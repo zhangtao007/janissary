@@ -1,12 +1,12 @@
-./idea
-./gradle
-out/
-build/
-logs/
-*.iml
+**/idea
+**/gradle
+**/out/
+**/build/
+**/logs/
+**/*.iml
 
 # Compiled class file
-*.class
+**/*.class
 
 # Log file
 *.log
