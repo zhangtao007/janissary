@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.GuestGroupRegisteredMemberGuestUserPictureMapper">
+    <resultMap id="guestGroupRegisteredMemberGuestUserPictureMap" type="com.lanjiu.im.storage.pojo.GuestGroupRegisteredMemberGuestUserPicture">
+        <result property="downloadUrl" column="download_url" javaType="java.lang.String"></result>
+        <result property="guestGroupId" column="guest_group_id" javaType="java.lang.Integer"></result>
+        <result property="registeredMemberId" column="registered_member_id" javaType="java.lang.Integer"></result>
+        <result property="guestUserId" column="guest_user_id" javaType="java.lang.Integer"></result>
+        <result property="creationTime" column="creation_time" javaType="java.sql.Date"></result>
+    </resultMap>
+    <select id="selectAllGuestGroupRegisteredMemberGuestUserPicture" resultMap="guestGroupRegisteredMemberGuestUserPictureMap">
+		select * from guest_group_registered_member_guest_user_picture
+	</select>
+
+    <select id="selectGuestGroupRegisteredMemberGuestUserPicture" resultMap="guestGroupRegisteredMemberGuestUserPictureMap">
+		select * from guest_group_registered_member_guest_user_picture where download_url = #{downloadUrl}
+	</select>
+
+    <insert id="insertGuestGroupRegisteredMemberGuestUserPicture" parameterType="com.lanjiu.im.storage.pojo.GuestGroupRegisteredMemberGuestUserPicture">
+        insert into guest_group_registered_member_guest_user_picture (download_url, guest_group_id, registered_member_id, guest_user_id, creation_time)
+        values (#{downloadUrl,jdbcType=VARCHAR}, #{guestGroupId,jdbcType=INTEGER}, #{registeredMemberId,jdbcType=INTEGER}, #{guestUserId,jdbcType=INTEGER}, #{creationTime,jdbcType=DATE})
+    </insert>
+
+    <delete id="deleteGuestGroupRegisteredMemberGuestUserPicture" >
+		delete from guest_group_registered_member_guest_user_picture where download_url = #{downloadUrl}
+	</delete>
+</mapper>

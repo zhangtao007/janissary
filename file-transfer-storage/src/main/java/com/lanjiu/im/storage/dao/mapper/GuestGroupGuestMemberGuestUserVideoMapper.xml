@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.GuestGroupGuestMemberGuestUserVideoMapper">
+    <resultMap id="guestGroupGuestMemberGuestUserVideo" type="com.lanjiu.im.storage.pojo.GuestGroupGuestMemberGuestUserVideo">
+        <result property="downloadUrl" column="download_url" javaType="java.lang.String"></result>
+        <result property="guestGroupId" column="guest_group_id" javaType="java.lang.Integer"></result>
+        <result property="guestMemberId" column="guest_member_id" javaType="java.lang.Integer"></result>
+        <result property="guestUserId" column="guest_user_id" javaType="java.lang.Integer"></result>
+        <result property="creationTime" column="creation_time" javaType="java.sql.Date"></result>
+    </resultMap>
+    <select id="selectAllGuestGroupGuestMemberGuestUserVideo" resultMap="guestGroupGuestMemberGuestUserVideo">
+		select * from guest_group_guest_member_guest_user_video
+	</select>
+
+    <select id="selectGuestGroupGuestMemberGuestUserVideo" resultMap="guestGroupGuestMemberGuestUserVideo">
+		select * from guest_group_guest_member_guest_user_video where download_url = #{downloadUrl}
+	</select>
+
+    <insert id="insertGuestGroupGuestMemberGuestUserVideo" parameterType="com.lanjiu.im.storage.pojo.GuestGroupGuestMemberGuestUserVideo">
+        insert into guest_group_guest_member_guest_user_video (download_url, guest_group_id, guest_member_id, guest_user_id, creation_time)
+        values (#{downloadUrl,jdbcType=VARCHAR}, #{guestGroupId,jdbcType=INTEGER}, #{guestMemberId,jdbcType=INTEGER}, #{guestUserId,jdbcType=INTEGER}, #{creationTime,jdbcType=DATE})
+    </insert>
+
+    <delete id="deleteGuestGroupGuestMemberGuestUserVideo" >
+		delete from guest_group_guest_member_guest_user_video where download_url = #{downloadUrl}
+	</delete>
+</mapper>

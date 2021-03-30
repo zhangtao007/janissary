@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package com.lanjiu.im.grpc;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.im.grpc";
+option java_outer_classname = "InformationStorageProto";
+option java_multiple_files = true;
+
+service InformationStorageService{
+
+    // 差群成员列表
+    rpc queryGroupMembersInfoList(SelectGroupMemberRequest)returns(AllGroupsMemberResponse);
+
+}
+
+message SelectGroupMemberRequest { // 传输请求 repeated
+    string group_id = 1;
+    string spare = 2; //  备用字段
+}
+
+message AllGroupsMemberResponse {
+    string status_detail = 1;
+    repeated AllGroupMemberVO response_group_member_vo = 2;
+}
+
+message AllGroupMemberVO {
+    int32 group_member_id = 1;
+    int32 registered_group_id = 2;
+    int32 guest_group_id = 3;
+    int32 registered_user_id = 4;
+    int32 guest_user_id = 5;
+    string group_remarks = 6;
+    string group_owner = 7;
+    string burn_after_reading_setting = 8;
+    string burn_after_reading_time_unit = 9;
+    float burn_after_reading_time_length = 10;
+    int64 group_entry_time = 11;
+    string offline_message_setting = 12;
+    string register_user_nick_ame = 13;
+    string guest_user_nick_ame = 14;
+    string group_name = 15;
+    int32 amount = 16;
+    string announcement_title = 17;
+    string announcement_content = 18;
+    string user_photo = 19;
+}

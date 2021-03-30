@@ -1,0 +1,135 @@
+syntax = "proto3";
+
+package com.lanjiu.pro.groupStorage;
+import "google/protobuf/any.proto";
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.pro.groupStorage";
+option java_outer_classname = "MessageGroupStorageProto";
+option java_multiple_files = true;
+
+import "im_business_protocol_entities.proto";
+
+service MessageGroupStorageService{
+
+    rpc saveGroupMassage(GroupMsgOffLineRequest) returns (ResponseResult) {};
+
+    rpc saveGroupMembersOffLineMsg(GroupMsgOffLineRequest) returns (ResponseResult) {};
+
+    rpc selectOffLineGroupMsg(SelectOffLineGroupMsgRequest) returns (ResponseResult) {};
+
+    rpc selectOffLineGroupMsgCount(SelectOffLineGroupMsgRequest) returns (ResponseCount) {};
+
+    rpc deleteGroupMembersOffLineMsg(DeleteGroupMembersMsgRequest) returns (ResponseResult) {};
+
+    rpc deleteSendOffLineMsg(DeleteGroupMembersMsgRequest) returns (ResponseResult)  {};
+
+    rpc deleteGroupMsg(GroupMsgOffLineRequest) returns (ResponseResult)  {};
+
+    rpc groupOwnerExit(DeleteGroupMembersMsgRequest) returns (ResponseResult)  {};
+
+    rpc groupAudioAndVideoCall(GroupAudioVideoCallRequest) returns (GroupAudioVideoCallResponse){};
+}
+
+// 删除群成员离线消息请求协议
+message DeleteGroupMembersMsgRequest {
+  string user_id = 1;
+  string member_type = 2;
+  repeated string group_id = 3;
+}
+
+// 查询用户离线消息请求协议
+message SelectOffLineGroupMsgRequest {
+  string user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+// 接口响应
+message ResponseResult {
+  bool success = 1;
+  string msg = 2;
+  google.protobuf.Any data = 3;
+}
+
+// 接口响应
+message ResponseCount {
+  int32 count = 1;
+}
+
+message GroupMsgList {
+   repeated com.lanjiu.pro.business.GroupOfflineMessage group_msg = 1;
+}
+
+message GroupMsg{
+   int32 msg_id = 1;
+}
+
+message GroupMsgOffLineRequest {
+    string msg_id = 1;
+    int32 msg_type = 2;
+    string from_id = 3;
+    string group_id = 4;
+    string to_id = 5;
+    string content = 6;
+    string entity_url = 7;
+    // 阅后即焚
+    bool snapchat_status = 8;
+    // 阅后即焚时长
+    int32 snapchat_time_length = 9;
+    int64 create_time = 10;
+    int32 id = 11;
+    int32 isAt = 12;
+    int64 duration = 13;
+    string groupOwner = 14;
+    string groupOwnerNick = 15;
+    string groupOwnerUrl = 16;
+    string groupName = 17;
+    string fromMemberId = 18;
+    string fromMemberName = 19;
+    string fromMemberAvatar = 20;
+}
+
+message GroupAudioVideoCallRequest{
+    GroupAudioVideoMessage groupAudioVideoMessage =1;
+    string  args =2;
+}
+
+message GroupAudioVideoCallResponse{
+    repeated GroupAudioVideoMessage groupAudioVideoMessage =1;
+    string result =2;
+}
+
+message GroupAudioVideoMessage{
+    // 房间ID
+    string room_id = 1;
+
+    // 是否纯音频(false:视频；true:音频)
+    bool only_audio = 2;
+
+    // 音视频通话发起者
+    // 用户ID
+    string from_user_id = 3;
+
+    // 用户名称
+    string from_user_name = 4;
+
+    // 用户头像
+    string user_avatar =5;
+
+    // 群ID
+    string group_id = 6;
+
+    // 群被邀请者ID(以英文,隔开)
+    string call_member_ids = 7;
+
+    // 类型(create:创建(拨打)，connecting:接通，join:加入，leave:离开，close:关闭(挂断)，busy:忙音，unanswered:未接听)
+    string type = 8;
+
+    // 时间
+    string detail = 9;
+
+    //备注
+    string other =10;
+
+}

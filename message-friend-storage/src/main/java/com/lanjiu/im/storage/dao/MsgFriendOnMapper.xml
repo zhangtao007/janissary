@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.MsgFriendOnMapper">
+    <insert id="insertMsgFriendOn" parameterType="com.lanjiu.im.storage.pojo.MsgFriendOnPO" >
+        insert into msg_friend_on
+        values (
+        #{msgId,jdbcType=INTEGER},
+        #{msgType,jdbcType=INTEGER},
+        #{fromId,jdbcType=INTEGER},
+        #{toId,jdbcType=INTEGER},
+        #{content,jdbcType=VARCHAR},
+        #{entityUrl,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{messageOfflineReadingStatus,jdbcType=BOOLEAN},
+        #{burnAfterReadingStatus,jdbcType=BOOLEAN},
+        #{burnAfterReadingLength,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <delete id="deleteMsgFriendOn" parameterType="java.lang.Integer">
+        delete from msg_friend_on where msg_id =#{msgId,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteMsgFriendOnByFromId" parameterType="java.lang.Integer">
+         delete from msg_friend_on where from_id =#{fromId,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteMsgFriendOnByToId" parameterType="java.lang.Integer">
+        delete from msg_friend_on where to_id =#{toId,jdbcType=INTEGER}
+    </delete>
+
+
+    <resultMap id="ResultBase" type="com.lanjiu.im.storage.pojo.MsgFriendOnPO">
+        <result property="msgId" column="msg_id" jdbcType="INTEGER"></result>
+        <result property="msgType" column="msg_type" jdbcType="INTEGER"></result>
+        <result property="fromId" column="from_id" jdbcType="INTEGER"></result>
+        <result property="toId" column="to_id" jdbcType="INTEGER"></result>
+        <result property="content" column="content" jdbcType="VARCHAR"></result>
+        <result property="entityUrl" column="entity_url" jdbcType="VARCHAR"></result>
+        <result property="createTime" column="create_time"  jdbcType="DATE"></result>
+        <result property="messageOfflineStatus" column="message_offline_status" javaType="java.lang.Boolean" jdbcType="BIT"></result>
+        <result property="burnAfterReadingStatus" column="burn_after_reading_status" javaType="java.lang.Boolean"  jdbcType="BIT"></result>
+        <result property="burnAfterReadingLength" column="burn_after_reading_length" jdbcType="INTEGER"></result>
+    </resultMap>
+
+    <select id="selectAllMsgFriendOn" resultMap="ResultBase">
+        select * from msg_friend_on
+    </select>
+
+    <select id="selectMsgFriendOnByMsgId" resultMap="ResultBase">
+        select * from msg_friend_on where msg_id = #{msgId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectMsgFriendOnByFromId" resultMap="ResultBase">
+         select * from msg_friend_on where from_id = #{fromId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectMsgFriendOnByToId" resultMap="ResultBase">
+         select * from msg_friend_on where to_id = #{toId,jdbcType=INTEGER}
+    </select>
+</mapper>

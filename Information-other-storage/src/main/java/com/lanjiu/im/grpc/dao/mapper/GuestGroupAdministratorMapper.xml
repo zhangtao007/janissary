@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.GuestGroupAdministratorMapper">
+    <resultMap id="guestGroupAdministratorMap" type="com.lanjiu.im.grpc.pojo.GuestGroupAdministrator">
+        <result property="administratorId" column="administrator_id" javaType="java.lang.Integer"></result>
+        <result property="administratorType" column="administrator_type" javaType="java.lang.String"></result>
+        <result property="administratorName" column="administrator_name" javaType="java.lang.String"></result>
+    </resultMap>
+
+    <select id="selectAllGuestGroupAdministrator" resultMap="guestGroupAdministratorMap">
+		select * from guest_group_administrator
+	</select>
+
+    <insert id="insertGuestGroupAdministrator" parameterType="com.lanjiu.im.grpc.pojo.GuestGroupAdministrator">
+        insert into guest_group_administrator (administrator_id, administrator_type, administrator_name)
+        values (#{administratorId,jdbcType=INTEGER}, #{administratorType,jdbcType=VARCHAR}, #{administratorName,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteGuestGroupAdministrator" >
+		delete from guest_group_administrator where administrator_id = #{administratorId}
+	</delete>
+
+    <!-- 修改公共 -->
+    <update id="updateGuestGroupAdministrator" parameterType="com.lanjiu.im.grpc.pojo.GuestGroupAdministrator">
+    update guest_group_administrator set administrator_type = #{administratorType}, administrator_name = #{administratorName} where administrator_id = #{administratorId}
+    </update>
+
+</mapper>

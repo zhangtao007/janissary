@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.RegisteredUserFriendVideoMapper">
+    <resultMap id="registeredUserFriendVideoMap" type="com.lanjiu.im.storage.pojo.RegisteredUserFriendVideo">
+        <result property="downloadUrl" column="download_url" javaType="java.lang.String"></result>
+        <result property="registeredUserId" column="registered_user_id" javaType="java.lang.Integer"></result>
+        <result property="creationTime" column="creation_time" javaType="java.sql.Date"></result>
+        <result property="friendId" column="friend_id" javaType="java.lang.Integer"></result>
+    </resultMap>
+    <select id="selectAllRegisteredUserFriendVideo" resultMap="registeredUserFriendVideoMap">
+		select * from registered_user_friend_video
+	</select>
+
+    <select id="selectRegisteredUserFriendVideoByFriendId" resultMap="registeredUserFriendVideoMap">
+		select * from registered_user_friend_video where registered_user_id = #{registeredUserId} and friend_id = #{friendId}
+	</select>
+
+    <select id="selectRegisteredUserFriendVideo" resultMap="registeredUserFriendVideoMap">
+		select * from registered_user_friend_video where download_url = #{downloadUrl}
+	</select>
+
+    <select id="selectRegisteredUserFriendVideoOnlyByFriendId" resultMap="registeredUserFriendVideoMap">
+        select * from registered_user_friend_video where  friend_id = #{friendId}
+    </select>
+
+    <select id="selectRegisteredUserFriendVideoByUserId" resultMap="registeredUserFriendVideoMap">
+        select * from registered_user_friend_video where registered_user_id = #{registeredUserId}
+    </select>
+
+    <insert id="insertRegisteredUserFriendVideo" parameterType="com.lanjiu.im.storage.pojo.RegisteredUserFriendVideo">
+        insert into registered_user_friend_video (download_url, registered_user_id, creation_time, friend_id)
+        values (#{downloadUrl,jdbcType=VARCHAR}, #{registeredUserId,jdbcType=INTEGER}, #{creationTime,jdbcType=DATE}, #{friendId,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteRegisteredUserFriendVideo" >
+		delete from registered_user_friend_video where download_url = #{downloadUrl}
+	</delete>
+
+    <select id="selectVidByDay" resultMap="registeredUserFriendVideoMap">
+        select *  from registered_user_friend_video where creation_time &lt;#{day,jdbcType=DATE}
+    </select>
+
+    <delete id="deleteVidByDay">
+        delete from registered_user_friend_video where creation_time &lt; #{sqlDate,jdbcType=DATE}
+    </delete>
+</mapper>

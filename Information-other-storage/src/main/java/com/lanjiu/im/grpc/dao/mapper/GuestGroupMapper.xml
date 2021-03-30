@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.GuestGroupMapper">
+    <resultMap id="guestGroupMap" type="com.lanjiu.im.grpc.pojo.GuestGroup">
+        <result property="guestUserId" column="guest_user_id" javaType="java.lang.Integer"></result>
+        <result property="groupId" column="group_id" javaType="java.lang.Integer"></result>
+        <result property="groupName" column="group_name" javaType="java.lang.String"></result>
+        <result property="groupAnnouncementId" column="group_announcement_id" javaType="java.lang.Integer"></result>
+        <result property="creationTime" column="creation_time" javaType="java.sql.Timestamp"></result>
+        <result property="modificationTime" column="modification_time" javaType="java.sql.Timestamp"></result>
+        <result property="amount" column="amount" javaType="java.lang.Integer"></result>
+    </resultMap>
+    <select id="selectAllGuestGroup" resultMap="guestGroupMap">
+		select * from guest_group
+	</select>
+
+    <select id="selectGuestGroup" resultMap="guestGroupMap">
+		select * from guest_group where guest_user_id = #{guestUserId} and group_id = #{groupId} and group_name = #{groupName} and group_announcement_id = #{groupAnnouncementId}
+		and creation_time = #{creationTime} and modification_time = #{modificationTime} and amount = #{amount}
+	</select>
+
+    <select id="selectGuestGroupByGuestUserId" resultMap="guestGroupMap">
+		select * from guest_group where guest_user_id = #{guestUserId}
+	</select>
+
+    <select id="selectGuestGroupByGroupId" resultMap="guestGroupMap">
+		select * from guest_group where group_id = #{groupId}
+	</select>
+
+    <select id="selectGuestGroupByGroupIdLike" resultMap="guestGroupMap">
+        <bind name="groupGuestParameter" value="'%' + groupId + '%'" />
+		select * from guest_group where group_id LIKE #{groupGuestParameter}
+	</select>
+
+    <select id="selectGuestGroupByGuestUserIdAndGroupId" resultMap="guestGroupMap">
+		select * from guest_group where guest_user_id = #{guestUserId} and group_id = #{groupId}
+	</select>
+
+    <insert id="insertGuestGroup" parameterType="com.lanjiu.im.grpc.pojo.GuestGroup">
+        insert into guest_group (guest_user_id, group_id, group_name, group_announcement_id, creation_time, modification_time,
+        amount)
+        values (#{guestUserId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR},
+        #{groupAnnouncementId,jdbcType=INTEGER}, #{creationTime,jdbcType=TIMESTAMP},
+        #{modificationTime,jdbcType=TIMESTAMP}, #{amount,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteGuestGroupByGroupId" >
+		delete from guest_group where group_id = #{groupId}
+	</delete>
+
+    <delete id="deleteGuestGroupByGuestUserId" >
+		delete from guest_group where guest_user_id = #{guestUserId}
+	</delete>
+
+    <!-- 修改群信息 -->
+    <update id="updateGuestGroup" parameterType="com.lanjiu.im.grpc.pojo.GuestGroup">
+    update guest_group set guest_user_id = #{guestUserId}, group_name = #{groupName}
+     , group_announcement_id = #{groupAnnouncementId}
+     , creation_time = #{creationTime}
+     , modification_time = #{modificationTime}
+     , amount = #{amount}
+     where group_id = #{groupId}
+    </update>
+
+    <select id="getGuestGroupByGroupId" resultMap="guestGroupMap">
+		select * from guest_group where group_id = #{groupId}
+	</select>
+</mapper>

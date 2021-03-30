@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.GroupRemarkMapper">
+    <resultMap id="groupRemarkMap" type="com.lanjiu.im.grpc.pojo.GroupRemark">
+        <result property="groupId" column="group_id" javaType="java.lang.Integer"></result>
+        <result property="groupMemberId" column="group_member_id" javaType="java.lang.Integer"></result>
+        <result property="groupMemberIdRemarked" column="group_member_id_remarked" javaType="java.lang.Integer"></result>
+        <result property="remark" column="remark" javaType="java.lang.String"></result>
+    </resultMap>
+
+    <select id="selectAllGroupRemark" resultMap="groupRemarkMap">
+		select * from group_remark
+	</select>
+
+    <select id="selectGroupRemarkWithGroupWithGroupMember" resultMap="groupRemarkMap">
+		select * from group_remark where group_id = #{groupId} and group_member_id = #{groupMemberId} and group_member_id_remarked = #{groupMemberIdRemarked}
+	</select>
+
+    <insert id="insertGroupRemark" parameterType="com.lanjiu.im.grpc.pojo.GroupRemark">
+        insert into group_remark (group_id, group_member_id, group_member_id_remarked, remark)
+        values (#{groupId,jdbcType=INTEGER}, #{groupMemberId,jdbcType=INTEGER}, #{groupMemberIdRemarked,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteGroupRemarkByGroupId" >
+		delete from group_remark where group_id = #{groupId}
+	</delete>
+
+    <delete id="deleteGroupRemarkByMemberRemarkedId" >
+		delete from group_remark where group_member_id_remarked = #{groupMemberIdRemarked}
+	</delete>
+
+    <delete id="deleteGroupRemarkByMemberId" >
+		delete from group_remark where group_member_id = #{groupMemberId}
+	</delete>
+
+    <delete id="deleteGroupRemarkByGroupIdAndMemberId" >
+		delete from group_remark where group_id = #{groupId} and group_member_id = #{groupMemberId}
+	</delete>
+
+    <!-- 修改备注 -->
+    <update id="updateGroupRemark" parameterType="com.lanjiu.im.grpc.pojo.GroupRemark">
+    update group_remark set remark = #{remark} where group_id = #{groupId} and group_member_id = #{groupMemberId} and group_member_id_remarked = #{groupMemberIdRemarked}
+    </update>
+
+</mapper>

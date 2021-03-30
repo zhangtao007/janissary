@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.UserInfomationMapper">
+
+    <resultMap  id="BaseResult" type="com.lanjiu.im.storage.pojo.UserInfomationPO">
+            <id column="user_id" property="userId" jdbcType="INTEGER"/>
+            <result column="nickname"  property="nickname"  jdbcType="VARCHAR"/>
+            <result column="avatar"  property="avatar"  jdbcType="VARCHAR"/>
+            <result column="online_status" property="onlineStatus" jdbcType="VARCHAR"/>
+            <result column="modification_time" property="modificationTime" jdbcType="TIMESTAMP"/>
+            <result column="exit_clean" property="exitClean" jdbcType="VARCHAR"/>
+            <result column="timer_clean" property="timerClean" jdbcType="INTEGER"/>
+    </resultMap>
+
+          <sql id="userInfoColumns">
+              <trim suffixOverrides=",">
+                  <if test="userId !=null">user_id,</if>
+                  <if test="nickname !=null">nickname,</if>
+                  <if test="avatar !=null">avatar,</if>
+                  <if test="onlineStatus !=null">online_status,</if>
+                  <if test="modificationTime !=null">modification_time,</if>
+                  <if test="exitClean !=null">exit_clean,</if>
+                  <if test="timerClean !=null">timer_clean</if>
+              </trim>
+          </sql>
+
+          <sql id="userInfoValues">
+              <trim suffixOverrides=",">
+                  <if test="userId !=null">#{userId},</if>
+                  <if test="nickname !=null">#{nickname},</if>
+                  <if test="avatar !=null">#{avatar},</if>
+                  <if test="onlineStatus !=null">#{onlineStatus},</if>
+                  <if test="modificationTime !=null">#{modificationTime},</if>
+                  <if test="exitClean !=null">#{exitClean},</if>
+                  <if test="timerClean !=null">#{timerClean}</if>
+              </trim>
+          </sql>
+
+        <insert id="insertUserInfomation" parameterType="com.lanjiu.im.storage.pojo.UserInfomationPO">
+                insert into regist_user_info  (<include refid="userInfoColumns"/>)
+                values (<include refid="userInfoValues"/>)
+        </insert>
+
+
+        <delete id="deleteUserInfomation" parameterType="java.lang.Integer">
+            delete from regist_user_info where  user_id = #{userId,jdbcType=INTEGER}
+        </delete>
+
+        <update id="updateUserInfomation" parameterType="com.lanjiu.im.storage.pojo.UserInfomationPO">
+                update  regist_user_info
+            <trim prefix="set" suffixOverrides=",">
+
+                     <if test="nickname != null and nickname !=''">
+                        nickname=#{nickname},
+                     </if>
+                     <if test="avatar != null and avatar != ''">
+                        avatar=#{avatar},
+                     </if>
+                     <if test="onlineStatus != null and onlineStatus !=''">
+                        online_status=#{onlineStatus},
+                     </if>
+                     <if test="modificationTime != null">
+                        modification_time=#{modificationTime},
+                     </if>
+
+                    <if test="exitClean != null and exitClean !=''">
+                        exit_clean=#{exitClean},
+                    </if>
+                    <if test="timerClean != null and timerClean != 0">
+                        timer_clean=#{timerClean},
+                    </if>
+            </trim>
+                where user_id=#{userId}
+        </update>
+
+
+
+        <select id="selectUserInfomation" resultMap="BaseResult"  parameterType="java.lang.Integer">
+                select *
+                from regist_user_info
+                where  user_id = #{userId,jdbcType=INTEGER}
+        </select>
+
+</mapper>

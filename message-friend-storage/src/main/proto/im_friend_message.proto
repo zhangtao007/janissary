@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package com.lanjiu.pro.friend_msg;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.pro.friend_msg";
+option java_outer_classname = "MessageFriendStorageProto";
+option java_multiple_files = true;
+
+service MessageFriendService {
+
+    rpc storageFriendMessage(RequestFriendMessage) returns (ResponseFriendMessage){};  // 存储好友离线消息
+    rpc removeFriendMessage(RequestFriendMessage) returns (ResponseFriendMessage){};    //删除好友离线消息
+    rpc selectFriendMessage(RequestFriendMessage) returns (ResponseFriendMessage){};   //获取好友离线消息
+    rpc storageFriendMessageOn(RequestFriendMessage) returns (ResponseFriendMessage){};  // 存储好友在线消息
+    rpc removeFriendMessageOn(RequestFriendMessage) returns (ResponseFriendMessage){};    //删除好友在线消息
+    rpc selectFriendMessageOn(RequestFriendMessage) returns (ResponseFriendMessage){};   //获取好友在线消息
+    rpc audioAndVideoCallMessage(AudioAndVideoCallRequest) returns (AudioAndVideoCallResponse){};
+}
+
+message RequestFriendMessage{
+    repeated FriendMessage friendMessage=1;
+    string ret = 2;
+    string result = 3;
+    repeated NotifyDelMsg notifyDelMsg =5;
+}
+
+message ResponseFriendMessage{
+    repeated FriendMessage friendMessage=1;
+    string ret = 2;
+    string result = 3;
+    repeated NotifyDelMsg notifyDelMsg =5;
+
+}
+
+
+message NotifyDelMsg{
+    int32 delfromId =1;
+    int32 deltoId =2;
+    int32 fromId =3;
+    string msgId =4;
+    string timestap = 5;
+    string args =6;
+
+}
+
+
+message FriendMessage{
+
+    string msg_id = 1;
+    int32 msg_type = 2;
+    int32 from_id = 3;
+    int32 to_id = 4;
+    string content = 5;
+    string entity_url = 6;
+    string create_time = 7;
+    bool message_offline_status = 8;
+    bool burn_after_reading_status = 9;
+    int32 burn_after_reading_length = 10;
+    // 发送者昵称
+    string from_nickname = 11;
+    // 发送者头像
+    string from_avatar = 12;
+    //视频时长
+    int64 video_time = 13;
+}
+
+
+message AudioAndVideoCallRequest{
+    AudioAndVideoCallMessage audioAndVideoCallMessage =1;
+    string args =2;
+}
+
+message AudioAndVideoCallResponse{
+    repeated  AudioAndVideoCallMessage audioAndVideoCallMessage =1;
+    string result =2;
+}
+
+message AudioAndVideoCallMessage {
+    // 音视频服务地址
+    string server = 1;
+
+    // 房间ID
+    string room_id = 2;
+
+    // 房间密码
+    string room_pwd = 3;
+
+    // 是否纯音频(false:视频；true:音频)
+    bool only_audio = 4;
+
+    // 音视频通话发起者
+    // 用户ID
+    string from_user_id = 5;
+
+    // 用户名称
+    string from_user_name = 6;
+
+    // 用户头像
+    string user_avatar =7;
+
+    // 音视频通话接收者(个人)
+    string to_user = 8;
+
+    // 类型(create:创建(拨打))
+    string type = 9;
+
+    // 返回类型(成功/失败)详情
+    string status_detail = 10;
+}
+

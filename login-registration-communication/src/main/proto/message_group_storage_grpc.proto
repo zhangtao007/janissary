@@ -1,0 +1,220 @@
+syntax = "proto3";
+
+package com.lanjiu.pro.groupStorage;
+import "google/protobuf/any.proto";
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.pro.groupStorage";
+option java_outer_classname = "MessageGroupStorageProto";
+option java_multiple_files = true;
+
+service MessageGroupStorageService{
+
+    rpc deleteGroupMembersOffLineMsg(DeleteGroupMembersMsgRequest) returns (ResponseResult) {};
+
+}
+message OnGroupMessageTransmissionRequest { // 在线消息申请
+  repeated MsgGroup msg_group = 1;
+  string kind = 2;
+}
+message OnGroupMessageTransmissionResponse { // 在线消息响应
+  repeated MsgGroup msg_group = 1;
+  string status = 2;
+}
+
+message OffGroupMessageTransmissionRequest { // 离线消息申请
+  repeated RpcMsgGroupOff msg_group = 1;
+  string kind = 2;
+}
+message OffGroupMessageTransmissionResponse { // 离线消息响应
+  repeated RpcMsgGroupOff msg_group = 1;
+  string status = 2;
+}
+message SelectMessageGroupRequest { // 查询群申请
+  repeated string group_id = 1;
+  string from_id = 2;
+}
+message ResponseSelectResult { // 查询群响应
+  repeated MsgGroup msg_group = 1;
+  string status = 2;
+}
+
+// 删除群成员离线消息请求协议
+message DeleteGroupMembersMsgRequest {
+  string user_id = 1;
+  string member_type = 2;
+  repeated string group_id = 3;
+}
+
+// 查询用户离线消息请求协议
+message SelectOffLineGroupMsgRequest {
+  string user_id = 1;
+}
+
+message GroupMsgList {
+   repeated GroupOfflineMessage group_msg = 1;
+}
+
+// 接口响应
+message ResponseResult {
+  bool success = 1;
+  string msg = 2;
+  google.protobuf.Any data = 3;
+}
+
+message MsgGroup {
+    int32 msg_id = 1;
+    int32 msg_type = 2;
+    int32 from_id = 3;
+    int32 to_id = 4;
+    string content = 5;
+    string entity_url = 6;
+    int64 create_time = 7;
+    string message_offline_status = 8;
+    string burn_after_reading_status = 9;
+    float burn_after_reading_length = 10;
+}
+
+message RpcMsgGroupOff {
+    string msg_id = 1;
+    int32 msg_type = 2;
+    int32 from_id = 3;
+    int32 to_id = 4;
+    string content = 5;
+    string entity_url = 6;
+    int64 create_time = 7;
+    string message_offline_status = 8;
+    string burn_after_reading_status = 9;
+    float burn_after_reading_length = 10;
+}
+
+message GroupMsgOffLineRequest {
+    string msg_id = 1;
+    int32 msg_type = 2;
+    int32 from_id = 3;
+    int32 group_id = 4;
+    int32 to_id = 5;
+    string content = 6;
+    string entity_url = 7;
+    int64 create_time = 8;
+}
+
+message GroupOfflineMessage {
+
+    int32 offline_message_type = 1;
+
+    string user_id = 2;
+
+    string user_nickname = 3;
+
+    string user_avatar = 4;
+
+    string group_id = 5;
+
+    string group_name = 6;
+
+    string group_member_user_id = 7;
+
+    string group_member_nickname = 8;
+
+    string group_member_avatar = 9;
+
+    ChatMessage chat_message = 10;
+
+    string msg_from_id = 11;
+}
+
+// 消息实体
+message ChatMessage {
+    // 消息ID
+    string msg_id = 1;
+
+    // 消息内容类型(图片/视频/文本/语音/文件)
+    int32 chat_type = 2;
+
+
+    // 文本实体
+    Text text = 3;
+
+    // 图片实体
+    Picture picture = 4;
+
+    // 视频实体
+    Video video = 5;
+
+    // 语音实体
+    Voice voice = 6;
+
+    // 文件实体
+    File file = 7;
+
+}
+
+// 图片结构体
+message Picture {
+    // 原图下载URL
+    string url = 1;
+
+    // 缩略图
+    bytes thumbnail = 2;
+
+    // 当前坐标
+    int64 pos = 3;
+
+    // 当前文件内容大小
+    int64 length = 4;
+}
+
+// 视频结构体
+message Video {
+    // 原视频下载URL
+    string url = 1;
+
+    // 缩略图
+    bytes thumbnail = 3;
+
+    // 当前坐标
+    int64 pos = 4;
+
+    // 当前文件内容大小
+    int64 length = 5;
+}
+
+// 语音结构体
+message Voice {
+    // 语音
+    bytes content = 1;
+
+    // 当前坐标
+    int64 pos = 2;
+
+    // 当前文件内容大小
+    int64 length = 3;
+}
+
+// 文本结构体
+message Text {
+    // 文本内容
+    string content = 1;
+
+    // 文本长度
+    string length = 2;
+}
+
+// 文件结构体
+message File {
+    // 原文件下载URL
+    string url = 1;
+
+    // 当前坐标
+    int64 pos = 2;
+
+    // 当前文件内容大小
+    int64 length = 3;
+}
+
+// 搜索条件结构体（防止以后加条件，直接设置实体）
+message Search {
+    // 搜索条件
+    string keyword = 1;
+}

@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package com.lanjiu.pro.login;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.pro.login";
+option java_outer_classname = "RegisterStorageProto";
+option java_multiple_files = true;
+
+service RegisterStorageService {
+
+    //保存注册用户
+    rpc StorageRegisterUser (RequestUser) returns (ResponseUser) {
+    };
+    //保存游客
+    rpc StorageGuestUser (RequestUser) returns (ResponseUser) {
+    };
+
+    //保存注册个人设置
+    rpc storageUserInfomation (RequestUser) returns (ResponseUser) {
+    };
+
+    //保存游客个人设置
+    rpc storageGuestUserInfo (RequestUser) returns (ResponseUser) {
+    };
+
+    //獲取註冊用戶個人設置信息及基本信息
+    rpc SelectUserInfomation(RequestUser) returns (ResponseUser){};
+    //獲取遊客用戶個人設置信息及基本信息
+    rpc SelectGuestUserInfo(RequestUser)returns (ResponseUser){};
+
+    //注册用户登录
+    rpc LoginRegistUser(RequestUser) returns (ResponseUser){};
+    //游客登录
+    rpc LoginGuestUser(RequestUser) returns (ResponseUser){};
+
+    rpc LogoutRegistUser(RequestUser) returns (ResponseUser){};
+
+    rpc LogoutGuestUser(RequestUser) returns (ResponseUser){};
+
+    rpc DeleteRegisterUser (RequestUser) returns (ResponseUser) {
+    };
+    rpc DeleteGuestUser(RequestUser) returns (ResponseUser){};
+
+    rpc UpdateUserInfomation(RequestUser) returns (ResponseUser){};
+
+    rpc UpdateGuestUserInfo(RequestUser) returns(ResponseUser){};
+
+    rpc SeekPassword(RequestUser) returns (ResponseUser){};
+
+    rpc VerificationCode(RequestUser) returns (ResponseUser){};
+
+    rpc UpdateUserDevice(RequestUserDevice) returns (RequestUserDevice){};
+
+}
+
+message RequestUser {
+    string userType =1;
+    RegisterUser registerUser = 2;
+    GuestUser guestUser = 3;
+    string args =4;
+
+}
+
+message ResponseUser {
+    string ret = 1;  //返回成功或失败
+    string result = 2;  //返回信息
+    repeated RegisterUser registerUser = 3;
+    repeated GuestUser guestUser = 4;
+    string userType =5;
+}
+
+//协议实体
+message RegisterUser {
+    string user_id = 1;
+    string user_account = 2;
+    string password = 3;
+    string phone = 4;
+    string create_time = 5;
+    UserInfomation userInfomation =6;
+}
+
+message GuestUser {
+    string user_id = 1;
+    string user_acount = 2; //游客无账号为空
+    string password = 3;     //游客无密码
+    string create_time = 4;
+    UserInfomation userInfomation =5;
+}
+
+message UserInfomation {
+    string user_type = 1;
+    string user_id = 2;
+    string nickname = 3;
+    string avatar = 4;
+    string online_status = 5;
+    string modify_time = 6;
+    // 是否开启退出清理 off/on
+    string exit_clean = 7;
+    // 定期清理（3:每月，2:每周，1:每天）
+    int32 timer_clean = 8;
+}
+
+message BeautifulNumber {
+    int32 ten_million = 1;
+    int32 one_million = 2;
+    int32 one_hundred_thousand = 3;
+    int32 ten_thousand = 4;
+    int32 one_thousand = 5;
+    int32 one_hundred = 6;
+    int32 ten = 7;
+    int32 one = 8;
+}
+
+
+message RequestUserDevice{
+    repeated  RequestDeviceUpdate  requestDeviceUpdate= 1;
+    string arg = 2;
+}
+
+message RequestDeviceUpdate{
+    string user_id = 1;
+
+    // 推送token
+    string push_token = 2;
+
+    // 设备厂商
+    string manufacturer = 3;
+
+    // 返回类型(成功/失败)详情
+    string status_detail = 4;
+
+}

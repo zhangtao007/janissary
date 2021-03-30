@@ -1,0 +1,629 @@
+syntax = "proto3";
+
+package com.lanjiu.pro.business;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.pro.business";
+option java_outer_classname = "BusinessProtocolMessages";
+
+import "im_business_protocol_entities.proto";
+
+// 注册协议体
+message RegisteredUserProtocol {
+    // 注册用户实体
+    RegisteredUser registered_user = 1;
+
+    //成功/失败提示消息详情
+    string status_detail = 2;
+}
+
+// 登录协议体
+message LoginProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    //成功/失败提示消息详情
+    string status_detail = 4;
+}
+
+// 登出协议体
+message LogoutProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    //成功/失败提示消息详情
+    string status_detail = 4;
+}
+
+// 查找用户协议体
+message FindUserProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 搜索条件
+    Search search = 4;
+
+    // 游客用户实体
+    repeated TouristsUser tourists_find = 5;
+
+    // 注册用户实体
+    repeated RegisteredUser registered_find = 6;
+
+    // 成功/失败提示消息详情
+    string status_detail = 7;
+}
+
+// 获取好友列表协议体
+message FriendListProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客好友结实体
+    repeated TouristsFriend tourists_friend = 4;
+
+    // 注册好友结实体
+    repeated RegisteredFriend registered_friend = 5;
+
+    // 成功/失败提示消息详情
+    string status_detail = 6;
+}
+
+// 好友资料协议体
+message FriendInfoProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客好友结实体
+    TouristsFriend tourists_friend = 4;
+
+    // 注册好友结实体
+    RegisteredFriend registered_friend = 5;
+
+    // 成功/失败提示消息详情
+    string status_detail = 6;
+}
+
+// 更新好友在线状态协议
+message FriendOnlineStatusChangeProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客好友实体
+    TouristsFriend tourists_friend = 2;
+
+    // 注册好友实体
+    RegisteredFriend registered_friend = 3;
+
+    // 成功/失败提示消息详情
+    string status_detail = 4;
+}
+
+// 好友添加协议体
+message FriendAddProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客好友结实体
+    repeated TouristsFriend tourists_friend = 4;
+
+    // 注册好友结实体
+    repeated RegisteredFriend registered_friend = 5;
+
+    // 留言
+    string leave_message = 6;
+
+    // 操作类型(添加好友/确认好友申请/拒绝好友申请)
+    int32 operation = 7;
+
+    // 成功/失败提示消息详情
+    string status_detail = 8;
+}
+
+// 好友删除协议体
+message FriendDeleteProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客好友结实体
+    TouristsFriend tourists_friend = 4;
+
+    // 注册好友结实体
+    RegisteredFriend registered_friend = 5;
+
+    // 成功/失败提示消息详情
+    string status_detail = 6;
+}
+
+// 查找群组协议体
+message FindGroupProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 搜索条件
+    Search search = 4;
+
+    // 游客群实体
+    repeated TouristsGroup tourists_group = 5;
+
+    // 注册群实体
+    repeated RegisteredGroup registered_group = 6;
+
+    // 成功/失败提示消息详情
+    string status_detail = 7;
+}
+
+// 获取群列表协议体
+message GroupListProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客群实体
+    repeated TouristsGroup tourists_group = 4;
+
+    // 注册群实体
+    repeated RegisteredGroup registered_group = 5;
+
+    // 成功/失败提示消息详情
+    string status_detail = 6;
+}
+
+// 群创建协议体
+message GroupCreateProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客群成员实体
+    repeated TouristsGroupMember tourists_group_member = 4;
+
+    // 注册群成员实体
+    repeated RegisteredGroupMember registered_group_member = 5;
+
+    // 游客群实体
+    TouristsGroup tourists_group = 6;
+
+    // 注册群实体
+    RegisteredGroup registered_group = 7;
+
+    // 成功/失败提示消息详情
+    string status_detail = 8;
+
+    //注册群成员集合实体
+    repeated AllGroupMemberVO all_group_member_vo = 9;
+
+}
+
+// 群资料协议体
+message GroupInfoProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客群实体
+    TouristsGroup tourists_group = 4;
+
+    // 注册群实体
+    RegisteredGroup registered_group = 5;
+
+    // 游客群成员实体
+    repeated TouristsGroupMember tourists_group_member = 6;
+
+    // 注册群成员实体
+    repeated RegisteredGroupMember registered_group_member = 7;
+
+    // 成功/失败提示消息详情
+    string status_detail = 8;
+
+    repeated AllGroupMemberVO response_group_member_vo = 9;
+}
+
+// 更新群成员在线状态协议
+message GroupMemberOnlineStatusChangeProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客好友实体
+    TouristsGroupMember tourists_group_member = 2;
+
+    // 注册好友实体
+    RegisteredGroupMember registered_group_member = 3;
+
+    // 成功/失败提示消息详情
+    string status_detail = 4;
+}
+
+// 群成员添加
+message GroupMemberAddProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客群成员实体
+    TouristsGroupMember tourists_group_member = 4;
+
+    // 注册群成员实体
+    RegisteredGroupMember registered_group_member = 5;
+
+    // 添加类型(申请/邀请)
+    int32 add_type = 6;
+
+    // 操作类型(申请/拒绝/同意)
+    int32 operation = 7;
+
+    // 成功/失败提示消息详情
+    string status_detail = 8;
+
+    repeated AllGroupMemberVO all_group_member_vo = 9;
+}
+
+// 群成员删除
+message GroupMemberDeleteProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客群成员实体
+    TouristsGroupMember tourists_group_member = 4;
+
+    // 注册群成员实体
+    RegisteredGroupMember registered_group_member = 5;
+
+    // 成功/失败提示消息详情
+    string status_detail = 6;
+}
+
+// 群公告协议体
+message GroupAnnouncementProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客群实体
+    TouristsGroup tourists_group = 4;
+
+    // 注册群实体
+    RegisteredGroup registered_group = 5;
+
+    // 操作类型(新增群公告/修改群公告/删除群公告/更新群公告)
+    int32 operation = 6;
+
+    // 成功/失败提示消息详情
+    string status_detail = 7;
+}
+
+// 修改个人信息协议体
+message PersonalInfoProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客用户实体(传新值)
+    TouristsUser settings_tourists_user = 4;
+
+    // 注册用户实体(传新值 新密码/新手机/新手机验证码)
+    RegisteredUser settings_registered_user = 5;
+
+    // 操作类型(设置昵称/设置头像/获取验证码/重置密码-验证/重置密码/设置手机/修改手机)
+    int32 operation = 6;
+
+    // 成功/失败提示消息详情
+    string status_detail = 7;
+}
+
+// 修改个人配置协议体
+message PersonalSettingsProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 设置实体
+    Settings settings = 4;
+
+    // 操作类型(设置好友阅后即焚开关/设置好友阅后即焚时长/设置是否接收离线消息/设置群阅后即焚开关/设置群阅后即焚时长/设置是否每次退出清理/设置定期清理周期)
+    int32 operation = 5;
+
+    // 成功/失败提示消息详情
+    string status_detail = 6;
+}
+
+// 好友设置协议体
+message FriendSettingsProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客好友实体
+    TouristsFriend tourists_friend = 4;
+
+    // 注册好友实体
+    RegisteredFriend registered_friend = 5;
+
+    // 操作类型(设置备注/设置阅后即焚开关/设置阅后即焚时长/设置是否接收离线消息)
+    int32 operation = 6;
+
+    // 成功/失败提示消息详情
+    string status_detail = 7;
+}
+
+// 群组设置协议体
+message GroupSettingsProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客群实体
+    TouristsGroup tourists_group = 4;
+
+    // 游客群实体
+    RegisteredGroup registered_group = 5;
+
+    // 操作类型(设置群名称/设置阅后即焚开关/设置阅后即焚时长)
+    int32 operation = 6;
+
+    // 成功/失败提示消息详情
+    string status_detail = 7;
+}
+
+// 群成员设置协议体
+message GroupMemberSettingsProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 游客群实体
+    TouristsGroupMember tourists_group_member = 4;
+
+    // 游客群实体
+    RegisteredGroupMember registered_group_member = 5;
+
+    // 操作类型(设置群昵称/设置群备注)
+    int32 operation = 6;
+
+    // 成功/失败提示消息详情
+    string status_detail = 7;
+}
+
+// 通知列表协议体
+message NotificationsProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 系统通知实体
+    repeated SysNotify sys_notify = 2;
+
+    // 游客通知实体
+    repeated TouristsNotify tourists_notify = 3;
+
+    // 注册通知实体
+    repeated RegisteredNotify registered_notify = 4;
+
+    // 返回类型(成功/失败)详情
+    string status_detail = 5;
+}
+
+// 系统通知协议体
+message SysNotifyProtocol {
+    // 系统通知实体
+    SysNotify sys_notify = 1;
+
+    // 返回类型(成功/失败)详情
+    string status_detail = 2;
+}
+
+// 用户消息通知
+message UserNotifyProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客通知实体
+    TouristsNotify tourists_notify = 2;
+
+    // 注册通知实体
+    RegisteredNotify registered_notify = 3;
+
+    // 返回类型(成功/失败)详情
+    string status_detail = 4;
+}
+
+// 单人聊天(1v1)协议体
+message FriendChatProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 聊天消息实体
+    ChatMessage chat_message = 4;
+
+    // 游客好友实体
+    TouristsFriend tourists_friend = 5;
+
+    // 注册好友实体
+    RegisteredFriend registered_friend = 6;
+
+    // 返回类型(成功/失败)详情
+    string status_detail = 7;
+}
+
+// 多人聊天(群聊)协议体
+message GroupChatProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 聊天消息实体
+    ChatMessage chat_message = 4;
+
+    // @成员ID，用“”，隔开
+    string at = 5;
+
+    // 游客群成员实体
+    TouristsGroupMember tourists_group_member = 6;
+
+    // 游客群成员实体
+    RegisteredGroupMember registered_group_member = 7;
+
+    // 返回类型(成功/失败)详情
+    string status_detail = 8;
+}
+
+//删除好友聊天的离线消息专用协议
+message DelFriendOffMessageProtocol {
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    // 聊天消息实体
+    ChatMessage chat_message = 4;
+
+    // 游客好友实体
+    TouristsFriend tourists_friend = 5;
+
+    // 注册好友实体
+    RegisteredFriend registered_friend = 6;
+
+    // 返回类型(成功/失败)详情
+    string status_detail = 7;
+
+    //指定删除离线消息之特点消息发送者
+    string msgfromId = 8;
+}
+
+//IMserver检测用户上线时拉去离线消息(批量)
+message OffFriendMessageListProtocol{
+    // 登录用户类型
+    string user_type = 1;
+
+    // 游客用户实体
+    TouristsUser tourists_user = 2;
+
+    // 注册用户实体
+    RegisteredUser registered_user = 3;
+
+    //游客离线消息
+    repeated TouristFriendOffMessage  touristFriendOffMessage= 4;
+
+    repeated  RegistFriendOffMessage  RegistFriendOffMessage =5;
+
+    // 返回类型(成功/失败)详情
+    string status_detail = 6;
+
+}

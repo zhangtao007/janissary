@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.RegisteredUserFriendMapper">
+    <resultMap id="registeredUserFriendMap" type="com.lanjiu.im.grpc.pojo.RegisteredUserFriend">
+        <result property="friendId" column="friend_id" javaType="java.lang.Integer"></result>
+        <result property="registeredUserId" column="registered_user_id" javaType="java.lang.Integer"></result>
+        <result property="friendUserId" column="friend_user_id" javaType="java.lang.Integer"></result>
+        <result property="friendComment" column="friend_comment" javaType="java.lang.String"></result>
+        <result property="creationTime" column="creation_time" javaType="java.sql.Timestamp"></result>
+        <result property="modificationTime" column="modification_time" javaType="java.sql.Timestamp"></result>
+        <result property="offlineMessageSetting" column="offline_message_setting" javaType="java.lang.String"></result>
+        <result property="burnAfterReadingSetting" column="burn_after_reading_setting"
+                javaType="java.lang.String"></result>
+        <result property="burnAfterReadingTimeUnit" column="burn_after_reading_time_unit"
+                javaType="java.lang.String"></result>
+        <result property="burnAfterReadingTimeLength" column="burn_after_reading_time_length"
+                javaType="java.math.BigDecimal"></result>
+        <result property="friendNickName" column="friend_nick_name" javaType="java.lang.String"></result>
+    </resultMap>
+
+    <select id="selectAllRegisteredUserFriend" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend
+	</select>
+
+    <select id="selectRegisteredUserFriend" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend where registered_user_id = #{registeredUserId} and friend_id = #{friendId} and friend_user_id = #{friendUserId} and friend_comment = #{friendComment} and creation_time = #{creationTime}
+		and modification_time = #{modificationTime} and offline_message_setting = #{offlineMessageSetting} and burn_after_reading_setting = #{burnAfterReadingSetting}
+		and burn_after_reading_time_unit = #{burnAfterReadingTimeUnit} and burn_after_reading_time_length = #{burnAfterReadingTimeLength} and friend_nick_name = #{friendNickName}
+	</select>
+
+    <select id="selectRegisteredUserFriendByRegisteredUserId" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend where registered_user_id = #{registeredUserId}
+	</select>
+
+    <select id="selectRegisteredUserFriendByFriendId" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend where friend_id = #{friendId}
+	</select>
+
+    <select id="selectRegisteredUserFriendByFriendIdLike" resultMap="registeredUserFriendMap">
+        <bind name="registeredFriendParameter" value="'%' + friendId + '%'"/>
+        select * from registered_user_friend where friend_id LIKE #{registeredFriendParameter}
+    </select>
+
+    <select id="selectRegisteredUserFriendByFriendUserId" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend where friend_user_id = #{friendUserId}
+	</select>
+
+    <select id="selectRegisteredUserFriendByRegisteredUserIdAndFriendId" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend where registered_user_id = #{registeredUserId} and friend_id = #{friendId}
+	</select>
+
+    <select id="selectRegisteredUserFriendByRegisteredUserIdAndFriendUserId" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend where registered_user_id = #{registeredUserId} and friend_user_id = #{friendUserId}
+	</select>
+
+    <select id="selectRegisteredUserFriendByOfflineMessageSetting" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend where offline_message_setting = #{offlineMessageSetting}
+	</select>
+
+    <select id="selectRegisteredUserFriendByBurnAfterReadingSetting" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend where burn_after_reading_setting = #{burnAfterReadingSetting}
+	</select>
+
+    <insert id="insertRegisteredUserFriend" parameterType="com.lanjiu.im.grpc.pojo.RegisteredUserFriend">
+        insert into registered_user_friend (registered_user_id, friend_user_id, friend_comment,creation_time,modification_time,
+        offline_message_setting,burn_after_reading_setting, burn_after_reading_time_unit, burn_after_reading_time_length, friend_nick_name)
+        values (#{registeredUserId,jdbcType=INTEGER}, #{friendUserId,jdbcType=INTEGER}, #{friendComment,jdbcType=VARCHAR},
+        #{creationTime,jdbcType=TIMESTAMP},#{modificationTime,jdbcType=TIMESTAMP},
+        #{offlineMessageSetting,jdbcType=VARCHAR}, #{burnAfterReadingSetting,jdbcType=VARCHAR},
+        #{burnAfterReadingTimeUnit,jdbcType=VARCHAR}, #{burnAfterReadingTimeLength,jdbcType=DECIMAL},
+        #{friendNickName,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteRegisteredUserFriendByFriendId">
+		delete from registered_user_friend where friend_id = #{friendId}
+	</delete>
+
+    <delete id="deleteRegisteredUserFriendByRegisteredUserId">
+		delete from registered_user_friend where registered_user_id = #{registeredUserId}
+	</delete>
+
+    <delete id="deleteRegisteredUserFriendByFriendUserId">
+		delete from registered_user_friend where friend_user_id = #{friendUserId}
+	</delete>
+
+    <delete id="deleteRegisteredUserFriendByRegisteredUserIdAndFriendUserId">
+		delete from registered_user_friend where registered_user_id = #{registeredUserId} and friend_user_id = #{friendUserId}
+	</delete>
+
+    <!-- 修改注册用户好友信息 -->
+    <update id="updateRegisteredUserFriend" parameterType="com.lanjiu.im.grpc.pojo.RegisteredUserFriend">
+    update registered_user_friend set registered_user_id = #{registeredUserId}
+     , friend_user_id = #{friendUserId}
+     , friend_comment = #{friendComment}
+     , modification_time = #{modificationTime}
+     , offline_message_setting = #{offlineMessageSetting}
+     , burn_after_reading_setting = #{burnAfterReadingSetting}
+     , burn_after_reading_time_unit = #{burnAfterReadingTimeUnit}
+     , burn_after_reading_time_length = #{burnAfterReadingTimeLength}
+     , friend_nick_name = #{friendNickName}
+     where friend_id = #{friendId}
+    </update>
+
+    <!-- 修改注册用户好友信息 -->
+    <update id="updateRegisteredUserFriendByRidAndFid" parameterType="com.lanjiu.im.grpc.pojo.RegisteredUserFriend">
+    update registered_user_friend set registered_user_id = #{registeredUserId}
+     , friend_user_id = #{friendUserId}
+     , friend_comment = #{friendComment}
+     , modification_time = #{modificationTime}
+     , offline_message_setting = #{offlineMessageSetting}
+     , burn_after_reading_setting = #{burnAfterReadingSetting}
+     , burn_after_reading_time_unit = #{burnAfterReadingTimeUnit}
+     , burn_after_reading_time_length = #{burnAfterReadingTimeLength}
+     , friend_nick_name = #{friendNickName}
+     where registered_user_id = #{registeredUserId} and friend_user_id = #{friendUserId}
+    </update>
+
+    <select id="getRelationByRegisteredUserIdAndFriendUserId" resultMap="registeredUserFriendMap">
+		select * from registered_user_friend where registered_user_id = #{registeredUserId} and friend_user_id = #{friendUserId}
+	</select>
+
+
+    <update id="updateFriendAlias" >
+        update registered_user_friend set  friend_comment = #{friendComment}
+     , modification_time = #{modificationTime}
+     where registered_user_id = #{registeredUserId} and friend_user_id = #{friendUserId}
+    </update>
+
+    <update id="updateFriendOfflineSet">
+          update registered_user_friend set   modification_time = #{modificationTime}
+     , offline_message_setting = #{offlineMessageSetting}
+     where registered_user_id = #{registeredUserId} and friend_user_id = #{friendUserId}
+    </update>
+</mapper>

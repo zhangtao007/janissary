@@ -1,0 +1,78 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.8.8'
+}
+
+group 'lanjiu.janissary'
+version '1.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+//    mavenCentral()
+}
+dependencies {
+    compile("io.netty:netty-all:4.1.10.Final",
+            "com.google.protobuf:protobuf-java:3.10.0",
+            "com.google.protobuf:protobuf-java-util:3.10.0",
+            "org.slf4j:slf4j-api:1.7.10",
+            "org.slf4j:slf4j-log4j12:1.7.10",
+            'io.grpc:grpc-netty-shaded:1.24.0',
+            'io.grpc:grpc-protobuf:1.24.0',
+            'io.grpc:grpc-stub:1.24.0',
+            'org.mybatis:mybatis:3.5.3',
+            'mysql:mysql-connector-java:5.1.49',
+            'org.quartz-scheduler:quartz:2.3.2'
+
+    )
+}
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        attributes 'Main-Class': 'com.lanjiu.im.storage.server.TransferStorageServer'
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.10.0"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.24.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {
+                setOutputSubDir 'java'
+            }
+        }
+    }
+    generatedFilesBaseDir = "src"
+}
+sourceSets {
+    main {
+        proto {
+            srcDir 'src/main/proto'
+        }
+        resources{
+            srcDirs {
+                [  "src/main/java","src/main/resource"]
+            }
+        }
+    }
+}
+
+processResources {
+    from('src/main/java') {
+        include '**/*'      //导入里面的所有文件，也可以自定义正则表达式
+        exclude "**/*.java" //源码文件中.java 文件是不需要的
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

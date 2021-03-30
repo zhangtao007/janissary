@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.GuestUserMapper">
+        <insert id="insertGuestUser"  parameterType="com.lanjiu.im.storage.pojo.GuestUserPO">
+                insert into guest_user(user_id,user_account,password,creation_time)
+                values(#{userId,jdbcType=INTEGER},#{userAccount,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{date,jdbcType=TIMESTAMP})
+        </insert>
+        <delete id="deleteGuestUser" >
+                delete from guest_user where user_id =#{userId,jdbcType=INTEGER}
+        </delete>
+
+        <resultMap id="BaseResultMap" type="com.lanjiu.im.storage.pojo.GuestUserPO">
+                <id column="user_id" property="userId" jdbcType="INTEGER" />
+                <result column="user_account" property="userAccount" jdbcType="VARCHAR"/>
+                <result column="password" property="password" jdbcType="VARCHAR"/>
+                <result column="creation_time" property="date" jdbcType="TIMESTAMP"/>
+        </resultMap>
+        <select id="searchGuestUser" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+               select  * from guest_user  where  user_id =#{userId,jdbcType=INTEGER}
+        </select>
+
+        <select id="selectOverTimeUser" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+                select user_id from guest_user  where  (UNIX_TIMESTAMP(creation_time)  &lt;= ( UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE) - INTERVAL #{time} DAY)))
+        </select>
+
+        <delete id="removeOverTimeUser"  parameterType="java.util.List" >
+                delete from guest_user where  user_id  in
+                (<foreach collection="list" separator="," item="item">
+                #{item}
+        </foreach>)
+        </delete>
+
+        <resultMap id="BaseVersionMap" type="com.lanjiu.im.storage.pojo.VersionPO">
+                <id column="id" property="id" jdbcType="INTEGER" />
+                <result column="phone_type" property="phoneType" jdbcType="INTEGER"/>
+                <result column="version_code" property="versionCode" jdbcType="INTEGER"/>
+                <result column="version_name" property="versionName" jdbcType="VARCHAR"/>
+                <result column="constraint" property="constraint" jdbcType="INTEGER"/>
+                <result column="path" property="path" jdbcType="VARCHAR"/>
+                <result column="describe" property="describe" jdbcType="VARCHAR"/>
+        </resultMap>
+
+
+
+</mapper>

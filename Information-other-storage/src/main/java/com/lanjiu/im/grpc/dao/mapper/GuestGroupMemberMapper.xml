@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.GuestGroupMemberMapper">
+    <resultMap id="guestGroupMemberMap" type="com.lanjiu.im.grpc.pojo.GuestGroupMember">
+        <result property="groupMemberId" column="group_member_id" javaType="java.lang.Integer"></result>
+        <result property="guestUserId" column="guest_user_id" javaType="java.lang.Integer"></result>
+        <result property="groupRemarks" column="group_remarks" javaType="java.lang.String"></result>
+        <result property="groupOwner" column="group_owner" javaType="java.lang.String"></result>
+        <result property="burnAfterReadingSettings" column="burn_after_reading_settings" javaType="java.lang.String"></result>
+        <result property="burnAfterReadingTimeUnit" column="burn_after_reading_time_unit" javaType="java.lang.String"></result>
+        <result property="burnAfterReadingTimeLength" column="burn_after_reading_time_length" javaType="java.math.BigDecimal"></result>
+        <result property="groupEntryTime" column="group_entry_time" javaType="java.sql.Timestamp"></result>
+        <result property="offlineMessageSetting" column="offline_message_setting" javaType="java.lang.String"></result>
+    </resultMap>
+    <select id="selectAllGuestGroupMember" resultMap="guestGroupMemberMap">
+		select * from guest_group_member
+	</select>
+
+    <select id="selectGuestGroupMember" resultMap="guestGroupMemberMap">
+		select * from guest_group_member where group_member_id = #{groupMemberId} and guest_user_id = #{guestUserId} and group_remarks = #{groupRemarks}
+		and group_owner = #{groupOwner} and burn_after_reading_settings = #{burnAfterReadingSettings} and burn_after_reading_time_unit = #{burnAfterReadingTimeUnit}
+		and burn_after_reading_time_length = #{burnAfterReadingTimeLength} and group_entry_time = #{groupEntryTime}
+		and offline_message_setting = #{offlineMessageSetting}
+	</select>
+
+    <select id="selectGuestGroupMemberByGroupMemberId" resultMap="guestGroupMemberMap">
+		select * from guest_group_member where group_member_id = #{groupMemberId}
+	</select>
+
+    <select id="selectGuestGroupMemberByGroupMemberIdLike" resultMap="guestGroupMemberMap">
+        <bind name="searchParameter" value="'%' + groupMemberId + '%'" />
+		select * from guest_group_member where group_member_id LIKE #{searchParameter}
+	</select>
+
+    <select id="selectGuestGroupMemberByGuestUserId" resultMap="guestGroupMemberMap">
+		select * from guest_group_member where guest_user_id = #{guestUserId}
+	</select>
+
+    <select id="selectGuestGroupMemberByGroupMemberIdAndGuestUserId" resultMap="guestGroupMemberMap">
+		select * from guest_group_member where group_member_id = #{groupMemberId} and guest_user_id = #{guestUserId}
+	</select>
+
+    <select id="selectGuestGroupMemberByOfflineMessageSetting" resultMap="guestGroupMemberMap">
+		select * from guest_group_member where offline_message_setting = #{offlineMessageSetting}
+	</select>
+
+    <select id="selectGuestGroupMemberByBurnAfterReadingSetting" resultMap="guestGroupMemberMap">
+		select * from guest_group_member where burn_after_reading_setting = #{burnAfterReadingSettings}
+	</select>
+
+    <insert id="insertGuestGroupMember" parameterType="com.lanjiu.im.grpc.pojo.GuestGroupMember">
+        insert into guest_group_member (group_member_id, guest_user_id, group_remarks, group_owner, burn_after_reading_settings, burn_after_reading_time_unit,
+        burn_after_reading_time_length, group_entry_time, offline_message_setting)
+        values (#{groupMemberId,jdbcType=INTEGER}, #{guestUserId,jdbcType=INTEGER}, #{groupRemarks,jdbcType=VARCHAR},
+        #{groupOwner,jdbcType=VARCHAR}, #{burnAfterReadingSettings,jdbcType=VARCHAR},
+        #{burnAfterReadingTimeUnit,jdbcType=VARCHAR}, #{burnAfterReadingTimeLength,jdbcType=DECIMAL},
+        #{groupEntryTime,jdbcType=TIMESTAMP}, #{offlineMessageSetting,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteGuestGroupMemberByGuestUserId" >
+		delete from guest_group_member where guest_user_id = #{guestUserId}
+	</delete>
+
+    <delete id="deleteGuestGroupMemberByGroupMemberId" >
+		delete from guest_group_member where group_member_id = #{groupMemberId}
+	</delete>
+
+    <!-- 修改游客用户好友信息 -->
+    <update id="updateGuestGroupMember" parameterType="com.lanjiu.im.grpc.pojo.GuestGroupMember">
+    update guest_group_member set guest_user_id = #{guestUserId}
+     , group_remarks = #{groupRemarks}
+     , group_owner = #{groupOwner}
+     , burn_after_reading_settings = #{burnAfterReadingSettings}
+     , burn_after_reading_time_unit = #{burnAfterReadingTimeUnit}
+     , burn_after_reading_time_length = #{burnAfterReadingTimeLength}
+     , group_entry_time = #{groupEntryTime}
+     , offline_message_setting = #{offlineMessageSetting}
+     where group_member_id = #{groupMemberId}
+    </update>
+
+    <select id="getGuestByGroupMemberId" resultMap="guestGroupMemberMap">
+		select * from guest_group_member where group_member_id = #{groupMemberId}
+	</select>
+
+    <select id="selectGroupTouristMembers" resultType="com.lanjiu.im.grpc.pojo.AllGroupMemberVO">
+        SELECT
+            gg.`group_id` AS guestGroupId,
+            ggm.`guest_user_id` AS guestUserId,
+            gg.`group_name` AS groupName,
+            gg.`amount` AS amount,
+            ga.`announcement_content` AS announcementContent,
+            ggm.`group_owner` AS groupOwner
+            FROM guest_group gg
+            JOIN guest_group_guest_user_member_relation ggmr ON gg.`group_id`= ggmr.`guest_group_id`
+            JOIN guest_group_member ggm ON ggmr.`guest_user_member_id` = ggm.`group_member_id`
+            LEFT JOIN group_announcements ga ON gg.`group_id`=ga.`group_announcement_id`
+        WHERE gg.`group_id`=#{groupId};
+    </select>
+</mapper>

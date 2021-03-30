@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.GuestGroupGuestMemberRegisteredUserVideoMapper">
+    <resultMap id="guestGroupGuestMemberRegisteredUserVideoMap" type="com.lanjiu.im.storage.pojo.GuestGroupGuestMemberRegisteredUserVideo">
+        <result property="downloadUrl" column="download_url" javaType="java.lang.String"></result>
+        <result property="guestGroupId" column="guest_group_id" javaType="java.lang.Integer"></result>
+        <result property="guestMemberId" column="guest_member_id" javaType="java.lang.Integer"></result>
+        <result property="registeredUserId" column="registered_user_id" javaType="java.lang.Integer"></result>
+        <result property="creationTime" column="creation_time" javaType="java.sql.Date"></result>
+    </resultMap>
+    <select id="selectAllGuestGroupGuestMemberRegisteredUserVideo" resultMap="guestGroupGuestMemberRegisteredUserVideoMap">
+		select * from guest_group_guest_member_registered_user_video
+	</select>
+
+    <select id="selectGuestGroupGuestMemberRegisteredUserVideo" resultMap="guestGroupGuestMemberRegisteredUserVideoMap">
+		select * from guest_group_guest_member_registered_user_video where download_url = #{downloadUrl}
+	</select>
+
+    <insert id="insertGuestGroupGuestMemberRegisteredUserVideo" parameterType="com.lanjiu.im.storage.pojo.GuestGroupGuestMemberRegisteredUserVideo">
+        insert into guest_group_guest_member_registered_user_video (download_url, guest_group_id, guest_member_id, registered_user_id, creation_time)
+        values (#{downloadUrl,jdbcType=VARCHAR}, #{guestGroupId,jdbcType=INTEGER}, #{guestMemberId,jdbcType=INTEGER}, #{registeredUserId,jdbcType=INTEGER}, #{creationTime,jdbcType=DATE})
+    </insert>
+
+    <delete id="deleteGuestGroupGuestMemberRegisteredUserVideo" >
+		delete from guest_group_guest_member_registered_user_video where download_url = #{downloadUrl}
+	</delete>
+</mapper>

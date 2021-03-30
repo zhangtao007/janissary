@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package com.lanjiu.pro.business;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.pro.business";
+option java_outer_classname = "BusinessProtocolMessageStandard";
+
+import "im_business_protocol_messages.proto";
+
+// 统一入口
+message CheckUnifiedEntranceMessage {
+    UnifiedEntranceMessage unified_entrance_message = 1;
+    string checksum = 2; //校验位
+}
+
+// 传输协议消息体
+message UnifiedEntranceMessage {
+
+    enum DataType {
+        RegisteredUserProtocol = 0;
+        LoginProtocol = 1;
+        LogoutProtocol = 2;
+        FindUserProtocol = 3;
+        FriendListProtocol = 4;
+        FriendInfoProtocol = 5;
+        FriendOnlineStatusChangeProtocol = 6;
+        FriendAddProtocol = 7;
+        FriendDeleteProtocol = 8;
+        FindGroupProtocol = 9;
+        GroupListProtocol = 10;
+        GroupCreateProtocol = 11;
+        GroupInfoProtocol = 12;
+        GroupMemberOnlineStatusChangeProtocol = 13;
+        GroupMemberAddProtocol = 14;
+        GroupMemberDeleteProtocol = 15;
+        GroupAnnouncementProtocol = 16;
+        PersonalInfoProtocol = 17;
+        PersonalSettingsProtocol = 18;
+        FriendSettingsProtocol = 19;
+        GroupSettingsProtocol = 20;
+        GroupMemberSettingsProtocol = 21;
+        NotificationsProtocol = 22;
+        SysNotifyProtocol = 23;
+        UserNotifyProtocol = 24;
+        FriendChatProtocol = 25;
+        GroupChatProtocol = 26;
+        DelFriendOffMessageProtocol = 27;
+        OffFriendMessageListProtocol = 28;
+        CheckForUpdatesProtocol = 31;
+        MessageClearProtocol = 33;
+        BindingPushServicesProtocol = 37;
+    }
+
+    Head head = 1;
+    DataType data_type = 2;
+    oneof dataBody {
+        RegisteredUserProtocol registered_user_protocol = 3;
+        LoginProtocol login_protocol = 4;
+        LogoutProtocol logout_protocol = 5;
+        FindUserProtocol find_user_protocol = 6;
+        FriendListProtocol friend_list_protocol = 7;
+        FriendInfoProtocol friend_info_protocol = 8;
+        FriendOnlineStatusChangeProtocol friend_online_status_change_protocol = 9;
+        FriendAddProtocol friend_add_protocol = 10;
+        FriendDeleteProtocol friend_delete_protocol = 11;
+        FindGroupProtocol find_group_protocol = 12;
+        GroupListProtocol group_list_protocol = 13;
+        GroupCreateProtocol group_create_protocol = 14;
+        GroupInfoProtocol group_info_protocol = 15;
+        GroupMemberOnlineStatusChangeProtocol group_member_online_status_change_protocol = 16;
+        GroupMemberAddProtocol group_member_add_protocol = 17;
+        GroupMemberDeleteProtocol group_member_delete_protocol = 18;
+        GroupAnnouncementProtocol group_announcement_protocol = 19;
+        PersonalInfoProtocol personal_info_protocol = 20;
+        PersonalSettingsProtocol personal_settings_protocol = 21;
+        FriendSettingsProtocol friend_settings_protocol = 22;
+        GroupSettingsProtocol group_settings_protocol = 23;
+        GroupMemberSettingsProtocol group_member_settings_protocol = 24;
+        NotificationsProtocol notifications_protocol = 25;
+        SysNotifyProtocol sys_notify_protocol = 26;
+        UserNotifyProtocol user_notify_protocol = 27;
+        FriendChatProtocol friend_chat_protocol = 28;
+        GroupChatProtocol group_chat_protocol = 29;
+        DelFriendOffMessageProtocol  delFriendOffMessageProtocol = 30;
+        OffFriendMessageListProtocol  offFriendMessageListProtocol= 31;
+        CheckForUpdatesProtocol check_for_updates_protocol = 34;
+        BindingPushServicesProtocol binding_PushServices_Protocol = 37;
+
+    }
+}
+
+// 传输协议消息头
+message Head {
+
+    // 服务类型编码+服务编码+模块编码+功能(动作)编码
+    string msgType = 1;
+
+    // 消息内容类型
+    int32 msgContentType = 2;
+
+    // 消息发送者id
+    string fromId = 3;
+
+    // 消息接收者id
+    string toId = 4;
+
+    // 消息时间戳
+    int64 timestamp = 5;
+
+    // 状态报告   返回类型(成功/失败)
+    string statusReport = 6;
+
+    // 消息标识(客户端有用)
+    string unique_identify = 7;
+
+    // token
+    string token = 8;
+}

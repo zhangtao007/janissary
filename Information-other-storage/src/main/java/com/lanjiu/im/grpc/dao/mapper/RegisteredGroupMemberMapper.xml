@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.RegisteredGroupMemberMapper">
+    <resultMap id="registeredGroupMemberMap" type="com.lanjiu.im.grpc.pojo.RegisteredGroupMember">
+        <result property="groupMemberId" column="group_member_id" javaType="java.lang.Integer"></result>
+        <result property="registeredUserId" column="registered_user_id" javaType="java.lang.Integer"></result>
+        <result property="userIdAndName" column="user_id_and_name" javaType="java.lang.String"></result>
+        <result property="groupRemarks" column="group_remarks" javaType="java.lang.String"></result>
+        <result property="groupOwner" column="group_owner" javaType="java.lang.String"></result>
+        <result property="burnAfterReadingSettings" column="burn_after_reading_settings" javaType="java.lang.String"></result>
+        <result property="burnAfterReadingTimeUnit" column="burn_after_reading_time_unit" javaType="java.lang.String"></result>
+        <result property="burnAfterReadingTimeLength" column="burn_after_reading_time_length" javaType="java.math.BigDecimal"></result>
+        <result property="groupEntryTime" column="group_entry_time" javaType="java.sql.Timestamp"></result>
+        <result property="offlineMessageSetting" column="offline_message_setting" javaType="java.lang.String"></result>
+    </resultMap>
+    <select id="selectAllRegisteredGroupMember" resultMap="registeredGroupMemberMap">
+		select * from registered_group_member
+	</select>
+
+    <select id="selectRegisteredGroupMember" resultMap="registeredGroupMemberMap">
+		select * from registered_group_member where group_member_id = #{groupMemberId} and registered_user_id = #{registeredUserId} and group_remarks = #{groupRemarks}
+		and group_owner = #{groupOwner} and burn_after_reading_settings = #{burnAfterReadingSettings} and burn_after_reading_time_unit = #{burnAfterReadingTimeUnit}
+		and burn_after_reading_time_length = #{burnAfterReadingTimeLength} and group_entry_time = #{groupEntryTime}
+		and offline_message_setting = #{offlineMessageSetting}
+	</select>
+
+    <select id="selectRegisteredGroupMemberByGroupMemberId" resultMap="registeredGroupMemberMap">
+		select * from registered_group_member where group_member_id = #{groupMemberId}
+	</select>
+
+    <select id="selectRegisteredGroupMemberByGroupMemberIdLike" resultMap="registeredGroupMemberMap">
+        <bind name="searchMemberParameter" value="'%' + groupMemberId + '%'" />
+		select * from registered_group_member where group_member_id LIKE #{searchMemberParameter}
+	</select>
+
+    <select id="selectRegisteredGroupMemberByRegisteredUserId" resultMap="registeredGroupMemberMap">
+		select * from registered_group_member where registered_user_id = #{registeredUserId}
+	</select>
+
+    <select id="selectRegisteredGroupMemberByGroupMemberIdAndRegisteredUserId" resultMap="registeredGroupMemberMap">
+		select * from registered_group_member where group_member_id = #{groupMemberId} and registered_user_id = #{registeredUserId}
+	</select>
+
+    <select id="selectRegisteredGroupMemberByOfflineMessageSetting" resultMap="registeredGroupMemberMap">
+		select * from registered_group_member where offline_message_setting = #{offlineMessageSetting}
+	</select>
+
+    <select id="selectRegisteredGroupMemberByBurnAfterReadingSetting" resultMap="registeredGroupMemberMap">
+		select * from registered_group_member where burn_after_reading_setting = #{burnAfterReadingSettings}
+	</select>
+
+    <insert id="insertRegisteredGroupMember" parameterType="com.lanjiu.im.grpc.pojo.RegisteredGroupMember">
+        insert into registered_group_member (group_member_id, registered_user_id,user_id_and_name, group_remarks, group_owner, burn_after_reading_settings, burn_after_reading_time_unit,
+        burn_after_reading_time_length, group_entry_time, offline_message_setting)
+        values (#{groupMemberId,jdbcType=INTEGER}, #{registeredUserId,jdbcType=INTEGER},#{userIdAndName,jdbcType=VARCHAR},
+        #{groupRemarks,jdbcType=VARCHAR},#{groupOwner,jdbcType=VARCHAR}, #{burnAfterReadingSettings,jdbcType=VARCHAR},
+        #{burnAfterReadingTimeUnit,jdbcType=VARCHAR}, #{burnAfterReadingTimeLength,jdbcType=DECIMAL},
+        #{groupEntryTime,jdbcType=TIMESTAMP}, #{offlineMessageSetting,jdbcType=VARCHAR})
+    </insert>
+
+
+    <insert id="insertGroupMemberOfBatch" parameterType="java.util.List">
+        insert into registered_group_member (group_member_id, registered_user_id,user_id_and_name, group_remarks, group_owner, burn_after_reading_settings, burn_after_reading_time_unit,
+          burn_after_reading_time_length, group_entry_time, offline_message_setting)
+        values
+
+         <foreach collection ="list" item="gm" separator =",">
+           (
+             #{gm.groupMemberId},
+             #{gm.registeredUserId},
+             #{gm.userIdAndName},
+             #{gm.groupRemarks},
+             #{gm.groupOwner},
+             #{gm.burnAfterReadingSettings},
+             #{gm.burnAfterReadingTimeUnit},
+             #{gm.burnAfterReadingTimeLength},
+             #{gm.groupEntryTime},
+             #{gm.offlineMessageSetting}
+             )
+         </foreach >
+    </insert>
+
+<delete id="deleteRegisteredGroupMemberByRegisteredUserId" >
+    delete from registered_group_member where registered_user_id = #{registeredUserId}
+</delete>
+
+<delete id="deleteRegisteredGroupMemberByGroupMemberId" >
+    delete from registered_group_member where group_member_id = #{groupMemberId}
+</delete>
+
+<!-- 修改游客用户好友信息 -->
+    <update id="updateRegisteredGroupMember" parameterType="com.lanjiu.im.grpc.pojo.RegisteredGroupMember">
+    update registered_group_member set registered_user_id = #{registeredUserId}
+     , user_id_and_name = #{userIdAndName}
+     , group_remarks = #{groupRemarks}
+     , group_owner = #{groupOwner}
+     , burn_after_reading_settings = #{burnAfterReadingSettings}
+     , burn_after_reading_time_unit = #{burnAfterReadingTimeUnit}
+     , burn_after_reading_time_length = #{burnAfterReadingTimeLength}
+     , group_entry_time = #{groupEntryTime}
+     , offline_message_setting = #{offlineMessageSetting}
+     where group_member_id = #{groupMemberId}
+    </update>
+
+    <select id="getRegisteredByGroupMemberId" resultMap="registeredGroupMemberMap">
+		select * from registered_group_member where group_member_id = #{groupMemberId}
+	</select>
+
+    <select id="selectGroupRegisteredMembers" resultType="com.lanjiu.im.grpc.pojo.AllGroupMemberVO">
+        SELECT
+          rgm.`group_member_id` AS groupMemberId,
+          rgrm.`registered_group_id` as registeredGroupId,
+          rgm.`registered_user_id` as registeredUserId,
+          rg.`group_name` as groupName,
+          rgm.`group_owner` as groupOwner,
+          ga.`announcement_content` AS announcementContent,
+          rg.`amount` as amount
+        FROM
+          registered_group_registered_user_member_relation rgrm
+        JOIN registered_group rg
+          ON rgrm.`registered_group_id` = rg.`group_id`
+        JOIN registered_group_member rgm
+          ON rgrm.`registered_user_member_id` = rgm.`group_member_id`
+        JOIN group_announcements ga
+          ON rgrm.`registered_group_id`=ga.`group_announcement_id`
+        WHERE rgrm.`registered_group_id` = #{groupId} GROUP BY rgm.`registered_user_id`
+    </select>
+
+    <select id="queryAllGroupByUserId" resultType="com.lanjiu.im.grpc.pojo.AllGroupMemberVO">
+        SELECT
+          rg.`group_id` as registeredGroupId,
+          rg.`group_name` as groupName,
+          rg.`registered_user_id` as registeredUserId,
+          rg.`amount` as amount,
+          rg.`group_photo_url` as userPhoto
+        FROM
+          registered_group_member rgm
+          JOIN registered_group_registered_user_member_relation rgrumr
+            ON rgrumr.`registered_user_member_id` = rgm.`group_member_id`
+          JOIN registered_group rg
+            ON rgrumr.`registered_group_id` = rg.`group_id`
+        WHERE rgm.`registered_user_id` = #{userId}
+    </select>
+</mapper>

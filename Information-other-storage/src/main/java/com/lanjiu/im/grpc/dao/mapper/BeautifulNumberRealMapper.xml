@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.BeautifulNumberRealMapper">
+    <resultMap id="beautifulNumberRealMap" type="com.lanjiu.im.grpc.pojo.BeautifulNumberReal">
+        <result property="tenMillion" column="ten_million" javaType="java.lang.Integer"></result>
+        <result property="oneMillion" column="one_million" javaType="java.lang.Integer"></result>
+        <result property="oneHundredThousand" column="one_hundred_thousand" javaType="java.lang.Integer"></result>
+        <result property="tenThousand" column="ten_thousand" javaType="java.lang.Integer"></result>
+        <result property="oneThousand" column="one_thousand" javaType="java.lang.Integer"></result>
+        <result property="oneHundred" column="one_hundred" javaType="java.lang.Integer"></result>
+        <result property="ten" column="ten" javaType="java.lang.Integer"></result>
+        <result property="one" column="one" javaType="java.lang.Integer"></result>
+    </resultMap>
+    <select id="selectAllBeautifulNumberReal" resultMap="beautifulNumberRealMap">
+		select * from beautiful_number_real
+	</select>
+
+    <select id="selectBeautifulNumberReal" resultMap="beautifulNumberRealMap">
+		select * from beautiful_number_real where ten_million = #{tenMillion} and one_million = #{oneMillion} and one_hundred_thousand = #{oneHundredThousand} and ten_thousand = #{tenThousand}
+		and one_thousand = #{oneThousand} and one_hundred = #{oneHundred} and ten = #{ten} and one = #{one}
+	</select>
+
+    <select id="selectBeautifulNumberRealByThousand" resultMap="beautifulNumberRealMap">
+		select * from beautiful_number_real where ten_million = #{tenMillion} and one_million = #{oneMillion} and one_hundred_thousand = #{oneHundredThousand} and ten_thousand = #{tenThousand}
+		and one_thousand = #{oneThousand}
+	</select>
+
+</mapper>

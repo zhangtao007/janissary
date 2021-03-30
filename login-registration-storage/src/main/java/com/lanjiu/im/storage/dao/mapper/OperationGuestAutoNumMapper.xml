@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.OperationGuestAutoNumMapper">
+
+    <resultMap  id="CaseMap"  type="com.lanjiu.im.storage.pojo.NumAutoGuestPO">
+        <result  column="ten_million" property="tenMillion" jdbcType="INTEGER" />
+        <result  column="one_million" property="oneMillion" jdbcType="INTEGER"/>
+        <result  column="one_hundred_thousand" property="oneHundredThousand" jdbcType="INTEGER" />
+        <result  column="ten_thousand" property="tenThousand" jdbcType="INTEGER"/>
+        <result  column="one_thousand" property="oneThousand" jdbcType="INTEGER"/>
+        <result  column="one_hundred" property="oneHundred" jdbcType="INTEGER"/>
+        <result  column="ten" property="ten" jdbcType="INTEGER"/>
+        <result  column="one" property="one" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="BaseColumn">
+        ten_million,one_million,one_hundred_thousand,ten_thousand,one_thousand,one_hundred,ten,one
+    </sql>
+
+    <select id="getUnusedGuestAutoNum" resultMap="CaseMap" parameterType="java.lang.Integer">
+        select   <include refid="BaseColumn"/> from unused_guest_number limit 1
+    </select>
+
+    <insert id="insertUsedGuestAutoNum" parameterType="com.lanjiu.im.storage.pojo.NumAutoGuestPO">
+        insert into used_guest_number
+        values (
+        #{tenMillion,jdbcType=INTEGER},
+        #{oneMillion,jdbcType=INTEGER},
+        #{oneHundredThousand,jdbcType=INTEGER},
+        #{tenThousand,jdbcType=INTEGER},
+        #{oneThousand,jdbcType=INTEGER},
+        #{oneHundred,jdbcType=INTEGER},
+        #{ten,jdbcType=INTEGER},
+        #{one,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <delete id="deleteUsedGuestAutoNumber" parameterType="com.lanjiu.im.storage.pojo.NumAutoGuestPO">
+        delete from used_guest_number where ten_million = #{tenMillion,jdbcType=INTEGER}
+        and  one_million = #{oneMillion,jdbcType=INTEGER}
+        and  one_hundred_thousand =  #{oneHundredThousand,jdbcType=INTEGER}
+        and  ten_thousand =   #{tenThousand,jdbcType=INTEGER}
+        and  one_thousand =   #{oneThousand,jdbcType=INTEGER}
+        and  one_hundred = #{oneHundred,jdbcType=INTEGER}
+        and  ten =  #{ten,jdbcType=INTEGER}
+        and  one =  #{one,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertUnUsedGuestNum" parameterType="com.lanjiu.im.storage.pojo.NumAutoGuestPO">
+        insert into unused_guest_number
+        values (
+        #{tenMillion,jdbcType=INTEGER},
+        #{oneMillion,jdbcType=INTEGER},
+        #{oneHundredThousand,jdbcType=INTEGER},
+        #{tenThousand,jdbcType=INTEGER},
+        #{oneThousand,jdbcType=INTEGER},
+        #{oneHundred,jdbcType=INTEGER},
+        #{ten,jdbcType=INTEGER},
+        #{one,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <delete id="deleteUnUsedGGuestAutoNum" parameterType="com.lanjiu.im.storage.pojo.NumAutoGuestPO">
+        delete from unused_guest_number where ten_million = #{tenMillion,jdbcType=INTEGER}
+        and  one_million = #{oneMillion,jdbcType=INTEGER}
+        and  one_hundred_thousand =  #{oneHundredThousand,jdbcType=INTEGER}
+        and  ten_thousand =   #{tenThousand,jdbcType=INTEGER}
+        and  one_thousand =   #{oneThousand,jdbcType=INTEGER}
+        and  one_hundred = #{oneHundred,jdbcType=INTEGER}
+        and  ten =  #{ten,jdbcType=INTEGER}
+        and  one =  #{one,jdbcType=INTEGER}
+    </delete>
+</mapper>

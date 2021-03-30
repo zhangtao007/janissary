@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.GuestInfomationMapper">
+    <resultMap  id="BaseResult" type="com.lanjiu.im.storage.pojo.GuestUserInfoPO">
+        <id column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="nickname"  property="nickname"  jdbcType="VARCHAR"/>
+        <result column="avatar"  property="avatar"  jdbcType="VARCHAR"/>
+        <result column="offline_message_setting" property="offlineMessageSetting" jdbcType="BOOLEAN"/>
+        <result column="online_status" property="onlineStatus" jdbcType="BOOLEAN"/>
+        <result column="modification_time" property="modificationTime" jdbcType="TIMESTAMP" />
+        <result column="burn_after_reading_setting" property="burnAfterReadingSetting" jdbcType="BOOLEAN"/>
+        <result column="burn_after_reading_time_unit" property="burnAfterReadingTimeUnit" jdbcType="INTEGER"/>
+        <result column="burn_after_reading_time_length" property="burnAfterReadingTimeLength" jdbcType="INTEGER"/>
+        <result column="exit_clean" property="exitClean" jdbcType="BOOLEAN"/>
+        <result column="timer_clean" property="timerClean" jdbcType="INTEGER"/>
+        <result column="group_burn_after_reading_setting" property="groupBurnAfterReadingSetting" jdbcType="BOOLEAN"/>
+        <result column="group_burn_after_reading_time_length" property="groupBurnAfterReadingTimeLength" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_column_list">
+   user_id,nickname,avatar,offline_message_setting,online_status, modification_time,
+    burn_after_reading_setting,burn_after_reading_time_unit,burn_after_reading_time_length,exit_clean,timer_clean,
+    group_burn_after_reading_setting,group_burn_after_reading_time_length
+    </sql>
+
+    <insert id="insertUserInfomation" parameterType="com.lanjiu.im.storage.pojo.GuestUserInfoPO">
+                insert into guest_user_info(user_id,nickname,avatar,offline_message_setting,online_status, modification_time,
+                               burn_after_reading_setting,burn_after_reading_time_unit,burn_after_reading_time_length,exit_clean,timer_clean,
+                               group_burn_after_reading_setting,group_burn_after_reading_time_length)
+                values(#{userId,jdbcType=INTEGER},#{nickname,jdbcType=VARCHAR},#{avatar,jdbcType=VARCHAR},
+                       #{offlineMessageSetting,jdbcType=BOOLEAN},#{onlineStatus,jdbcType=BOOLEAN},#{modificationTime,jdbcType=TIMESTAMP},#{burnAfterReadingSetting,jdbcType=BOOLEAN},
+                       #{burnAfterReadingTimeUnit,jdbcType=INTEGER},#{burnAfterReadingTimeLength,jdbcType=INTEGER},
+                        #{exitClean,jdbcType=BOOLEAN},#{timerClean,jdbcType=INTEGER},#{groupBurnAfterReadingSetting,jdbcType=BOOLEAN},#{groupBurnAfterReadingTimeLength,jdbcType=INTEGER})
+        </insert>
+    <delete id="deleteUserInfomation" parameterType="java.lang.Integer">
+            delete from guest_user_info where  user_id = #{userId,jdbcType=INTEGER}
+        </delete>
+
+    <update id="updateUserInfomation" parameterType="com.lanjiu.im.storage.pojo.GuestUserInfoPO">
+        update  guest_user_info
+        <set>
+            <if test="nickname != null and nickname != ''">
+                nickname=#{nickname},
+           </if>
+            <if test="avatar != null and avatar !='' ">
+                avatar=#{avatar},
+            </if>
+            <if test="offlineMessageSetting">
+                offline_message_setting = #{offlineMessageSetting},
+            </if>
+            <if test="onlineStatus != null">
+                online_status=#{onlineStatus},
+            </if>
+            <if test="modificationTime !=null">
+                modification_time=#{modificationTime},
+            </if>
+            <if test="burnAfterReadingSetting != null">
+                burn_after_reading_setting=#{burnAfterReadingSetting},
+            </if>
+            <if test="burnAfterReadingTimeUnit != null">
+                burn_after_reading_time_unit=#{burnAfterReadingTimeUnit},
+            </if>
+            <if test="burnAfterReadingTimeLength != null ">
+                burn_after_reading_time_length=#{burnAfterReadingTimeLength},
+            </if>
+            <if test="exitClean != null and 'true'.toString() == exitClean.toString()">
+                exit_clean=#{exitClean},
+            </if>
+            <if test="timerClean != null and timerClean !=0">
+                timer_clean=#{timerClean},
+            </if>
+
+            <if test="groupBurnAfterReadingSetting != null">
+                group_burn_after_reading_setting=#{groupBurnAfterReadingSetting},
+            </if>
+            <if test="groupBurnAfterReadingTimeLength !=null">
+                group_burn_after_reading_time_length=#{groupBurnAfterReadingTimeLength},
+            </if>
+        </set>
+        where user_id=#{userId,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectUserInfomation" resultMap="BaseResult"  parameterType="java.lang.Integer">
+        select
+        <include refid="Base_column_list"/>
+        from guest_user_info
+        where  user_id =#{userId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="removeOverGuestInfo" parameterType="java.util.List">
+        delete from guest_user_info where  user_id  in
+        (<foreach collection="list" separator="," item="item">
+           #{item}
+         </foreach>)
+    </delete>
+</mapper>

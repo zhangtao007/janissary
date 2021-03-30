@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.RegisteredGroupGuestUserMemberRelationMapper">
+    <resultMap id="registeredGroupGuestUserMemberRelationMap" type="com.lanjiu.im.grpc.pojo.RegisteredGroupGuestUserMemberRelation">
+        <result property="registeredGroupId" column="registered_group_id" javaType="java.lang.Integer"></result>
+        <result property="guestUserMemberId" column="guest_user_member_id" javaType="java.lang.Integer"></result>
+    </resultMap>
+
+    <select id="selectAllRegisteredGroupGuestUserMemberRelation" resultMap="registeredGroupGuestUserMemberRelationMap">
+		select * from registered_group_guest_user_member_relation
+	</select>
+
+    <select id="selectAllRegisteredGroupGuestUserMemberRelationByGroupIdAndMemberId" resultMap="registeredGroupGuestUserMemberRelationMap">
+		select * from registered_group_guest_user_member_relation where registered_group_id = #{registeredGroupId} and guest_user_member_id = #{guestUserMemberId}
+	</select>
+
+    <select id="selectRegisteredGroupGuestUserMemberRelationByRegisteredGroupId" resultMap="registeredGroupGuestUserMemberRelationMap">
+		select * from registered_group_guest_user_member_relation where registered_group_id = #{registeredGroupId}
+	</select>
+
+    <select id="selectRegisteredGroupGuestUserMemberRelationByGuestUserMemberId" resultMap="registeredGroupGuestUserMemberRelationMap">
+		select * from registered_group_guest_user_member_relation where guest_user_member_id = #{guestUserMemberId}
+	</select>
+
+    <insert id="insertRegisteredGroupGuestUserMemberRelation" parameterType="com.lanjiu.im.grpc.pojo.RegisteredGroupGuestUserMemberRelation">
+        insert into registered_group_guest_user_member_relation (registered_group_id, guest_user_member_id)
+        values (#{registeredGroupId,jdbcType=INTEGER}, #{guestUserMemberId,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteRegisteredGroupGuestUserMemberRelation" >
+		delete from registered_group_guest_user_member_relation where registered_group_id = #{registeredGroupId} and guest_user_member_id = #{guestUserMemberId}
+	</delete>
+
+
+
+</mapper>

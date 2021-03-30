@@ -1,0 +1,317 @@
+syntax = "proto3";
+
+package com.lanjiu.im.grpc;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.im.grpc";
+option java_outer_classname = "InformationStorageProto";
+option java_multiple_files = true;
+
+service InformationStorageService{
+
+    rpc deleteGuestRelatedAllInfo(TransmissionRequest) returns(AllGroupsMemberResponse){};
+    rpc searchAllGroupByUserId(TransmissionRequest)returns(AllGroupsMemberResponse);
+    rpc insertInviteUsersJoinGroup(TransmissionRequest) returns(AllGroupsMemberResponse);
+    rpc selectRegisteredUserFriend(TransmissionRequest) returns (RegisteredUserFriendResponse) {};
+    rpc queryGroupMembersInfoList(SelectGroupMemberRequest)returns(AllGroupsMemberResponse);
+}
+
+
+
+
+
+message TransmissionRequest { // 传输请求 repeated
+                              RpcBeautifulNumberCommon beautiful_number_common = 1;
+                              RpcBurnAfterReadingPriority burn_after_reading_priority = 2;
+                              RpcGroupAnnouncements   group_announcements = 3;
+                              RpcGuestGroup guest_group = 4;
+                              RpcGuestGroupAdministrator   guest_group_administrator  = 5;
+                              RpcGuestGroupGuestUserMemberRelation  guest_group_guest_user_relation = 6;
+                              RpcGuestGroupMember  guest_group_member  = 7;
+                              RpcGuestGroupRegisteredUserMemberRelation  guest_group_registered_user_relation = 8;
+                              RpcGuestUserFriend  guest_user_friend  = 9;
+                              RpcOfflineMessagePriority  offline_message_priority = 10;
+                              RpcRegisteredGroup   registered_group = 11;
+                              RpcRegisteredGroupAdministrator  registered_group_administrator = 12;
+                              RpcRegisteredGroupGuestUserMemberRelation  registered_group_guest_user_relation = 13;
+                              RpcRegisteredGroupMember registered_group_member = 14;
+                              RpcRegisteredGroupRegisteredUserMemberRelation registered_group_registered_user_relation = 15;
+                              RpcRegisteredUserFriend registered_user_friend = 16;
+                              RpcGroupRemark group_remark = 17;
+                              string request_kind = 18;//当前用户类型
+                              AllGroupMemberVO all_group_member_vo = 19;//群成员集合(包括游客和注册)
+}
+
+
+message BeautifulNumberCommonResponse { // 传输响应
+                                        string status_detail = 1;
+                                        repeated RpcBeautifulNumberCommon response_data = 2;
+}
+
+message BurnAfterReadingPriorityResponse { // 传输响应
+                                           string status_detail = 1;
+                                           repeated RpcBurnAfterReadingPriority response_data = 2;
+}
+
+message GroupAnnouncementsResponse { // 传输响应
+                                     string status_detail = 1;
+                                     repeated RpcGroupAnnouncements response_data = 2;
+}
+
+message GuestGroupResponse { // 传输响应------------Guest user Group
+                             string status_detail = 1;
+                             repeated RpcGuestGroup response_guest_group = 2;
+                             repeated RpcRegisteredGroup response_registered_group = 3;
+                             repeated RpcGuestGroupMember response_guest_group_member = 4;
+                             repeated RpcRegisteredGroupMember response_registered_group_member = 5;
+                             repeated AllGroupMemberVO response_group_member_vo = 6;
+}
+
+message GuestGroupAdministratorResponse { // 传输响应
+                                          string status_detail = 1;
+                                          repeated RpcGuestGroupAdministrator response_data = 2;
+}
+
+message GuestGroupGuestUserMemberRelationResponse { // 传输响应
+                                                    string status_detail = 1;
+                                                    repeated RpcGuestGroupGuestUserMemberRelation response_data = 2;
+}
+
+message GuestGroupMemberResponse { // 传输响应
+                                   string status_detail = 1;
+                                   repeated RpcGuestGroupMember response_data = 2;
+                                   repeated RpcRegisteredGroup registered_group_data = 3;
+                                   repeated RpcGuestGroup guest_group_data = 4;
+}
+
+message GuestGroupRegisteredUserMemberRelationResponse { // 传输响应
+                                                         string status_detail = 1;
+                                                         repeated RpcGuestGroupRegisteredUserMemberRelation response_data = 2;
+}
+
+message GuestUserFriendResponse { // 传输响应
+                                  string status_detail = 1;
+                                  repeated RpcGuestUserFriend response_data = 2;
+}
+
+message OfflineMessagePriorityResponse { // 传输响应
+                                         string status_detail = 1;
+                                         repeated RpcOfflineMessagePriority response_data = 2;
+}
+
+message RegisteredGroupResponse { // 传输响应
+                                  string status_detail = 1;
+                                  repeated RpcRegisteredGroup response_registered_group = 2;
+                                  repeated RpcGuestGroup response_guest_group = 3;
+                                  repeated RpcRegisteredGroupMember response_registered_group_member = 4;
+                                  repeated RpcGuestGroupMember response_guest_group_member = 5;
+                                  repeated AllGroupMemberVO response_group_member_vo = 6;
+}
+
+message RegisteredGroupAdministratorResponse { // 传输响应
+                                               string status_detail = 1;
+                                               repeated RpcRegisteredGroupAdministrator response_data = 2;
+}
+
+message RegisteredGroupGuestUserMemberRelationResponse { // 传输响应
+                                                         string status_detail = 1;
+                                                         repeated RpcRegisteredGroupGuestUserMemberRelation response_data = 2;
+}
+
+message RegisteredGroupMemberResponse { // 传输响应
+                                        string status_detail = 1;
+                                        repeated RpcRegisteredGroupMember response_data = 2;
+                                        repeated RpcRegisteredGroup registered_group_data = 3;
+                                        repeated RpcGuestGroup guest_group_data = 4;
+}
+
+message RegisteredGroupRegisteredUserMemberRelationResponse { // 传输响应
+                                                              string status_detail = 1;
+                                                              repeated RpcRegisteredGroupRegisteredUserMemberRelation response_data = 2;
+}
+
+message RegisteredUserFriendResponse { // 传输响应
+                                       string status_detail = 1;
+                                       repeated RpcRegisteredUserFriend response_data = 2;
+}
+
+message GroupRemarkResponse { // 传输响应
+                              string status_detail = 1;
+                              repeated RpcGroupRemark response_data = 2;
+}
+
+//传输协议涉及的实体结构体
+
+message RpcBeautifulNumberCommon {
+    int32 ten_million = 1;
+    int32 one_million = 2;
+    int32 one_hundred_thousand = 3;
+    int32 ten_thousand = 4;
+    int32 one_thousand = 5;
+    int32 one_hundred = 6;
+    int32 ten = 7;
+    int32 one = 8;
+}
+
+message RpcBurnAfterReadingPriority {
+    string type = 1;
+    string priority = 2;
+}
+
+message RpcGroupAnnouncements {
+    int32 group_announcement_id = 1;
+    string announcement_title = 2;
+    string announcement_content = 3;
+}
+
+message RpcGuestGroup {
+    int32 guest_user_id = 1;
+    int32 group_id = 2;
+    string group_name = 3;
+    int32 group_announcement_id = 4;
+    int64 creation_time = 5;
+    int64 modification_time = 6;
+    int32 amount = 7;
+    int32 group_member_id = 8;
+}
+
+message RpcGuestGroupAdministrator {
+    int32 administrator_id = 1;
+    string administrator_type = 2;
+    string administrator_name = 3;
+}
+
+message RpcGuestGroupGuestUserMemberRelation {
+    int32 guest_group_id = 1;
+    int32 guest_user_member_id = 2;
+}
+
+message RpcGuestGroupMember {
+    int32 group_member_id = 1;
+    int32 guest_user_id = 2;
+    string group_remarks = 3;
+    string group_owner = 4;
+    string burn_after_reading_settings = 5;
+    string burn_after_reading_time_unit = 6;
+    float burn_after_reading_time_length = 7;
+    int64 group_entry_time = 8;
+    string offline_message_setting = 9;
+    int32 group_id = 10;
+}
+
+message RpcGuestGroupRegisteredUserMemberRelation {
+    int32 guest_group_id = 1;
+    int32 registered_user_member_id = 2;
+}
+
+message RpcGuestUserFriend {
+    int32 guest_user_id = 1;
+    int32 friend_id = 2;
+    int32 friend_user_id = 3;
+    string friend_comment = 4;
+    int64 creation_time = 5;
+    int64 modification_time = 6;
+    string offline_message_setting = 7;
+    string burn_after_reading_setting = 8;
+    string burn_after_reading_time_unit = 9;
+    float burn_after_reading_time_length = 10;
+    string friend_nick_name = 11;
+}
+
+message RpcOfflineMessagePriority {
+    string type = 1;
+    string priority = 2;
+}
+
+message RpcRegisteredGroup {
+    int32 registered_user_id = 1;
+    int32 group_id = 2;
+    string group_name = 3;
+    int32 group_announcement_id = 4;
+    int64 creation_time = 5;
+    int64 modification_time = 6;
+    int32 amount = 7;
+    int32 group_member_id = 8;
+}
+
+message RpcRegisteredGroupAdministrator {
+    int32 administrator_id = 1;
+    string administrator_type = 2;
+    string administrator_name = 3;
+}
+
+message RpcRegisteredGroupGuestUserMemberRelation {
+    int32 registered_group_id = 1;
+    int32 guest_user_member_id = 2;
+}
+
+message RpcRegisteredGroupMember {
+    int32 group_member_id = 1;
+    int32 registered_user_id = 2;
+    string group_remarks = 3;
+    string group_owner = 4;
+    string burn_after_reading_settings = 5;
+    string burn_after_reading_time_unit = 6;
+    float burn_after_reading_time_length = 7;
+    int64 group_entry_time = 8;
+    string offline_message_setting = 9;
+    int32 group_id = 10;
+}
+
+message RpcRegisteredGroupRegisteredUserMemberRelation {
+    int32 registered_group_id = 1;
+    int32 registered_user_member_id = 2;
+}
+
+message RpcRegisteredUserFriend {
+    int32 registered_user_id = 1;
+    int32 friend_id = 2;
+    int32 friend_user_id = 3;
+    string friend_comment = 4;
+    int64 creation_time = 5;
+    int64 modification_time = 6;
+    string offline_message_setting = 7;
+    string burn_after_reading_setting = 8;
+    string burn_after_reading_time_unit = 9;
+    float burn_after_reading_time_length = 10;
+    string friend_nick_name = 11;
+}
+
+message RpcGroupRemark {
+    int32 group_id = 1;
+    int32 group_member_id = 2;
+    int32 group_member_id_remarked = 3;
+    string remark = 4;
+}
+
+message AllGroupMemberVO {
+    int32 group_member_id = 1;
+    int32 registered_group_id = 2;
+    int32 guest_group_id = 3;
+    int32 registered_user_id = 4;
+    int32 guest_user_id = 5;
+    string group_remarks = 6;
+    string group_owner = 7;
+    string burn_after_reading_setting = 8;
+    string burn_after_reading_time_unit = 9;
+    float burn_after_reading_time_length = 10;
+    int64 group_entry_time = 11;
+    string offline_message_setting = 12;
+    string register_user_nick_ame = 13;
+    string guest_user_nick_ame = 14;
+    string group_name = 15;
+    int32 amount = 16;
+    string announcement_title = 17;
+    string announcement_content = 18;
+    string user_photo = 19;
+}
+
+message AllGroupsMemberResponse {
+    string status_detail = 1;
+    repeated AllGroupMemberVO response_group_member_vo = 2;
+}
+
+message SelectGroupMemberRequest { // 传输请求 repeated
+                                   string group_id = 1;
+                                   string spare = 2; //  备用字段
+}

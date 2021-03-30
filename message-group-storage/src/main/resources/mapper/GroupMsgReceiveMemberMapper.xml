@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.GroupMemberReceiveMsgMapper">
+
+	<resultMap id="BaseResultMap" type="com.lanjiu.im.storage.pojo.entity.GroupMemberReceiveMsgOffLine">
+		<result property="id" column="id" javaType="java.lang.Integer" />
+		<result property="msgId" column="msg_id" javaType="java.lang.String"/>
+		<result property="msgType" column="msg_type" javaType="java.lang.Integer"/>
+		<result property="groupId" column="group_id" javaType="java.lang.String"/>
+		<result property="groupName" column="group_name" javaType="java.lang.String"/>
+		<result property="content" column="content" javaType="java.lang.String"/>
+		<result property="entityUrl" column="entity_url" javaType="java.lang.String"/>
+		<result property="snapChatStatus" column="snap_chat_status" javaType="java.lang.Boolean"/>
+		<result property="snapChatTimeLength" column="snap_chat_time_length" javaType="java.lang.Integer"/>
+		<result property="duration" column="duration" javaType="java.lang.Long"/>
+		<result property="groupOwner" column="group_owner" javaType="java.lang.String"/>
+		<result property="groupOwnerNick" column="group_owner_nick" javaType="java.lang.String"/>
+		<result property="groupOwnerUrl" column="group_owner_url" javaType="java.lang.String"/>
+		<result property="fromId" column="from_id" javaType="java.lang.String"/>
+		<result property="fromMemberId" column="from_member_id" javaType="java.lang.String"/>
+		<result property="fromMemberName" column="from_member_name" javaType="java.lang.String"/>
+		<result property="fromMemberAvatar" column="from_member_avatar" javaType="java.lang.String"/>
+		<result property="toId" column="to_id" javaType="java.lang.String"/>
+		<result property="isAt" column="is_at" javaType="java.lang.Integer"/>
+		<result property="createTime" column="create_time" javaType="java.sql.Timestamp"/>
+	</resultMap>
+
+
+    <resultMap id="ReceiveResultMap" type="com.lanjiu.im.storage.pojo.GroupMemberReceiveMsg">
+        <result property="id" column="id" javaType="java.lang.Integer" />
+        <result property="groupId" column="group_id" javaType="java.lang.String"/>
+        <result property="toId" column="to_id" javaType="java.lang.String"/>
+        <result property="offLineMsgId" column="off_line_msg_id" javaType="java.lang.Integer"/>
+        <result property="isAt" column="is_at" javaType="java.lang.Integer"/>
+        <result property="createTime" column="create_time" javaType="java.lang.Long"/>
+    </resultMap>
+
+
+	<sql id="Base_Column_List">
+		id, group_id, to_id, off_line_msg_id, is_at, create_time
+	</sql>
+
+	<sql id="Relation_Column_List">
+		o.id, o.msg_id, o.msg_type, o.from_id, o.`from_member_id`, o.`from_member_name`, o.`from_member_avatar`, r.to_id,
+        r.is_at, o.group_id, o.`group_name`, o.`group_owner`, o.`group_owner_nick`, o.`group_owner_url`, o.content,
+        o.entity_url, o.snap_chat_status,o.snap_chat_time_length, o.`duration`, o.create_time
+	</sql>
+
+    <insert id="insert" parameterType="GroupMemberReceiveMsg">
+		insert into group_msg_receive_member (
+		group_id,
+		to_id,
+		off_line_msg_id,
+		is_at,
+		create_time)
+        values (
+        #{groupId,jdbcType=VARCHAR},
+        #{toId,jdbcType=VARCHAR},
+        #{offLineMsgId,jdbcType=INTEGER},
+        #{isAt,jdbcType=INTEGER},
+        #{createTime})
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into group_msg_receive_member (
+		group_id,
+		to_id,
+		off_line_msg_id,
+		is_at,
+		create_time)
+		values
+		<foreach collection="list" item="item" open="(" separator="," close=")" >
+		#{item.groupId,jdbcType=VARCHAR},
+		#{item.toId,jdbcType=INTEGER},
+		#{item.offLineMsgId,jdbcType=INTEGER},
+		#{item.isAt,jdbcType=INTEGER},
+		#{item.createTime,jdbc=INTEGER}
+		</foreach>
+	</insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from group_msg_receive_member where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+    <delete id="deleteByToId" parameterType="java.lang.String">
+		delete from group_msg_receive_member where to_id = #{toId,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deleteByGroupIds" parameterType="java.util.List">
+		delete from group_msg_receive_member where group_id in
+		<foreach collection="groupIds" item="item" open="(" separator="," close=")" >
+			#{item, jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+
+	<delete id="deleteByOffLineMsgIds" parameterType="java.util.List">
+		delete from group_msg_receive_member where off_line_msg_id in
+		<foreach collection="msgIds" item="item" open="(" separator="," close=")" >
+			#{item, jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+    <update id="updateByPrimaryKey" parameterType="GroupMemberReceiveMsg">
+		update group_msg_receive_member
+        set group_id = #{groupId,jdbcType=VARCHAR},
+            to_id = #{toId,jdbcType=VARCHAR},
+            off_line_msg_id = #{offLineMsgId,jdbcType=INTEGER},
+            is_at = #{isAt,jdbcType=INTEGER},
+			create_time = #{createTime,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+	</update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ReceiveResultMap">
+		select <include refid="Base_Column_List"/> from group_msg_receive_member where id = #{id, jdbcType=INTEGER}
+		ORDER BY create_time DESC
+	</select>
+
+    <select id="selectByToId" resultMap="ReceiveResultMap">
+		select <include refid="Base_Column_List"/> from group_msg_receive_member where to_id = #{toId, jdbcType=VARCHAR}
+		ORDER BY create_time DESC
+	</select>
+
+    <select id="selectByGroupIds" resultMap="ReceiveResultMap">
+        select <include refid="Base_Column_List"/> from group_msg_receive_member where group_id in
+        <foreach collection="groupIds" item="groupId" open="(" separator="," close=")">
+            #{groupId, jdbcType=VARCHAR}
+        </foreach>
+        ORDER BY create_time DESC
+    </select>
+
+	<select id="selectPageData" resultMap="BaseResultMap">
+		SELECT <include refid="Relation_Column_List"/>
+		FROM group_msg_receive_member r
+		JOIN group_msg_off_line o ON r.`off_line_msg_id` = o.`id`
+		WHERE r.to_id = #{toId, jdbcType=VARCHAR}
+		ORDER BY r.create_time ASC
+		LIMIT #{start, jdbcType=INTEGER}, #{length, jdbcType=INTEGER}
+	</select>
+
+	<select id="selectRelationData" resultMap="BaseResultMap">
+		SELECT <include refid="Relation_Column_List"/>
+		FROM group_msg_receive_member r
+		JOIN group_msg_off_line o ON r.`off_line_msg_id` = o.`id`
+		WHERE r.to_id = #{toId, jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectCountByToId" resultType="java.lang.Integer">
+		SELECT COUNT(1) FROM group_msg_receive_member r
+		JOIN group_msg_off_line o ON r.`off_line_msg_id` = o.`id`
+		WHERE r.to_id = #{toId, jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByOffLineIds" resultType="java.lang.Integer">
+		select DISTINCT off_line_msg_id
+		from group_msg_receive_member where off_line_msg_id in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			#{item, jdbcType=INTEGER}
+		</foreach>
+	</select>
+
+    <delete id="deleteGroupLineMsgByToId" parameterType="java.lang.String">
+		delete from group_msg_receive_member where group_id = #{groupId,jdbcType=VARCHAR} and to_id = #{toId,jdbcType=VARCHAR}
+	</delete>
+
+    <select id="selectGroupLineMsgByToId" resultType="java.lang.Integer">
+		SELECT off_line_msg_id FROM group_msg_receive_member WHERE group_id = #{groupId,jdbcType=VARCHAR} and to_id = #{toId,jdbcType=VARCHAR}
+	</select>
+
+
+	<insert id="insertAudioVideoCallIndex" parameterType="com.lanjiu.im.storage.pojo.GroupAudioVideoCallIndex">
+		insert into  group_audio_video_call_index
+		(
+		group_id,
+		member_id,
+		is_join,
+		gavc_id,
+		time
+		)values (
+		#{groupId,jdbcType=VARCHAR},
+		#{memberId,jdbcType=VARCHAR},
+		#{isJoin,jdbcType=INTEGER},
+		#{gavcId,jdbcType=INTEGER},
+		from_unixtime(#{time},'%Y-%m-%d %H:%i:%s')
+		)
+	</insert>
+
+	<select id="selectAudioCallCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1) from group_audio_video_call_index d  join group_audio_video_call_msg m  on  d.gavc_id = m.id where member_id=#{toUserId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteAudioVideoCallOfUserIndex" >
+		delete from group_audio_video_call_index where member_id =#{delUser,jdbcType=VARCHAR} and gavc_id =#{msgId,jdbcType=INTEGER}
+	</delete>
+
+	<delete id="removeAudioVideoCallIndexByRoomId" parameterType="java.lang.String">
+		delete  from group_audio_video_call_index where group_id=#{groupId,jdbcType=VARCHAR}
+	</delete>
+</mapper>

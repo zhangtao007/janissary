@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.GuestUserFriendMapper">
+    <resultMap id="guestUserFriendMap" type="com.lanjiu.im.grpc.pojo.GuestUserFriend">
+        <result property="friendId" column="friend_id" javaType="java.lang.Integer"></result>
+        <result property="guestUserId" column="guest_user_id" javaType="java.lang.Integer"></result>
+        <result property="friendUserId" column="friend_user_id" javaType="java.lang.Integer"></result>
+        <result property="friendComment" column="friend_comment" javaType="java.lang.String"></result>
+        <result property="creationTime" column="creation_time" javaType="java.sql.Timestamp"></result>
+        <result property="modificationTime" column="modification_time" javaType="java.sql.Timestamp"></result>
+        <result property="offlineMessageSetting" column="offline_message_setting" javaType="java.lang.String"></result>
+        <result property="burnAfterReadingSetting" column="burn_after_reading_setting"
+                javaType="java.lang.String"></result>
+        <result property="burnAfterReadingTimeUnit" column="burn_after_reading_time_unit"
+                javaType="java.lang.String"></result>
+        <result property="burnAfterReadingTimeLength" column="burn_after_reading_time_length"
+                javaType="java.math.BigDecimal"></result>
+        <result property="friendNickName" column="friend_nick_name" javaType="java.lang.String"></result>
+    </resultMap>
+    <select id="selectAllGuestUserFriend" resultMap="guestUserFriendMap">
+		select * from guest_user_friend
+	</select>
+
+    <select id="selectGuestUserFriend" resultMap="guestUserFriendMap">
+		select * from guest_user_friend where friend_id = #{friendId} and guest_user_id = #{guestUserId} and friend_user_id = #{friendUserId} and friend_comment = #{friendComment} and creation_time = #{creationTime}
+		and modification_time = #{modificationTime} and offline_message_setting = #{offlineMessageSetting} and burn_after_reading_setting = #{burnAfterReadingSetting}
+		and burn_after_reading_time_unit = #{burnAfterReadingTimeUnit} and burn_after_reading_time_length = #{burnAfterReadingTimeLength} and friend_nick_name = #{friendNickName}
+	</select>
+
+    <select id="selectGuestUserFriendByGuestUserId" resultMap="guestUserFriendMap">
+		select * from guest_user_friend where guest_user_id = #{guestUserId}
+	</select>
+
+    <select id="selectGuestUserFriendByFriendId" resultMap="guestUserFriendMap">
+		select * from guest_user_friend where friend_id = #{friendId}
+	</select>
+
+    <select id="selectGuestUserFriendByFriendIdLike" resultMap="guestUserFriendMap">
+        <bind name="friendGuestParameter" value="'%' + friendId + '%'"/>
+        select * from guest_user_friend where friend_id LIKE #{friendGuestParameter}
+    </select>
+
+    <select id="selectGuestUserFriendByFriendUserId" resultMap="guestUserFriendMap">
+		select * from guest_user_friend where friend_user_id = #{friendUserId}
+	</select>
+
+    <select id="selectGuestUserFriendByGuestUserIdAndFriendId" resultMap="guestUserFriendMap">
+		select * from guest_user_friend where guest_user_id = #{guestUserId} and friend_id = #{friendId}
+	</select>
+
+    <select id="selectGuestUserFriendByGuestUserIdAndFriendUserId" resultMap="guestUserFriendMap">
+		select * from guest_user_friend where guest_user_id = #{guestUserId} and friend_user_id = #{friendUserId}
+	</select>
+
+    <select id="selectGuestUserFriendByOfflineMessageSetting" resultMap="guestUserFriendMap">
+		select * from guest_user_friend where offline_message_setting = #{offlineMessageSetting}
+	</select>
+
+    <select id="selectGuestUserFriendByBurnAfterReadingSetting" resultMap="guestUserFriendMap">
+		select * from guest_user_friend where burn_after_reading_setting = #{burnAfterReadingSetting}
+	</select>
+
+    <insert id="insertGuestUserFriend" parameterType="com.lanjiu.im.grpc.pojo.GuestUserFriend">
+        insert into guest_user_friend (guest_user_id, friend_user_id, friend_comment, creation_time, modification_time, offline_message_setting,
+        burn_after_reading_setting, burn_after_reading_time_unit, burn_after_reading_time_length, friend_nick_name)
+        values (#{guestUserId,jdbcType=INTEGER},#{friendUserId,jdbcType=INTEGER},#{friendComment,jdbcType=VARCHAR},
+        #{creationTime,jdbcType=DATE}, #{modificationTime,jdbcType=DATE},
+        #{offlineMessageSetting,jdbcType=VARCHAR}, #{burnAfterReadingSetting,jdbcType=VARCHAR},
+        #{burnAfterReadingTimeUnit,jdbcType=VARCHAR}, #{burnAfterReadingTimeLength,jdbcType=DECIMAL},
+        #{friendNickName,jdbcType=VARCHAR})
+    </insert>
+
+    <delete id="deleteGuestUserFriendByFriendId">
+		delete from guest_user_friend where friend_id = #{friendId}
+	</delete>
+
+    <delete id="deleteGuestUserFriendByFriendUserId">
+		delete from guest_user_friend where friend_user_id = #{friendUserId}
+	</delete>
+
+    <delete id="deleteGuestUserFriendByGuestUserId">
+		delete from guest_user_friend where guest_user_id = #{guestUserId}
+	</delete>
+
+    <delete id="deleteGuestUserFriendByGuestUserIdAndFriendUserId">
+		delete from guest_user_friend where guest_user_id = #{guestUserId} and friend_user_id = #{friendUserId}
+	</delete>
+
+    <!-- 修改游客用户好友信息 -->
+    <update id="updateGuestUserFriend" parameterType="com.lanjiu.im.grpc.pojo.GuestUserFriend">
+    update guest_user_friend set guest_user_id = #{guestUserId}
+     , friend_user_id = #{friendUserId}
+     , friend_comment = #{friendComment}
+     , creation_time = #{creationTime}
+     , modification_time = #{modificationTime}
+     , offline_message_setting = #{offlineMessageSetting}
+     , burn_after_reading_setting = #{burnAfterReadingSetting}
+     , burn_after_reading_time_unit = #{burnAfterReadingTimeUnit}
+     , burn_after_reading_time_length = #{burnAfterReadingTimeLength}
+     , friend_nick_name = #{friendNickName}
+     where friend_id = #{friendId}
+    </update>
+
+
+</mapper>

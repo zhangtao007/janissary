@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.FriendUnusedBeautifulNumberMapper">
+    <resultMap id="friendUnusedBeautifulNumberMap" type="com.lanjiu.im.grpc.pojo.FriendUnusedBeautifulNumber">
+        <result property="tenMillion" column="ten_million" javaType="java.lang.Integer"></result>
+        <result property="oneMillion" column="one_million" javaType="java.lang.Integer"></result>
+        <result property="oneHundredThousand" column="one_hundred_thousand" javaType="java.lang.Integer"></result>
+        <result property="tenThousand" column="ten_thousand" javaType="java.lang.Integer"></result>
+        <result property="oneThousand" column="one_thousand" javaType="java.lang.Integer"></result>
+        <result property="oneHundred" column="one_hundred" javaType="java.lang.Integer"></result>
+        <result property="ten" column="ten" javaType="java.lang.Integer"></result>
+        <result property="one" column="one" javaType="java.lang.Integer"></result>
+    </resultMap>
+
+    <select id="selectOnlyFriendUnusedBeautifulNumber" resultMap="friendUnusedBeautifulNumberMap">
+		select * from friend_unused_beautiful_number limit 1
+	</select>
+
+    <select id="selectAllFriendUnusedBeautifulNumber" resultMap="friendUnusedBeautifulNumberMap">
+		select * from friend_unused_beautiful_number
+	</select>
+
+    <select id="selectFriendUnusedBeautifulNumber" resultMap="friendUnusedBeautifulNumberMap">
+		select * from friend_unused_beautiful_number where ten_million = #{tenMillion} and one_million = #{oneMillion} and one_hundred_thousand = #{oneHundredThousand} and ten_thousand = #{tenThousand}
+		and one_thousand = #{oneThousand} and one_hundred = #{oneHundred} and ten = #{ten} and one = #{one}
+	</select>
+
+    <select id="selectFriendUnusedBeautifulNumberByThousand" resultMap="friendUnusedBeautifulNumberMap">
+		select * from friend_unused_beautiful_number where ten_million = #{tenMillion} and one_million = #{oneMillion} and one_hundred_thousand = #{oneHundredThousand} and ten_thousand = #{tenThousand}
+		and one_thousand = #{oneThousand}
+	</select>
+
+    <insert id="insertFriendUnusedBeautifulNumber" parameterType="com.lanjiu.im.grpc.pojo.FriendUnusedBeautifulNumber">
+        insert into friend_unused_beautiful_number (ten_million, one_million, one_hundred_thousand, ten_thousand, one_thousand, one_hundred, ten, one)
+        values (#{tenMillion,jdbcType=INTEGER}, #{oneMillion,jdbcType=INTEGER}, #{oneHundredThousand,jdbcType=INTEGER},
+        #{tenThousand,jdbcType=INTEGER}, #{oneThousand,jdbcType=INTEGER},
+        #{oneHundred,jdbcType=INTEGER}, #{ten,jdbcType=INTEGER}, #{one,jdbcType=INTEGER})
+    </insert>
+    <delete id="deleteFriendUnusedBeautifulNumber" >
+		delete from friend_unused_beautiful_number where ten_million = #{tenMillion} and one_million = #{oneMillion} and one_hundred_thousand = #{oneHundredThousand} and ten_thousand = #{tenThousand}
+		and one_thousand = #{oneThousand} and one_hundred = #{oneHundred} and ten = #{ten} and one = #{one}
+	</delete>
+</mapper>

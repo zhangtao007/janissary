@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.AutoBeautifulCheckNumberRecordMapper">
+    <resultMap id="autoBeautifulCheckNumberRecordMap" type="com.lanjiu.im.grpc.pojo.AutoBeautifulCheckNumberRecord">
+        <result property="recordType" column="record_type" javaType="java.lang.String"></result>
+        <result property="tenMillion" column="ten_million" javaType="java.lang.Integer"></result>
+        <result property="oneMillion" column="one_million" javaType="java.lang.Integer"></result>
+        <result property="oneHundredThousand" column="one_hundred_thousand" javaType="java.lang.Integer"></result>
+        <result property="tenThousand" column="ten_thousand" javaType="java.lang.Integer"></result>
+        <result property="oneThousand" column="one_thousand" javaType="java.lang.Integer"></result>
+    </resultMap>
+
+    <select id="selectAutoBeautifulCheckNumberRecord" resultMap="autoBeautifulCheckNumberRecordMap">
+		select * from auto_beautiful_check_number_record where record_type = #{recordType}
+	</select>
+
+    <!-- 修改记录数据 -->
+    <update id="updateAutoBeautifulCheckNumberRecord" parameterType="com.lanjiu.im.grpc.pojo.AutoBeautifulCheckNumberRecord">
+    update auto_beautiful_check_number_record set ten_million = #{tenMillion}, one_million = #{oneMillion},one_hundred_thousand = #{oneHundredThousand},ten_thousand = #{tenThousand},one_thousand = #{oneThousand} where record_type = #{recordType}
+    </update>
+
+</mapper>

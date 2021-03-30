@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.grpc.dao.mapper.impl.RegisteredGroupRegisteredUserMemberRelationMapper">
+    <resultMap id="registeredGroupRegisteredUserMemberRelationMap" type="com.lanjiu.im.grpc.pojo.RegisteredGroupRegisteredUserMemberRelation">
+        <result property="registeredGroupId" column="registered_group_id" javaType="java.lang.Integer"></result>
+        <result property="registeredUserMemberId" column="registered_user_member_id" javaType="java.lang.Integer"></result>
+    </resultMap>
+
+    <select id="selectAllRegisteredGroupRegisteredUserMemberRelation" resultMap="registeredGroupRegisteredUserMemberRelationMap">
+		select * from registered_group_registered_user_member_relation
+	</select>
+
+    <select id="selectAllRegisteredGroupRegisteredUserMemberRelationByGroupIdAndMemberId" resultMap="registeredGroupRegisteredUserMemberRelationMap">
+		select * from registered_group_registered_user_member_relation where registered_group_id = #{registeredGroupId} and registered_user_member_id = #{registeredUserMemberId}
+	</select>
+
+    <select id="selectRegisteredGroupRegisteredUserMemberRelationByRegisteredGroupId" resultMap="registeredGroupRegisteredUserMemberRelationMap">
+		select * from registered_group_registered_user_member_relation where registered_group_id = #{registeredGroupId}
+	</select>
+
+    <select id="selectRegisteredGroupRegisteredUserMemberRelationByRegisteredUserMemberId" resultMap="registeredGroupRegisteredUserMemberRelationMap">
+		select * from registered_group_registered_user_member_relation where registered_user_member_id = #{registeredUserMemberId}
+	</select>
+
+    <insert id="insertRegisteredGroupRegisteredUserMemberRelation" parameterType="com.lanjiu.im.grpc.pojo.RegisteredGroupRegisteredUserMemberRelation">
+        insert into registered_group_registered_user_member_relation (registered_group_id, registered_user_member_id)
+        values (#{registeredGroupId,jdbcType=INTEGER}, #{registeredUserMemberId,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertGroupMemberRelationOfBatch" parameterType="java.util.List">
+            insert into registered_group_registered_user_member_relation (registered_group_id, registered_user_member_id)
+            values
+        <foreach collection ="list" item="gmrela" separator =",">
+            (
+            #{gmrela.registeredGroupId},
+            #{gmrela.registeredUserMemberId}
+            )
+        </foreach >
+    </insert>
+
+
+
+    <delete id="deleteRegisteredGroupRegisteredUserMemberRelation" >
+		delete from registered_group_registered_user_member_relation where registered_group_id = #{registeredGroupId} and registered_user_member_id = #{registeredUserMemberId}
+	</delete>
+
+    <select id="getGroupAndMemberRelation" resultType="com.lanjiu.im.grpc.pojo.AllGroupMemberVO">
+        SELECT
+          rgm.`group_member_id` as groupMemberId,
+          rgm.`registered_user_id` as registeredUserId,
+          rgrumr.`registered_group_id` as registeredGroupId
+        FROM registered_group_member rgm
+        JOIN registered_group_registered_user_member_relation rgrumr
+        ON rgm.`group_member_id` = rgrumr.`registered_user_member_id`
+        WHERE rgm.`registered_user_id`=#{registeredUserId} AND rgrumr.`registered_group_id`=#{registeredGroupId}
+    </select>
+</mapper>

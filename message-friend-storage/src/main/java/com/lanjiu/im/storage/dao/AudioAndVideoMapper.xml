@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.AudioAndVideoMapper">
+    <insert id="insertVideoMessage" parameterType="com.lanjiu.im.storage.pojo.AudioAndVideoPO">
+            insert into audio_video (room_id,room_pwd,only_audio,from_user_id,user_name,user_avatar,to_user,type,time)values (
+        #{roomId,jdbcType=VARCHAR},
+        #{roomPwd,jdbcType=VARCHAR},
+        #{onlyAudio},
+        #{fromUserId,jdbcType=VARCHAR},
+        #{userName,jdbcType=VARCHAR},
+        #{userAvatar,jdbcType=VARCHAR},
+        #{toUser,jdbcType=VARCHAR},
+        #{type,jdbcType=VARCHAR},
+        from_unixtime(#{time},'%Y-%m-%d %H:%i:%s')
+        )
+    </insert>
+
+    <resultMap id="ResultCase" type="com.lanjiu.im.storage.pojo.AudioAndVideoPO">
+        <result property="server" column="server" jdbcType="VARCHAR"></result>
+        <result property="roomId" column="room_id" jdbcType="VARCHAR"></result>
+        <result property="roomPwd" column="room_pwd" jdbcType="VARCHAR"></result>
+        <result property="onlyAudio" column="only_audio" jdbcType="BIT"></result>
+        <result property="fromUserId" column="from_user_id" jdbcType="VARCHAR"></result>
+        <result property="userName" column="user_name" jdbcType="VARCHAR"></result>
+        <result property="userAvatar" column="user_avatar" jdbcType="VARCHAR" ></result>
+        <result property="toUser" column="to_user" jdbcType="VARCHAR"></result>
+        <result property="type" column="type" jdbcType="VARCHAR"></result>
+        <result property="time" column="time" jdbcType="BIGINT"></result>
+    </resultMap>
+    <select id="selectAudioAndVideoMessage" parameterType="java.lang.String" resultMap="ResultCase">
+        select server,room_id,room_pwd,only_audio,from_user_id,user_name,user_avatar,to_user,type,unix_timestamp(time) as time from audio_video where  to_user=#{to_user}
+    </select>
+
+    <delete id="removeAudioAndVideo" parameterType="java.lang.String">
+        delete from audio_video where room_id=#{roomId} and to_user =#{receiveUser}
+    </delete>
+
+    <delete id="closeRoomByRoomId" parameterType="java.lang.String">
+        delete from audio_video where room_id=#{roomId}
+    </delete>
+</mapper>

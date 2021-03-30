@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.GuestAutoNumMapper">
+    <resultMap  id="RaseMap"  type="com.lanjiu.im.storage.pojo.NumAutoGuestPO">
+        <result  column="ten_million" property="tenMillion" jdbcType="INTEGER" />
+        <result  column="one_million" property="oneMillion" jdbcType="INTEGER"/>
+        <result  column="one_hundred_thousand" property="oneHundredThousand" jdbcType="INTEGER" />
+        <result  column="ten_thousand" property="tenThousand" jdbcType="INTEGER"/>
+        <result  column="one_thousand" property="oneThousand" jdbcType="INTEGER"/>
+        <result  column="one_hundred" property="oneHundred" jdbcType="INTEGER"/>
+        <result  column="ten" property="ten" jdbcType="INTEGER"/>
+        <result  column="one" property="one" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="BaseColumn">
+        ten_million,one_million,one_hundred_thousand,ten_thousand,one_thousand,one_hundred,ten,one
+    </sql>
+
+    <select id="selectUnusedSumNum" resultType="java.lang.Integer">
+        select count(*) from unused_guest_number
+    </select>
+
+    <select id="selectBatchNumByThousand" resultMap="RaseMap" parameterType="com.lanjiu.im.storage.pojo.NumAutoGuestPO">
+        select <include refid="BaseColumn"/> from beautiful_number_auto where ten_million =#{tenMillion,jdbcType=INTEGER}
+        and one_million=#{oneMillion,jdbcType=INTEGER}
+        and one_hundred_thousand=#{oneHundredThousand,jdbcType=INTEGER}
+        and ten_thousand=#{tenThousand,jdbcType=INTEGER}
+        and one_thousand=#{oneThousand,jdbcType=INTEGER}
+
+    </select>
+
+    <insert id="insertBatchNum" parameterType="java.util.List" useGeneratedKeys="false">
+        insert into unused_guest_number
+        <!--<include refid="BaseColumn"/>-->
+        (ten_million,one_million,one_hundred_thousand,ten_thousand,one_thousand,one_hundred,ten,one)
+        values
+        <foreach collection="list" item="item" index="inedx" separator=",">
+            (  #{item.tenMillion},
+            #{item.oneMillion},
+            #{item.oneHundredThousand},
+            #{item.tenThousand},
+            #{item.oneThousand},
+            #{item.oneHundred},
+            #{item.ten},
+            #{item.one})
+        </foreach>
+    </insert>
+
+    <resultMap  id="RecordMap"  type="com.lanjiu.im.storage.pojo.AutoRecordNumPO">
+        <id column="record_type" property="recordType" jdbcType="VARCHAR"/>
+        <result  column="ten_million" property="tenMillion" jdbcType="INTEGER" />
+        <result  column="one_million" property="oneMillion" jdbcType="INTEGER"/>
+        <result  column="one_hundred_thousand" property="oneHundredThousand" jdbcType="INTEGER" />
+        <result  column="ten_thousand" property="tenThousand" jdbcType="INTEGER"/>
+        <result  column="one_thousand" property="oneThousand" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectNewNum" resultMap="RecordMap" parameterType="java.lang.String">
+        select * from auto_beautiful_check_number_record where record_type =#{autoRegist,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertNewNum"  parameterType="com.lanjiu.im.storage.pojo.AutoRecordNumPO" >
+        update  auto_beautiful_check_number_record set
+         ten_million=#{tenMillion,jdbcType=INTEGER},
+         one_million=#{oneMillion,jdbcType=INTEGER},
+         one_hundred_thousand=#{oneHundredThousand,jdbcType=INTEGER},
+         ten_thousand=#{tenThousand,jdbcType=INTEGER},
+         one_thousand=#{oneThousand,jdbcType=INTEGER}
+         where
+          record_type = #{recordType,jdbcType=VARCHAR}
+    </insert>
+</mapper>

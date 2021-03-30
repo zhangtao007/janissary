@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.OperationAutoNumMapper">
+
+    <resultMap  id="CaseMap"  type="com.lanjiu.im.storage.pojo.BueautifulNumberPO">
+        <result  column="ten_million" property="tenMillion" jdbcType="INTEGER" />
+        <result  column="one_million" property="oneMillion" jdbcType="INTEGER"/>
+        <result  column="one_hundred_thousand" property="oneHundredThousand" jdbcType="INTEGER" />
+        <result  column="ten_thousand" property="tenThousand" jdbcType="INTEGER"/>
+        <result  column="one_thousand" property="oneThousand" jdbcType="INTEGER"/>
+        <result  column="one_hundred" property="oneHundred" jdbcType="INTEGER"/>
+        <result  column="ten" property="ten" jdbcType="INTEGER"/>
+        <result  column="one" property="one" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="BaseColumn">
+        ten_million,one_million,one_hundred_thousand,ten_thousand,one_thousand,one_hundred,ten,one
+    </sql>
+    <select id="selectMinNum" resultType="java.lang.Integer">
+        select count(*) from unused_auto_number
+    </select>
+
+    <select id="exportBatchNum" resultMap="CaseMap" parameterType="java.lang.Integer">
+        select
+        <include refid="BaseColumn"/>
+        from beautiful_number_auto
+        limit #{offset,jdbcType=INTEGER},#{num,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insertBatchNum" parameterType="java.util.List" useGeneratedKeys="false">
+        insert into unused_auto_number
+        <!--<include refid="BaseColumn"/>-->
+        (ten_million,one_million,one_hundred_thousand,ten_thousand,one_thousand,one_hundred,ten,one)
+        values
+        <foreach collection="list" item="item" index="inedx" separator=",">
+            (  #{item.tenMillion},
+            #{item.oneMillion},
+            #{item.oneHundredThousand},
+            #{item.tenThousand},
+            #{item.oneThousand},
+            #{item.oneHundred},
+            #{item.ten},
+            #{item.one})
+        </foreach>
+    </insert>
+
+    <delete id="deleteBatchNum" parameterType="java.lang.Integer">
+        delete from  beautiful_number_auto limit #{n,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getUnusedAutoNum" resultMap="CaseMap" parameterType="java.lang.Integer">
+        select   <include refid="BaseColumn"/> from unused_auto_number order by rand()  limit 1
+    </select>
+
+    <insert id="insertUsedAutoNum" parameterType="com.lanjiu.im.storage.pojo.BueautifulNumberPO">
+        insert into used_auto_number
+        values (
+        #{tenMillion,jdbcType=INTEGER},
+        #{oneMillion,jdbcType=INTEGER},
+        #{oneHundredThousand,jdbcType=INTEGER},
+        #{tenThousand,jdbcType=INTEGER},
+        #{oneThousand,jdbcType=INTEGER},
+        #{oneHundred,jdbcType=INTEGER},
+        #{ten,jdbcType=INTEGER},
+        #{one,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <delete id="deleteUsedAutoNumber" parameterType="com.lanjiu.im.storage.pojo.BueautifulNumberPO">
+        delete from unused_auto_number where ten_million = #{tenMillion,jdbcType=INTEGER}
+        and  one_million = #{oneMillion,jdbcType=INTEGER}
+        and  one_hundred_thousand =  #{oneHundredThousand,jdbcType=INTEGER}
+        and  ten_thousand =   #{tenThousand,jdbcType=INTEGER}
+        and  one_thousand =   #{oneThousand,jdbcType=INTEGER}
+        and  one_hundred = #{oneHundred,jdbcType=INTEGER}
+        and  ten =  #{ten,jdbcType=INTEGER}
+        and  one =  #{one,jdbcType=INTEGER}
+    </delete>
+
+
+</mapper>

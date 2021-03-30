@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.MsgFriendOffMapper">
+    <insert id="insertMsgFriendOff" parameterType="com.lanjiu.im.storage.pojo.MsgFriendOffPO" >
+        insert into msg_friend_off (msg_id,msg_type,from_id,to_id,content,entity_url,create_time,message_offline_status,burn_after_reading_status,burn_after_reading_length,from_nickname,from_avatar,video_time)
+        values (
+        #{msgId,jdbcType=VARCHAR},
+        #{msgType,jdbcType=INTEGER},
+        #{fromId,jdbcType=INTEGER},
+        #{toId,jdbcType=INTEGER},
+        #{content,jdbcType=LONGVARCHAR},
+        #{entityUrl,jdbcType=VARCHAR},
+        from_unixtime(#{createTime},'%Y-%m-%d %H:%i:%s'),
+        #{messageOfflineStatus,jdbcType=BOOLEAN},
+        #{burnAfterReadingStatus,jdbcType=BOOLEAN},
+        #{burnAfterReadingLength,jdbcType=INTEGER},
+        #{fromNickname,jdbcType=VARCHAR},
+        #{fromAvatar,jdbcType=VARCHAR},
+        #{videoTime,jdbcType=BIGINT}
+        )
+    </insert>
+
+    <delete id="deleteMsgFriendOff" parameterType="java.lang.String">
+        delete from msg_friend_off where msg_id =#{msgId,jdbcType=VARCHAR}  and msg_type = 0
+    </delete>
+    <!--delete from del_fmsg_off where msg_id =#{msgId,jdbcType=VARCHAR};-->
+    <delete id="deleteMsgFriendOffByFromId" parameterType="java.lang.Integer">
+         delete from msg_friend_off where from_id =#{fromId,jdbcType=INTEGER}
+    </delete>
+
+    <!--&#45;   delete from del_fmsg_off where del_toId =#{toId} or del_fromId =#{toId};-->
+    <delete id="deleteMsgFriendOffByToId">
+        delete from msg_friend_off where to_id =#{toId} or from_id =#{toId}
+    </delete>
+
+    <delete id="deleteGuestOffMsgByFromidToid" parameterType="java.lang.Integer">
+         delete from msg_friend_off where to_id =#{toId,jdbcType=INTEGER} or from_id =#{fromId,jdbcType=INTEGER}
+    </delete>
+
+    <resultMap id="ResultBase" type="com.lanjiu.im.storage.pojo.MsgFriendOffPO">
+        <result property="msgId" column="msg_id" jdbcType="VARCHAR"></result>
+        <result property="msgType" column="msg_type" jdbcType="INTEGER"></result>
+        <result property="fromId" column="from_id" jdbcType="INTEGER"></result>
+        <result property="toId" column="to_id" jdbcType="INTEGER"></result>
+        <result property="content" column="content" jdbcType="LONGVARCHAR"></result>
+        <result property="entityUrl" column="entity_url" jdbcType="VARCHAR"></result>
+        <result property="createTime" column="create_time" javaType="java.lang.Long" ></result>
+        <result property="messageOfflineStatus" column="message_offline_status" javaType="java.lang.Boolean" jdbcType="BIT"></result>
+        <result property="burnAfterReadingStatus" column="burn_after_reading_status" javaType="java.lang.Boolean"  jdbcType="BIT"></result>
+        <result property="burnAfterReadingLength" column="burn_after_reading_length" jdbcType="INTEGER"></result>
+        <result property="fromNickname" column="from_nickname" jdbcType="VARCHAR"></result>
+        <result property="fromAvatar" column="from_avatar" jdbcType="VARCHAR"></result>
+        <result property="videoTime" column="video_time" jdbcType="BIGINT"></result>
+    </resultMap>
+
+
+
+    <select id="selectMsgFriendOffByMsgId" resultMap="ResultBase">
+        select msg_id,msg_type, from_id,to_id, content, entity_url, unix_timestamp(create_time) as create_time,message_offline_status,burn_after_reading_status,burn_after_reading_length,from_nickname,from_avatar
+         from msg_friend_off where msg_id = #{msgId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectMsgFriendOffByFromId" resultMap="ResultBase">
+         select msg_id,msg_type, from_id,to_id, content, entity_url, unix_timestamp(create_time) as create_time,message_offline_status,burn_after_reading_status,burn_after_reading_length,from_nickname,from_avatar
+          from msg_friend_off where from_id = #{fromId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectMsgFriendOffByToId" resultMap="ResultBase">
+         select msg_id,msg_type, from_id,to_id, content, entity_url, unix_timestamp(create_time) as create_time ,message_offline_status,burn_after_reading_status,burn_after_reading_length,from_nickname,from_avatar,video_time
+          from msg_friend_off where to_id = #{toId,jdbcType=INTEGER}
+    </select>
+
+
+    <insert id="insertDelFriendMsgOff" parameterType="com.lanjiu.im.storage.pojo.DelFriendOffMsg">
+        insert into del_fmsg_off (del_fromId,del_toId,from_id,msg_id,timer,msg_type)values (
+        #{delFromId,jdbcType=INTEGER},
+        #{delToId,jdbcType=INTEGER},
+        #{fromId,jdbcType=INTEGER},
+        #{msgId,jdbcType=VARCHAR},
+         from_unixtime(#{timer},'%Y-%m-%d %H:%i:%s'),
+         #{msgType,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <resultMap id="BaseDelMsg" type="com.lanjiu.im.storage.pojo.DelFriendOffMsg">
+        <result property="delFromId" column="del_fromId" jdbcType="INTEGER"></result>
+        <result property="delToId" column="del_toId" jdbcType="INTEGER"></result>
+        <result property="fromId" column="from_id" jdbcType="INTEGER"></result>
+        <result property="msgId" column="msg_id" jdbcType="VARCHAR"></result>
+        <result property="timer" column="timer" javaType="java.lang.Long"></result>
+        <result property="msgType" column="msg_type" jdbcType="INTEGER"></result>
+    </resultMap>
+
+    <select id="selectDelFriendMsgOff" parameterType="java.lang.Integer" resultMap="BaseDelMsg">
+        select del_fromId,del_toId,from_id,msg_id,unix_timestamp(timer)as timer ,msg_type  from del_fmsg_off where del_toId=#{deltoId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteDelFriendMsgOff" parameterType="java.lang.Integer">
+        delete from del_fmsg_off where del_toId = #{toId,jdbcType=INTEGER} or del_fromId = #{toId,jdbcType=INTEGER}
+    </delete>
+
+
+    <delete id="deleteMsgFriendMsgOff">
+        delete from msg_friend_off where  from_id =#{fromId,jdbcType=INTEGER} and msg_id=#{msgId,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteDelGuestOffMsgByFromidToid" parameterType="java.lang.Integer">
+          delete from del_fmsg_off where del_toId = #{deltoId,jdbcType=INTEGER} or del_fromId = #{delFromId,jdbcType=INTEGER}
+    </delete>
+
+
+    <resultMap id="CaseTCMsg" type="com.lanjiu.im.storage.pojo.TimeClearMsgPO">
+        <result property="clsFromId" column="cls_fromId" jdbcType="INTEGER"></result>
+        <result property="clsToId" column="cls_toId" jdbcType="INTEGER"></result>
+        <result property="msgType" column="msg_type" jdbcType="INTEGER"></result>
+        <result property="msgUid" column="msg_uid" jdbcType="VARCHAR"></result>
+        <result property="newtime" column="timer" javaType="java.lang.Long"></result>
+    </resultMap>
+
+    <select id="selectTimeClearLastMsg" resultMap="CaseTCMsg"  parameterType="java.lang.Integer">
+        select cls_fromId,cls_toId,msg_type,msg_uid,unix_timestamp(timer)*1000 as timer from cls_record  where  cls_toId =#{clsToId};
+    </select>
+
+    <select id="getOneTimeClearLastMsg"  resultMap="CaseTCMsg"  parameterType="java.lang.Integer">
+          select cls_fromId,cls_toId,msg_type,msg_uid,unix_timestamp(timer)*1000 as timer from cls_record  where cls_fromId =#{fromId} and cls_toId =#{toId};
+    </select>
+
+    <delete id="deleteTimeClearMsg"  parameterType="java.lang.Integer">
+        delete from cls_record where cls_toId =#{clsToId};
+    </delete>
+
+    <insert id="insertTimeClearMsg" parameterType="com.lanjiu.im.storage.pojo.TimeClearMsgPO">
+         insert into cls_record (cls_fromId,cls_toId,msg_type,msg_uid,timer)values (
+        #{clsFromId,jdbcType=INTEGER},
+        #{clsToId,jdbcType=INTEGER},
+        #{msgType,jdbcType=INTEGER},
+        #{msgUid,jdbcType=VARCHAR},
+         from_unixtime(#{newtime},'%Y-%m-%d %H:%i:%s')
+        )
+    </insert>
+
+    <update id="updateTimeClearMsg" parameterType="com.lanjiu.im.storage.pojo.TimeClearMsgPO">
+        update cls_record
+        <set>
+            <if test="msgUid != null">
+                msg_uid =#{msgUid},
+            </if>
+             timer = from_unixtime(#{newtime},'%Y-%m-%d %H:%i:%s'),
+        </set>
+        WHERE cls_fromId =#{clsFromId} and cls_toId =#{clsToId}
+    </update>
+</mapper>

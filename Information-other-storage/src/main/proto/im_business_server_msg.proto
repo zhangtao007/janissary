@@ -1,0 +1,332 @@
+syntax = "proto3";
+
+package com.lanjiu.im.communication;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.pro.communication";
+option java_outer_classname = "BusinessProtocolMessageStandard";
+
+message CheckUnifiedEntranceMessage { // 统一入口
+
+  UnifiedEntranceMessage unified_entrance_message = 1;
+  string checksum = 2;//校验位
+
+}
+
+message UnifiedEntranceMessage { // 统一入口
+
+  enum DataType {
+    RegisteredUserProtocol = 0;
+    LoginProtocol = 1;
+    FindUserRequestProtocol = 2;
+    FindGroupRequestProtocol = 3;
+    FriendsListMaintenanceProtocol = 4;
+    GroupMemberManagementProtocol = 5;
+    PersonalSettingsProtocol = 6;
+    FriendsOfflineMessageProtocol = 7;
+    FriendsBurnAfterReadingProtocol = 8;
+    FriendsOnlineStatusProtocol = 9;
+    GroupAnnouncementManagementProtocol = 10;
+    GroupBurnAfterReadingProtocol = 11;
+    OneVOneChatSendingMessageProtocol = 12;
+    OneVOneChatReceptionProtocol = 13;
+    GroupMessagingProtocol = 14;
+    GroupMessageReceptionProtocol = 15;
+    OriginalPictureVideoFriendsTransmissionProtocol = 16;
+    OriginalPictureVideoGroupTransmissionProtocol = 17;
+  }
+
+  Head head = 1;
+  DataType data_type = 2;
+
+  oneof dataBody {
+    RegisteredUserProtocol registered_user_protocol = 3;
+    LoginProtocol login_protocol = 4;
+    FindUserRequestProtocol find_user_request_protocol = 5;
+    FindGroupRequestProtocol find_group_request_protocol = 6;
+    FriendsListMaintenanceProtocol friends_list_maintenance_protocol = 7;
+    GroupMemberManagementProtocol group_member_management_protocol = 8;
+    PersonalSettingsProtocol personal_settings_protocol = 9;
+    FriendsOfflineMessageProtocol friends_offline_message_protocol = 10;
+    FriendsBurnAfterReadingProtocol friends_burn_after_reading_protocol = 11;
+    FriendsOnlineStatusProtocol friends_online_status_protocol = 12;
+    GroupAnnouncementManagementProtocol group_announcement_management_protocol = 13;
+    GroupBurnAfterReadingProtocol group_burn_after_reading_protocol = 14;
+    OneVOneChatSendingMessageProtocol one_v_one_chat_sending_message_protocol = 15;
+    OneVOneChatReceptionProtocol one_v_one_chat_reception_protocol = 16;
+    GroupMessagingProtocol group_messaging_protocol = 17;
+    GroupMessageReceptionProtocol group_message_reception_protocol = 18;
+    OriginalPictureVideoFriendsTransmissionProtocol original_picture_video_friends_transmission_protocol = 19;
+    OriginalPictureVideoGroupTransmissionProtocol original_picture_video_group_transmission_protocol = 20;
+  }
+
+}
+
+message RegisteredUserProtocol {
+  RegisteredUser registered_user = 1;
+  string status_detail = 2;//成功/失败提示消息详情
+}
+message LoginProtocol {
+  string user_type = 1;//当前服务模块类型
+  Tourists tourists = 2;
+  RegisteredUser registered_user = 3;
+  string status_detail = 4;//成功/失败提示消息详情
+}
+message FindUserRequestProtocol {
+  string user_type = 1;//当前服务模块类型
+  Tourists tourists = 2;
+  RegisteredUser registered_user = 3;
+  string status_detail = 4;//成功/失败提示消息详情
+}
+message FindGroupRequestProtocol {
+  string user_type = 1;//当前服务模块类型
+  Tourists tourists = 2;
+  RegisteredUser registered_user = 3;
+  Group group = 4;//兼容群类型成员
+  string status_detail = 5;//成功/失败提示消息详情
+}
+message FriendsListMaintenanceProtocol {
+  string user_type = 1;//当前服务模块类型
+  Tourists tourists = 2;
+  RegisteredUser registered_user = 3;
+  Friends friends = 4; //好友结构体
+  string operation = 5;//操作类型(添加/好友申请/删除好友/资料更新)
+  string status_detail = 6;//成功/失败提示消息详情
+}
+message GroupMemberManagementProtocol {
+  string user_type = 1;//当前服务模块类型
+  Tourists tourists = 2;
+  RegisteredUser registered_user = 3;
+  GroupMember group_member = 4;
+  Administrator administrator = 5;
+  Group group = 6;//兼容群类型成员
+  string operation = 7;//操作类型(群成员添加/成员确认添加/删除群成员/申请加入群/管理员确认申请/群资料更新)
+  string status_detail = 8;//成功/失败提示消息详情
+}
+message PersonalSettingsProtocol {
+  string user_type = 1;//当前服务模块类型
+  string settings_type = 2;//设置类型(离线消息/阅后即焚/用户在线状态更新)
+  string settings_status = 3;//设置状态（指令）
+  string time_unit = 4;//时间单位
+  string time_length = 5;//时间长度
+  Friends friends = 6; //好友结构体
+  Tourists tourists = 7;//游客结构体
+  RegisteredUser registered_user = 8;//注册用户结构体
+  string status_detail = 9;//返回类型（成功/失败/网络超时）详情
+}
+message FriendsOfflineMessageProtocol {
+  string user_type = 1;//当前服务模块类型
+  string settings_status = 2;//设置状态（好友离线消息设置指令）
+  Friends friends = 3; //好友结构体
+  Tourists tourists = 4;//游客结构体
+  RegisteredUser registered_user = 5;//注册用户结构体
+  string status_detail = 6;//返回类型（成功/失败/网络超时）详情
+}
+message FriendsBurnAfterReadingProtocol {
+  string user_type = 1;//当前服务模块类型
+  string settings_status = 2;//设置状态（好友阅后即焚设置指令）
+  string time_unit = 3;//时间单位
+  string time_length = 4;//时间长度
+  Friends friends = 5; //好友结构体
+  Tourists tourists = 6;//游客结构体
+  RegisteredUser registered_user = 7;//注册用户结构体
+  string status_detail = 8;//返回类型（成功/失败/网络超时）详情
+}
+message FriendsOnlineStatusProtocol {
+  string user_type = 1;//当前服务模块类型
+  string settings_status = 2;//设置状态（群用户在线状态指令）
+  Group group = 3;//兼容群类型成员(ID、昵称、头像)
+  Tourists tourists = 4;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 5;//注册用户结构体
+  Friends friends = 6; //好友结构体(ID、昵称、头像)
+}
+message GroupAnnouncementManagementProtocol {
+  string user_type = 1;//当前服务模块类型
+  string operation = 2;//操作类型(提交群公告/更新群公告/添加群公告/删除群公告)
+  GroupAnnouncements group_announcements = 3;//兼容群公共类型成员
+  Group group = 4;//兼容群类型成员
+  Tourists tourists = 5;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 6;//注册用户结构体
+}
+message GroupBurnAfterReadingProtocol {
+  string user_type = 1;//当前服务模块类型
+  string settings_status = 2;//设置状态（群阅后即焚设置指令）
+  string time_unit = 3;//时间单位
+  string time_length = 4;//时间长度
+  Group group = 5;//兼容群公共类型成员
+  Tourists tourists = 6;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 7;//注册用户结构体
+  string status_detail = 8;//返回类型（成功/失败/网络超时）详情
+}
+message OneVOneChatSendingMessageProtocol {//1v1聊天发送
+  string user_type = 1;//当前服务模块类型
+  string settings_type = 2;//交互数据类型(图片/视频/文本/语音/表情)Picture,Video,Voice,Expression,Text
+  Text text = 3;
+  Picture picture = 4;
+  Video video = 5;
+  Voice voice = 6;
+  Expression expression = 7;
+  Friends friends = 8;//兼容好友类型成员
+  Tourists tourists = 9;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 10;//注册用户结构体
+  string status_detail = 11;//返回类型(成功/失败/网络超时/好友or您已设置不接受离线消息)详情
+}
+message OneVOneChatReceptionProtocol {//1v1聊天接收 RECEPTION
+  string user_type = 1;//当前服务模块类型
+  string settings_type = 2;//交互数据类型(图片/视频/文本/语音/表情)Picture,Video,Voice,Expression,Text
+  Text text = 3;
+  Picture picture = 4;
+  Video video = 5;
+  Voice voice = 6;
+  Expression expression = 7;
+  Friends friends = 8;//兼容好友类型成员
+  Tourists tourists = 9;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 10;//注册用户结构体
+  string status_detail = 11;//返回类型(成功/失败)详情
+}
+message GroupMessagingProtocol {//群消息发送
+  string user_type = 1;//当前服务模块类型
+  string settings_type = 2;//交互数据类型(图片/视频/文本/语音/表情)Picture,Video,Voice,Expression,Text
+  Text text = 3;
+  Picture picture = 4;
+  Video video = 5;
+  Voice voice = 6;
+  Expression expression = 7;
+  GroupMember GroupMember = 8;//兼容群成员类型成员
+  Group group = 9;//兼容群类型成员
+  Tourists tourists = 10;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 11;//注册用户结构体
+  string status_detail = 12;//返回类型(成功/失败/网络超时)详情
+}
+message GroupMessageReceptionProtocol {//群消息接收
+  string user_type = 1;//当前服务模块类型
+  string settings_type = 2;//交互数据类型(图片/视频/文本/语音/表情)Picture,Video,Voice,Expression,Text
+  Text text = 3;
+  Picture picture = 4;
+  Video video = 5;
+  Voice voice = 6;
+  Expression expression = 7;
+  GroupMember GroupMember = 8;//兼容群成员类型成员
+  Group group = 9;//兼容群类型成员
+  Tourists tourists = 10;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 11;//注册用户结构体
+  string status_detail = 12;//返回类型(成功/失败)详情
+}
+message OriginalPictureVideoFriendsTransmissionProtocol {//原始视频图片好友传输结构体
+  string user_type = 1;//原始视频图片传输归属类型
+  string settings_type = 2;//交互数据类型(图片/视频)Picture/视频
+  Picture picture = 3;
+  Video video = 4;
+  Friends friends = 5;//兼容好友类型成员
+  Tourists tourists = 6;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 7;//注册用户结构体
+  string status_detail = 8;//返回类型(成功/失败)详情
+}
+message OriginalPictureVideoGroupTransmissionProtocol {//原始视频图片群传输结构体
+  string user_type = 1;//原始视频图片传输归属类型
+  string settings_type = 2;//交互数据类型(图片/视频)Picture/视频
+  Video video = 3;
+  Picture picture = 4;
+  GroupMember GroupMember = 5;//兼容群成员类型成员
+  Group group = 6;//兼容群类型成员
+  Tourists tourists = 7;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 8;//注册用户结构体
+  string status_detail = 9;//返回类型(成功/失败)详情
+}
+
+//传输协议涉及的实体结构体
+message RegisteredUser { // 注册用户
+  string user_id = 1;// 注册用户ID
+  string secret = 2;//密码
+  string nickname = 3;// 注册用户昵称
+  string user_phone = 4;// 注册用户手机号码
+  string ip_address = 5;//IP地址
+}
+message Tourists { // 游客用户
+  string temporary_id = 1;// 临时ID
+  string ip_address = 2;//IP地址
+  string mac_address = 3;//MAC地址
+  string ime = 4;// IME码
+}
+message Friends { // 好友
+  string friends_id = 1;// 好友ID
+  string friends_nickname = 2;//好友昵称
+  string friends_user_type = 3; //好友用户类型
+  string friends_offline_message = 4;//好友离线消息
+  string friends_burn_after_reading = 5;//好友阅后即焚
+  string friends_online_status = 6;//好友在线状态
+  Tourists tourists = 7;
+  RegisteredUser registered_user = 8;
+}
+message Administrator { // 管理员
+  string administrator_id = 1;// 管理员ID
+  string administrator_name = 2;//管理员名称
+  string type = 3;//管理员类型
+}
+message GroupMember { // 群成员
+  string group_member_id = 1;// 群成员ID
+  string group_member_nickname = 2;// 群成员昵称
+  string group_member_type = 3;//群成员类型 (游客,注册用户)
+  Tourists tourists = 4;//兼容游客类型成员
+  RegisteredUser registered_user = 5;//兼容注册用户类型成员
+  Administrator administrator = 6;//兼容管理员类型成员
+  Group group = 7;//兼容群类型成员
+}
+message Group { // 群
+  string group_id = 1;// 群ID
+  string group_nickname = 2;//群昵称
+  string group_type = 3;//群类型(游客用户群，注册用户群，混合群)
+  int32 group_quantity = 4;// 群人数
+}
+message GroupAnnouncements { //群公告结构体
+  string announcement_id = 1;// 群公告ID
+  string announcement_title = 2;//群公告标题
+  string announcement_content = 3;//群公告内容
+  Group group = 4;//群结构体
+}
+message Picture { // 图片
+  string url = 1;// 原图下载URL
+  bytes origin_picture = 2;// 原始图
+  bytes thumbnail = 3;//缩略图
+  int32 pos = 4;//当前坐标
+  int32 length = 5;//当前文件内容大小
+  Friends friends = 6;//好友结构体
+  GroupMember groupMember = 7;
+}
+message Video { // 视频
+  string url = 1;// 原图下载URL
+  bytes origin_video = 2;// 压缩原始视频
+  int32 pos = 3;//当前坐标
+  int32 length = 4;//当前文件内容大小
+  bytes thumbnail = 5;//缩略图
+  Friends friends = 6;//好友结构体
+  GroupMember groupMember = 7;
+}
+message Voice { // 语音
+  string all_length = 1;// 文本长度
+  bytes content = 2;// 文本内容
+  int32 pos = 3;//当前坐标
+  int32 length = 4;//当前文件内容大小
+  Friends friends = 5;//好友结构体
+  GroupMember groupMember = 6;
+}
+message Expression { // 表情
+  string expression_id = 1;// 文件大小
+  Friends friends = 2;//好友结构体
+  GroupMember groupMember = 3;
+}
+message Text { // 文本
+  string length = 1;// 文本长度
+  string content = 2;// 文本内容
+}
+//传输协议消息头
+message Head {
+    string msgId = 1;// 消息id  服务类型编码+服务编码+模块编码+功能(动作)编码
+    int32 msgType = 2;// 消息类型   长连接，短连接
+    int32 msgContentType = 3;// 消息内容类型
+    string fromId = 4;// 消息发送者id
+    string toId = 5;// 消息接收者id
+    int64 timestamp = 6;// 消息时间戳
+    string statusReport = 7;// 状态报告   返回类型(成功/失败)
+    string token = 8;
+}

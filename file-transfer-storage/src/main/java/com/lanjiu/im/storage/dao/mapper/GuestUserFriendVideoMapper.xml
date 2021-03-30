@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.mapper.impl.GuestUserFriendVideoMapper">
+    <resultMap id="guestUserFriendVideoMap" type="com.lanjiu.im.storage.pojo.GuestUserFriendVideo">
+        <result property="downloadUrl" column="download_url" javaType="java.lang.String"></result>
+        <result property="guestUserId" column="guest_user_id" javaType="java.lang.Integer"></result>
+        <result property="creationTime" column="creation_time" javaType="java.sql.Date"></result>
+        <result property="friendId" column="friend_id" javaType="java.lang.Integer"></result>
+    </resultMap>
+    <select id="selectAllGuestUserFriendVideo" resultMap="guestUserFriendVideoMap">
+		select * from guest_user_friend_video
+	</select>
+
+    <select id="selectGuestUserFriendVideoByFriendId" resultMap="guestUserFriendVideoMap">
+		select * from guest_user_friend_video where guest_user_id = #{guestUserId} and friend_id = #{friendId}
+	</select>
+
+    <select id="selectGuestUserFriendVideo" resultMap="guestUserFriendVideoMap">
+		select * from guest_user_friend_video where download_url = #{downloadUrl}
+	</select>
+
+    <insert id="insertGuestUserFriendVideo" parameterType="com.lanjiu.im.storage.pojo.GuestUserFriendVideo">
+        insert into guest_user_friend_video (download_url, guest_user_id, creation_time, friend_id)
+        values (#{downloadUrl,jdbcType=VARCHAR}, #{guestUserId,jdbcType=INTEGER}, #{creationTime,jdbcType=DATE}, #{friendId,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteGuestUserFriendVideo" >
+		delete from guest_user_friend_video where download_url = #{downloadUrl}
+	</delete>
+
+    <select id="selectGuestUserFriendVideoByUserId" resultMap="guestUserFriendVideoMap">
+        select * from guest_user_friend_video where guest_user_id = #{guestUserId}
+    </select>
+
+    <select id="selectGuestUserFriendVideooOnlyByFriendId" resultMap="guestUserFriendVideoMap">
+        select * from guest_user_friend_video where friend_id = #{friendId}
+    </select>
+</mapper>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanjiu.im.storage.dao.GroupMsgOffLineMapper">
+
+    <resultMap id="msgGroupOffMap" type="com.lanjiu.im.storage.pojo.GroupMsgOffLine">
+        <result property="id" column="id" javaType="java.lang.Integer" />
+        <result property="msgId" column="msg_id" javaType="java.lang.String"/>
+        <result property="msgType" column="msg_type" javaType="java.lang.Integer"/>
+        <result property="fromId" column="from_id" javaType="java.lang.String"/>
+        <result property="groupId" column="group_id" javaType="java.lang.String"/>
+        <result property="groupName" column="group_name" javaType="java.lang.String"/>
+        <result property="content" column="content" javaType="java.lang.String"/>
+        <result property="entityUrl" column="entity_url" javaType="java.lang.String"/>
+        <result property="snapChatStatus" column="snap_chat_status" javaType="java.lang.Boolean"/>
+        <result property="snapChatTimeLength" column="snap_chat_time_length" javaType="java.lang.Integer"/>
+        <result property="duration" column="duration" javaType="java.lang.Long"/>
+        <result property="groupOwner" column="group_owner" javaType="java.lang.String"/>
+        <result property="groupOwnerNick" column="group_owner_nick" javaType="java.lang.String"/>
+        <result property="groupOwnerUrl" column="group_owner_url" javaType="java.lang.String"/>
+        <result property="fromMemberId" column="from_member_id" javaType="java.lang.String"/>
+        <result property="fromMemberName" column="from_member_name" javaType="java.lang.String"/>
+        <result property="fromMemberAvatar" column="from_member_avatar" javaType="java.lang.String"/>
+        <result property="createTime" column="create_time" javaType="java.sql.Timestamp"/>
+    </resultMap>
+
+
+    <resultMap id="groupAudioCallMsg" type="com.lanjiu.im.storage.pojo.GroupAudioVideoCallEntity">
+        <result property="id" column="id" javaType="java.lang.Integer"/>
+        <result property="msgId" column="msg_id" javaType="java.lang.String"/>
+        <result property="roomId" column="room_id" javaType="java.lang.String"/>
+        <result property="onlyAudio" column="only_audio" javaType="java.lang.Boolean"/>
+        <result property="fromUserId" column="from_user_id" javaType="java.lang.String"/>
+        <result property="fromUserName" column="from_user_name" javaType="java.lang.String"/>
+        <result property="fromUserAvatar" column="from_user_avatar" javaType="java.lang.String"/>
+        <result property="groupId" column="group_id" javaType="java.lang.String"/>
+        <result property="joinMemberIds" column="join_member_ids" javaType="java.lang.String"/>
+        <result property="type" column="type" javaType="java.lang.String"/>
+        <result property="time" column="time" javaType="java.lang.Long"/>
+    </resultMap>
+
+
+
+    <sql id="Base_Column_List">
+        id, msg_id, msg_type, from_id, group_id, group_name, content, entity_url, snap_chat_status,
+        snap_chat_time_length, duration, group_owner, group_owner_nick, group_owner_url,
+        from_member_id, from_member_name, from_member_avatar
+        create_time
+    </sql>
+    <insert id="insert" parameterType="GroupMsgOffLine" useGeneratedKeys="true" keyProperty="id">
+        insert into group_msg_off_line(
+        msg_id,
+        msg_type,
+        from_id,
+        group_id,
+        group_name,
+        content,
+        entity_url,
+        snap_chat_status,
+        snap_chat_time_length,
+        duration,
+        group_owner,
+        group_owner_nick,
+        group_owner_url,
+        from_member_id,
+        from_member_name,
+        from_member_avatar,
+        create_time)
+        values (
+        #{msgId,jdbcType=VARCHAR},
+        #{msgType,jdbcType=INTEGER},
+        #{fromId,jdbcType=VARCHAR},
+        #{groupId,jdbcType=VARCHAR},
+        #{groupName,jdbcType=VARCHAR},
+        #{content,jdbcType=VARCHAR},
+        #{entityUrl,jdbcType=VARCHAR},
+        #{snapChatStatus, jdbcType=INTEGER},
+        #{snapChatTimeLength, jdbcType=INTEGER},
+        #{duration,jdbcType=INTEGER},
+        #{groupOwner,jdbcType=VARCHAR},
+        #{groupOwnerNick,jdbcType=VARCHAR},
+        #{groupOwnerUrl,jdbcType=VARCHAR},
+        #{fromMemberId,jdbcType=VARCHAR},
+        #{fromMemberName,jdbcType=VARCHAR},
+        #{fromMemberAvatar,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into group_msg_off_line (
+        msg_id,
+        msg_type,
+        from_id,
+        group_id,
+        group_name,
+        content,
+        entity_url,
+        snap_chat_status,
+        snap_chat_time_length,
+        duration,
+        group_owner,
+        group_owner_nick,
+        group_owner_url,
+        from_member_id,
+        from_member_name,
+        from_member_avatar,
+        create_time)
+        values
+        <foreach collection="list" item="item" open="(" separator="," close=")" >
+            #{item.msgId,jdbcType=VARCHAR},
+            #{item.msgType,jdbcType=INTEGER},
+            #{item.fromId,jdbcType=VARCHAR},
+            #{item.groupId,jdbcType=VARCHAR},
+            #{item.groupName,jdbcType=VARCHAR},
+            #{item.content,jdbcType=VARCHAR},
+            #{item.entityUrl,jdbcType=VARCHAR},
+            #{item.snapChatStatus, jdbcType=INTEGER},
+            #{item.snapChatTimeLength, jdbcType=INTEGER},
+            #{item.duration, jdbcType=INTEGER},
+            #{item.groupOwner,jdbcType=VARCHAR},
+            #{item.groupOwnerNick,jdbcType=VARCHAR},
+            #{item.groupOwnerUrl,jdbcType=VARCHAR},
+            #{item.fromMemberId,jdbcType=VARCHAR},
+            #{item.fromMemberName,jdbcType=VARCHAR},
+            #{item.fromMemberAvatar,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP}
+        </foreach>
+    </insert>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="GroupMsgOffLine">
+		select <include refid="Base_Column_List"/> from group_msg_off_line where id = #{id, jdbcType=INTEGER}
+	</select>
+
+    <select id="selectByPrimaryKeys" resultType="GroupMsgOffLine">
+		select  <include refid="Base_Column_List"/>
+        from group_msg_off_line
+        where id in
+		<foreach collection="ids" item="id" open="(" separator="," close=")" >
+            #{id, jdbcType=INTEGER}
+        </foreach>
+	</select>
+
+    <select id="selectByGroupIds" resultType="GroupMsgOffLine">
+        select <include refid="Base_Column_List"/>
+        from group_msg_off_line
+        where group_id in
+        <foreach collection="ids" item="groupId" open="(" separator="," close=")" >
+            #{groupId, jdbcType=INTEGER}
+        </foreach>
+    </select>
+
+    <select id="selectByMsgId" resultMap="msgGroupOffMap">
+		select <include refid="Base_Column_List"/> from group_msg_off_line where msg_id = #{msgId}
+	</select>
+
+    <select id="selectByFromId" resultMap="msgGroupOffMap">
+		select <include refid="Base_Column_List"/> from group_msg_off_line where from_id = #{fromId}
+	</select>
+
+    <select id="selectByMsgIds" resultMap="msgGroupOffMap">
+		select * from group_msg_off_line where msg_id in
+        <foreach collection="msgIds" item="item" open="(" separator="," close=")" >
+            #{item, jdbcType=VARCHAR}
+        </foreach>
+	</select>
+
+    <delete id="deleteByFromId">
+		delete from group_msg_off_line where from_id = #{fromId}
+	</delete>
+
+    <delete id="deleteByGroupIds" parameterType="java.util.List">
+		delete from group_msg_off_line where group_id in
+		<foreach collection="groupIds" item="item" open="(" separator="," close=")" >
+            #{item, jdbcType=VARCHAR}
+        </foreach>
+	</delete>
+
+    <delete id="deletePrimaryKeys" parameterType="java.util.List">
+        delete from group_msg_off_line where id in
+        <foreach collection="ids" item="item" open="(" separator="," close=")" >
+            #{item, jdbcType=INTEGER}
+        </foreach>
+    </delete>
+
+    <update id="updateByPrimaryKey" parameterType="GroupMsgOffLine">
+        update group_msg_off_line
+        set msg_id = #{msgId}
+            msg_type = #{msgType},
+            from_id = #{fromId},
+            group_id = #{groupId},
+            group_name = #{groupName},
+            content = #{content},
+            entity_url = #{entityUrl},
+            snap_chat_status = #{snapChatStatus},
+            snap_chat_time_length = #{snapChatTimeLength},
+            duration = #{duration},
+            group_owner = #{groupOwner},
+            group_owner_nick = #{groupOwnerNick},
+            group_owner_url = #{groupOwnerUrl},
+            from_member_id = #{fromMemberId},
+            from_member_name = #{fromMemberName},
+            from_member_avatar = #{fromMemberAvatar},
+            create_time = #{createTime}
+        where id = #{id}
+    </update>
+
+    <insert id="storageAudioVideoCallMsg" parameterType="com.lanjiu.im.storage.pojo.GroupAudioVideoCallEntity"  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into group_audio_video_call_msg
+        (
+          room_id,
+          msg_id,
+          only_audio,
+          from_user_id,
+          from_user_name,
+          from_user_avatar,
+          group_id,
+          join_member_ids,
+          type,
+          time
+        )values (
+          #{roomId,jdbcType=VARCHAR},
+          #{msgId,jdbcType=VARCHAR},
+          #{onlyAudio},
+          #{fromUserId,jdbcType=VARCHAR},
+          #{fromUserName,jdbcType=VARCHAR},
+          #{fromUserAvatar,jdbcType=VARCHAR},
+          #{groupId,jdbcType=VARCHAR},
+          #{joinMemberIds,jdbcType=VARCHAR},
+          #{type,jdbcType=VARCHAR},
+           from_unixtime(#{time},'%Y-%m-%d %H:%i:%s')
+        )
+    </insert>
+
+    <select id="getAudioCallMsg" parameterType="java.lang.String" resultMap="groupAudioCallMsg">
+        select m.id, m.msg_id,m.room_id,m.only_audio,m.from_user_id,m.from_user_name,m.from_user_avatar,m.group_id,m.join_member_ids,m.type,unix_timestamp(m.time)as time
+        from group_audio_video_call_index x
+        join  group_audio_video_call_msg m
+        on x.gavc_id= m.id
+        where  x.member_id =#{toUserId,jdbcType=VARCHAR}
+        ORDER BY x.time ASC
+
+    </select>
+
+    <delete id="removeAudioVideoCallMsgByRoomId" parameterType="java.lang.String">
+        delete  from  group_audio_video_call_msg  where  group_id = #{groupId,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="selectMsgByRoomId" parameterType="java.lang.String" resultMap="groupAudioCallMsg">
+        select  from group_audio_video_call_msg where room_id=#{roomId,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateAudioCallMsgJoin" parameterType="com.lanjiu.im.storage.pojo.GroupAudioVideoCallEntity">
+        update group_audio_video_call_msg set join_member_ids = #{joinMemberIds,jdbcType=VARCHAR} where room_id=#{roomId,jdbcType=VARCHAR}
+
+    </update>
+</mapper>

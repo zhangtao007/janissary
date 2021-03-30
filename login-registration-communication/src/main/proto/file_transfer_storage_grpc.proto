@@ -1,0 +1,199 @@
+syntax = "proto3";
+
+package com.lanjiu.pro.fileStorage;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.pro.fileStorage";
+option java_outer_classname = "FileStorageProto";
+option java_multiple_files = true;
+
+service FileStorageService{
+    rpc storageFileInformationWithFriend(FriendsTransmissionRequest) returns (FriendsTransmissionResponse) {};
+
+    rpc storageFileInformationWithGroup(GroupTransmissionRequest) returns (GroupTransmissionResponse) {};
+
+    rpc deleteFileInformationWithFriend(FriendsTransmissionRequest) returns (FriendsTransmissionResponse) {};
+
+    rpc deleteFileInformationWithFriendByFriendId(FriendsTransmissionRequest) returns (FriendsTransmissionResponse) {};
+
+    rpc deleteFileInformationWithGroup(GroupTransmissionRequest) returns (GroupTransmissionResponse) {};
+
+    rpc cleanFileWithUserId(FriendsTransmissionRequest) returns (FriendsTransmissionResponse){};
+
+    rpc mergeGroupAvatar(GroupAvatarRequest) returns (GroupAvatarResponse){};
+
+}
+
+message FriendsTransmissionRequest { // 好友上传申请
+  OriginalPictureVideoFriendsTransmission friends_picture_video_message = 1;
+  string checksum = 2;//校验位
+}
+
+message FriendsTransmissionResponse { // 好友上传响应
+  OriginalPictureVideoFriendsTransmission friends_picture_video_message = 1;
+  string checksum = 2;//校验位
+}
+
+message GroupTransmissionRequest { // 群上传申请
+  OriginalPictureVideoGroupTransmission Group_picture_video_message = 1;
+  string checksum = 2;//校验位
+}
+
+message GroupTransmissionResponse { // 群上传响应
+  OriginalPictureVideoGroupTransmission Group_picture_video_message = 1;
+  string checksum = 2;//校验位
+}
+
+message OriginalPictureVideoFriendsTransmission { //原始视频图片好友传输结构体 大于100kb
+  string user_type = 1;//原始视频图片传输归属类型
+  string settings_type = 2;//交互数据类型(图片/视频)Picture/视频
+  Picture picture = 3;
+  Video video = 4;
+  FileContent file_content = 5;
+  Friends friends = 6;//兼容好友类型成员
+  Tourists tourists = 7;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 8;//注册用户结构体
+  string status_detail = 9;//返回类型(成功/失败)详情
+  Head head = 10;
+}
+
+message OriginalPictureVideoGroupTransmission { //原始视频图片群传输结构体 大于100kb
+  string user_type = 1;//原始视频图片传输归属类型
+  string settings_type = 2;//交互数据类型(图片/视频)Picture/视频
+  Picture picture = 3;
+  Video video = 4;
+  FileContent file_content = 5;
+  GroupMember GroupMember = 6;//兼容群成员类型成员
+  Group group = 7;//兼容群类型成员
+  Tourists tourists = 8;//游客结构体(ID、昵称、头像)
+  RegisteredUser registered_user = 9;//注册用户结构体
+  string status_detail = 10;//返回类型(成功/失败)详情
+  Head head = 11;
+
+}
+
+//文件传输相关消息体
+message FileContent{
+  BigFileHead big_file_head = 1;
+  BigFileFragment big_file_fragment = 2;
+  BigFileFoot big_file_foot = 3;
+  string package_kind = 4;
+}
+message BigFileHead {
+  int32 count = 1;
+  int64 length = 2;
+  string server_url = 3;
+  string client_url = 4;
+}
+message BigFileFragment {
+  int64 length = 1;
+  bytes data = 2;
+  int64 position = 3;
+}
+message BigFileFoot {
+  bool isSuccess = 1;
+}
+
+//传输协议涉及的实体结构体
+message RegisteredUser { // 注册用户
+  string user_id = 1;// 注册用户ID
+  string secret = 2;//密码
+  string nickname = 3;// 注册用户昵称
+  string user_phone = 4;// 注册用户手机号码
+  string ip_address = 5;//IP地址
+}
+
+message Tourists { // 游客用户
+  string temporary_id = 1;// 临时ID
+  string ip_address = 2;//IP地址
+  string mac_address = 3;//MAC地址
+  string ime = 4;// IME码
+}
+
+message Friends { // 好友
+  string friends_id = 1;// 好友ID
+  string friends_nickname = 2;//好友昵称
+  string friends_user_type = 3; //好友用户类型
+  string friends_offline_message = 4;//好友离线消息
+  string friends_burn_after_reading = 5;//好友阅后即焚
+  string friends_online_status = 6;//好友在线状态
+  Tourists tourists = 7;
+  RegisteredUser registered_user = 8;
+}
+
+message GroupMember { // 群成员
+  string group_member_id = 1;// 群成员ID
+  string group_member_nickname = 2;// 群成员昵称
+  string group_member_type = 3;//群成员类型 (游客,注册用户)
+  Tourists tourists = 4;//兼容游客类型成员
+  RegisteredUser registered_user = 5;//兼容注册用户类型成员
+  Group group = 6;//兼容群类型成员
+}
+
+message Group { // 群
+  string group_id = 1;// 群ID
+  string group_nickname = 2;//群昵称
+  string group_type = 3;//群类型(游客用户群，注册用户群，混合群)
+  int32 group_quantity = 4;// 群人数
+}
+
+message Picture { // 图片
+  string url = 1;// 原图下载URL
+  bytes origin_picture = 2;// 原始图
+  bytes thumbnail = 3;//缩略图
+  int32 pos = 4;//当前坐标
+  int32 length = 5;//当前文件内容大小
+  Friends friends = 6;//好友结构体
+  GroupMember groupMember = 7;
+}
+
+message Video { // 视频
+  string url = 1;// 原图下载URL
+  bytes origin_video = 2;// 压缩原始视频
+  int32 pos = 3;//当前坐标
+  int32 length = 4;//当前文件内容大小
+  bytes thumbnail = 5;//缩略图
+  Friends friends = 6;//好友结构体
+  GroupMember groupMember = 7;
+}
+
+message Voice { // 语音
+  string all_length = 1;// 文本长度
+  bytes content = 2;// 文本内容
+  int32 pos = 3;//当前坐标
+  int32 length = 4;//当前文件内容大小
+  Friends friends = 5;//好友结构体
+  GroupMember groupMember = 6;
+}
+
+message Expression { // 表情
+  string expression_id = 1;// 文件大小
+  Friends friends = 2;//好友结构体
+  GroupMember groupMember = 3;
+}
+//传输协议消息头
+message Head {
+    string msgId = 1;// 消息id  服务类型编码+服务编码+模块编码+功能(动作)编码
+    int32 msgType = 2;// 消息类型   长连接，短连接
+    int32 msgContentType = 3;// 消息内容类型
+    string fromId = 4;// 消息发送者id
+    string toId = 5;// 消息接收者id
+    int64 timestamp = 6;// 消息时间戳
+    string token = 7;// 是否在线鉴权
+    string statusReport = 8;// 状态报告   返回类型(成功/失败)
+    }
+
+message GroupAvatarRequest {
+  string groupId=1;//群ID
+  string Num=2; //群成员数量
+  repeated string avatarUrl=3; //成员的头像地址
+  string args=4;//保留字段
+
+}
+
+message GroupAvatarResponse{
+  string groupId=1;
+  string groupAvatar=2; //群头像url
+  string result=3; //success/failure
+  string detail=4;//失败原因
+}

@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package com.lanjiu.pro.login;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.pro.login";
+option java_outer_classname = "RegisterStorageProto";
+
+service RegisterStorageService {
+
+    //獲取註冊用戶個人設置信息及基本信息
+    rpc SelectUserInfomation(RequestUser) returns (ResponseUser){};
+    //獲取遊客用戶個人設置信息及基本信息
+    rpc SelectGuestUserInfo(RequestUser)returns (ResponseUser){};
+
+}
+
+message RequestUser {
+    string userType =1;
+    RegisterUser registerUser = 2;
+    GuestUser guestUser = 3;
+    string args =4;
+
+}
+
+message ResponseUser {
+    string ret = 1;  //返回成功或失败
+    string result = 2;  //返回信息
+    repeated RegisterUser registerUser = 3;
+    repeated GuestUser guestUser = 4;
+    string userType =5;
+}
+
+//协议实体
+message RegisterUser {
+    string user_id = 1;
+    string user_account = 2;
+    string password = 3;
+    string phone = 4;
+    string create_time = 5;
+    UserInfomation userInfomation =6;
+}
+
+message GuestUser {
+    string user_id = 1;
+    string user_acount = 2; //游客无账号为空
+    string password = 3;     //游客无密码
+    string create_time = 4;
+    UserInfomation userInfomation =5;
+}
+
+message UserInfomation {
+    string user_type = 1;
+    string user_id = 2;
+    string nickname = 3;
+    string avatar = 4;
+    string online_status = 5;
+    string modify_time = 6;
+    // 是否开启退出清理 off/on
+    string exit_clean = 7;
+    // 定期清理（3:每月，2:每周，1:每天）
+    int32 timer_clean = 8;
+}

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 引入外部配置文件 -->
+    <properties resource="mysql.properties"></properties>
+    <!-- 为JAVA Bean起类别名 -->
+    <typeAliases >
+        <!-- 别名方式1，一个一个的配置 type中放置的是类的全路径，alias中放置的是类别名
+        <typeAliase type="com.cy.mybatis.beans.UserBean" alias="UserBean"/>-->
+        <!-- 别名方式2，自动扫描，将JAVA类的类名作为类的类别名 -->
+        <package name="com.lanjiu.im.grpc.pojo"/>
+    </typeAliases>
+
+    <!-- 配置mybatis运行环境 -->
+    <environments default="cybatis">
+        <environment id="cybatis">
+            <!-- type="JDBC" 代表使用JDBC的提交和回滚来管理事务 -->
+            <transactionManager type="JDBC" />
+            <!-- mybatis提供了3种数据源类型，分别是：POOLED,UNPOOLED,JNDI -->
+            <!-- POOLED 表示支持JDBC数据源连接池 -->
+            <!-- UNPOOLED 表示不支持数据源连接池 -->
+            <!-- JNDI 表示支持外部数据源连接池 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}" />
+                <property name="url" value="${jdbc.url}" />
+                <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
+                <property name="poolMaximumActiveConnections" value="1000"/>
+                <property name="poolMaximumIdleConnections" value="5"/>
+                <property name="poolTimeToWait" value="20000"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <!-- 告知映射文件方式1，一个一个的配置  com.lanjiu.im.storage.dao.mapper.impl
+        <mapper resource="com/cy/mybatis/mapper/UserMapper.xml"/>-->
+        <!-- 告知映射文件方式2，自动扫描包内的Mapper接口与配置文件 -->
+        <!--<package name="com.lanjiu.im.storage.dao.mapper"/>-->
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/BeautifulNumberRealMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/BeautifulNumberAutoMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/FriendUnusedBeautifulNumberRealMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/FriendUsedBeautifulNumberRealMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/FriendUsedBeautifulNumberMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/FriendUnusedBeautifulNumberMapper.xml"/>
+
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupUnusedBeautifulNumberRealMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupUsedBeautifulNumberRealMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupUsedBeautifulNumberMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupUnusedBeautifulNumberMapper.xml"/>
+
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupMemberUnusedBeautifulNumberRealMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupMemberUsedBeautifulNumberRealMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupMemberUsedBeautifulNumberMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupMemberUnusedBeautifulNumberMapper.xml"/>
+
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GuestUserFriendMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/RegisteredUserFriendMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/OfflineMessagePriorityMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/BurnAfterReadingPriorityMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupAnnouncementsMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GuestGroupAdministratorMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/RegisteredGroupAdministratorMapper.xml"/>
+
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GuestGroupMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/RegisteredGroupMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GuestGroupMemberMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/RegisteredGroupMemberMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupRemarkMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GuestGroupGuestUserMemberRelationMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GuestGroupRegisteredUserMemberRelationMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/RegisteredGroupRegisteredUserMemberRelationMapper.xml"/>
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/RegisteredGroupGuestUserMemberRelationMapper.xml"/>
+
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/AutoBeautifulCheckNumberRecordMapper.xml"/>
+
+        <mapper resource="com/lanjiu/im/grpc/dao/mapper/GroupMemberNicknameMapper.xml"/>
+    </mappers>
+</configuration>

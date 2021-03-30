@@ -1,0 +1,375 @@
+syntax = "proto3";
+
+package com.lanjiu.im.grpc;
+
+option optimize_for = SPEED;
+option java_package = "com.lanjiu.im.grpc";
+option java_outer_classname = "InformationStorageProto";
+option java_multiple_files = true;
+
+service InformationStorageService{
+    rpc selectBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectBeautifulNumberAuto(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectBurnAfterReadingPriority(TransmissionRequest) returns (BurnAfterReadingPriorityResponse) {};
+    rpc selectFriendUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectFriendUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectGroupAnnouncements(TransmissionRequest) returns (GroupAnnouncementsResponse) {};
+    rpc selectGroupMemberUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectGroupMemberUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectGroupUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectGroupUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectGuestGroup(TransmissionRequest) returns (GuestGroupResponse) {};
+    rpc selectGuestGroupAdministrator(TransmissionRequest) returns (GuestGroupAdministratorResponse) {};
+    rpc selectGuestGroupGuestUserMemberRelation(TransmissionRequest) returns (GuestGroupGuestUserMemberRelationResponse) {};
+    rpc selectGuestGroupMember(TransmissionRequest) returns (GuestGroupMemberResponse) {};
+    rpc selectGuestGroupRegisteredUserMemberRelation(TransmissionRequest) returns (GuestGroupRegisteredUserMemberRelationResponse) {};
+    rpc selectGuestUserFriend(TransmissionRequest) returns (GuestUserFriendResponse) {};
+    rpc selectOfflineMessagePriority(TransmissionRequest) returns (OfflineMessagePriorityResponse) {};
+    rpc selectRegisteredGroup(TransmissionRequest) returns (RegisteredGroupResponse) {};
+    rpc selectRegisteredGroupAdministrator(TransmissionRequest) returns (RegisteredGroupAdministratorResponse) {};
+    rpc selectRegisteredGroupGuestUserMemberRelation(TransmissionRequest) returns (RegisteredGroupGuestUserMemberRelationResponse) {};
+    rpc selectRegisteredGroupMember(TransmissionRequest) returns (RegisteredGroupMemberResponse) {};
+    rpc selectRegisteredGroupRegisteredUserMemberRelation(TransmissionRequest) returns (RegisteredGroupRegisteredUserMemberRelationResponse) {};
+    rpc selectRegisteredUserFriend(TransmissionRequest) returns (RegisteredUserFriendResponse) {};
+    rpc selectGroupUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectGroupUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectGroupMemberUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectGroupMemberUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectFriendUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectFriendUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc selectGroupRemark(TransmissionRequest) returns (GroupRemarkResponse) {};
+
+    rpc insertFriendUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertFriendUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertGroupAnnouncements(TransmissionRequest) returns (GroupAnnouncementsResponse) {};
+    rpc insertGroupMemberUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertGroupMemberUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertGroupUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertGroupUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertGuestGroup(TransmissionRequest) returns (GuestGroupResponse) {};
+    rpc insertGuestGroupAdministrator(TransmissionRequest) returns (GuestGroupAdministratorResponse) {};
+    rpc insertGuestGroupGuestUserMemberRelation(TransmissionRequest) returns (GuestGroupGuestUserMemberRelationResponse) {};
+    rpc insertGuestGroupMember(TransmissionRequest) returns (GuestGroupMemberResponse) {};
+    rpc insertGuestGroupRegisteredUserMemberRelation(TransmissionRequest) returns (GuestGroupRegisteredUserMemberRelationResponse) {};
+    rpc insertGuestUserFriend(TransmissionRequest) returns (GuestUserFriendResponse) {};
+    rpc insertOfflineMessagePriority(TransmissionRequest) returns (OfflineMessagePriorityResponse) {};
+    rpc insertRegisteredGroup(TransmissionRequest) returns (RegisteredGroupResponse) {};
+    rpc insertRegisteredGroupAdministrator(TransmissionRequest) returns (RegisteredGroupAdministratorResponse) {};
+    rpc insertRegisteredGroupGuestUserMemberRelation(TransmissionRequest) returns (RegisteredGroupGuestUserMemberRelationResponse) {};
+    rpc insertRegisteredGroupMember(TransmissionRequest) returns (RegisteredGroupMemberResponse) {};
+    rpc insertRegisteredGroupRegisteredUserMemberRelation(TransmissionRequest) returns (RegisteredGroupRegisteredUserMemberRelationResponse) {};
+    rpc insertRegisteredUserFriend(TransmissionRequest) returns (RegisteredUserFriendResponse) {};
+    rpc insertGroupUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertGroupUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertGroupMemberUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertGroupMemberUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertFriendUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertFriendUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc insertGroupRemark(TransmissionRequest) returns (GroupRemarkResponse) {};
+
+    rpc updateFriendUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateFriendUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateGroupAnnouncements(TransmissionRequest) returns (GroupAnnouncementsResponse) {};
+    rpc updateGroupMemberUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateGroupMemberUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateGroupUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateGroupUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateGuestGroup(TransmissionRequest) returns (GuestGroupResponse) {};
+    rpc updateGuestGroupAdministrator(TransmissionRequest) returns (GuestGroupAdministratorResponse) {};
+    rpc updateGuestGroupGuestUserMemberRelation(TransmissionRequest) returns (GuestGroupGuestUserMemberRelationResponse) {};
+    rpc updateGuestGroupMember(TransmissionRequest) returns (GuestGroupMemberResponse) {};
+    rpc updateGuestGroupRegisteredUserMemberRelation(TransmissionRequest) returns (GuestGroupRegisteredUserMemberRelationResponse) {};
+    rpc updateGuestUserFriend(TransmissionRequest) returns (GuestUserFriendResponse) {};
+    rpc updateOfflineMessagePriority(TransmissionRequest) returns (OfflineMessagePriorityResponse) {};
+    rpc updateRegisteredGroup(TransmissionRequest) returns (RegisteredGroupResponse) {};
+    rpc updateRegisteredGroupAdministrator(TransmissionRequest) returns (RegisteredGroupAdministratorResponse) {};
+    rpc updateRegisteredGroupGuestUserMemberRelation(TransmissionRequest) returns (RegisteredGroupGuestUserMemberRelationResponse) {};
+    rpc updateRegisteredGroupMember(TransmissionRequest) returns (RegisteredGroupMemberResponse) {};
+    rpc updateRegisteredGroupRegisteredUserMemberRelation(TransmissionRequest) returns (RegisteredGroupRegisteredUserMemberRelationResponse) {};
+    rpc updateRegisteredUserFriend(TransmissionRequest) returns (RegisteredUserFriendResponse) {};
+    rpc updateGroupUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateGroupUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateGroupMemberUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateGroupMemberUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateFriendUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateFriendUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc updateGroupRemark(TransmissionRequest) returns (GroupRemarkResponse) {};
+
+    rpc deleteFriendUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteFriendUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteGroupAnnouncements(TransmissionRequest) returns (GroupAnnouncementsResponse) {};
+    rpc deleteGroupMemberUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteGroupMemberUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteGroupUnusedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteGroupUsedBeautifulNumber(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteGuestGroup(TransmissionRequest) returns (GuestGroupResponse) {};
+    rpc deleteGuestGroupAdministrator(TransmissionRequest) returns (GuestGroupAdministratorResponse) {};
+    rpc deleteGuestGroupGuestUserMemberRelation(TransmissionRequest) returns (GuestGroupGuestUserMemberRelationResponse) {};
+    rpc deleteGuestGroupMember(TransmissionRequest) returns (GuestGroupMemberResponse) {};
+    rpc deleteGuestGroupRegisteredUserMemberRelation(TransmissionRequest) returns (GuestGroupRegisteredUserMemberRelationResponse) {};
+    rpc deleteGuestUserFriend(TransmissionRequest) returns (GuestUserFriendResponse) {};
+    rpc deleteOfflineMessagePriority(TransmissionRequest) returns (OfflineMessagePriorityResponse) {};
+    rpc deleteRegisteredGroup(TransmissionRequest) returns (RegisteredGroupResponse) {};
+    rpc deleteRegisteredGroupAdministrator(TransmissionRequest) returns (RegisteredGroupAdministratorResponse) {};
+    rpc deleteRegisteredGroupGuestUserMemberRelation(TransmissionRequest) returns (RegisteredGroupGuestUserMemberRelationResponse) {};
+    rpc deleteRegisteredGroupMember(TransmissionRequest) returns (RegisteredGroupMemberResponse) {};
+    rpc deleteRegisteredGroupRegisteredUserMemberRelation(TransmissionRequest) returns (RegisteredGroupRegisteredUserMemberRelationResponse) {};
+    rpc deleteRegisteredUserFriend(TransmissionRequest) returns (RegisteredUserFriendResponse) {};
+    rpc deleteGroupUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteGroupUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteGroupMemberUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteGroupMemberUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteFriendUnusedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteFriendUsedBeautifulNumberReal(TransmissionRequest) returns (BeautifulNumberCommonResponse) {};
+    rpc deleteGroupRemark(TransmissionRequest) returns (GroupRemarkResponse) {};
+}
+
+message TransmissionRequest { // 传输请求 repeated
+  RpcBeautifulNumberCommon beautiful_number_common = 1;
+  RpcBurnAfterReadingPriority burn_after_reading_priority = 2;
+  RpcGroupAnnouncements   group_announcements = 3;
+  RpcGuestGroup guest_group = 4;
+  RpcGuestGroupAdministrator   guest_group_administrator  = 5;
+  RpcGuestGroupGuestUserMemberRelation  guest_group_guest_user_relation = 6;
+  RpcGuestGroupMember  guest_group_member  = 7;
+  RpcGuestGroupRegisteredUserMemberRelation  guest_group_registered_user_relation = 8;
+  RpcGuestUserFriend  guest_user_friend  = 9;
+  RpcOfflineMessagePriority  offline_message_priority = 10;
+  RpcRegisteredGroup   registered_group = 11;
+  RpcRegisteredGroupAdministrator  registered_group_administrator = 12;
+  RpcRegisteredGroupGuestUserMemberRelation  registered_group_guest_user_relation = 13;
+  RpcRegisteredGroupMember registered_group_member = 14;
+  RpcRegisteredGroupRegisteredUserMemberRelation registered_group_registered_user_relation = 15;
+  RpcRegisteredUserFriend registered_user_friend = 16;
+  RpcGroupRemark group_remark = 17;
+  string request_kind = 18;//当前用户类型
+}
+
+message BeautifulNumberCommonResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcBeautifulNumberCommon response_data = 2;
+}
+
+message BurnAfterReadingPriorityResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcBurnAfterReadingPriority response_data = 2;
+}
+
+message GroupAnnouncementsResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcGroupAnnouncements response_data = 2;
+}
+
+message GuestGroupResponse { // 传输响应------------
+  string status_detail = 1;
+  repeated RpcGuestGroup response_data = 2;
+}
+
+message GuestGroupAdministratorResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcGuestGroupAdministrator response_data = 2;
+}
+
+message GuestGroupGuestUserMemberRelationResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcGuestGroupGuestUserMemberRelation response_data = 2;
+}
+
+message GuestGroupMemberResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcGuestGroupMember response_data = 2;
+  repeated RpcRegisteredGroup registered_group_data = 3;
+  repeated RpcGuestGroup guest_group_data = 4;
+}
+
+message GuestGroupRegisteredUserMemberRelationResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcGuestGroupRegisteredUserMemberRelation response_data = 2;
+}
+
+message GuestUserFriendResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcGuestUserFriend response_data = 2;
+}
+
+message OfflineMessagePriorityResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcOfflineMessagePriority response_data = 2;
+}
+
+message RegisteredGroupResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcRegisteredGroup response_data = 2;
+}
+
+message RegisteredGroupAdministratorResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcRegisteredGroupAdministrator response_data = 2;
+}
+
+message RegisteredGroupGuestUserMemberRelationResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcRegisteredGroupGuestUserMemberRelation response_data = 2;
+}
+
+message RegisteredGroupMemberResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcRegisteredGroupMember response_data = 2;
+  repeated RpcRegisteredGroup registered_group_data = 3;
+  repeated RpcGuestGroup guest_group_data = 4;
+}
+
+message RegisteredGroupRegisteredUserMemberRelationResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcRegisteredGroupRegisteredUserMemberRelation response_data = 2;
+}
+
+message RegisteredUserFriendResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcRegisteredUserFriend response_data = 2;
+}
+
+message GroupRemarkResponse { // 传输响应
+  string status_detail = 1;
+  repeated RpcGroupRemark response_data = 2;
+}
+
+//传输协议涉及的实体结构体
+
+message RpcBeautifulNumberCommon {
+  int32 ten_million = 1;
+  int32 one_million = 2;
+  int32 one_hundred_thousand = 3;
+  int32 ten_thousand = 4;
+  int32 one_thousand = 5;
+  int32 one_hundred = 6;
+  int32 ten = 7;
+  int32 one = 8;
+}
+
+message RpcBurnAfterReadingPriority {
+  string type = 1;
+  string priority = 2;
+}
+
+message RpcGroupAnnouncements {
+  int32 group_announcement_id = 1;
+  string announcement_title = 2;
+  string announcement_content = 3;
+}
+
+message RpcGuestGroup {
+  int32 guest_user_id = 1;
+  int32 group_id = 2;
+  string group_name = 3;
+  int32 group_announcement_id = 4;
+  int64 creation_time = 5;
+  int64 modification_time = 6;
+  int32 amount = 7;
+}
+
+message RpcGuestGroupAdministrator {
+  int32 administrator_id = 1;
+  string administrator_type = 2;
+  string administrator_name = 3;
+}
+
+message RpcGuestGroupGuestUserMemberRelation {
+  int32 guest_group_id = 1;
+  int32 guest_user_member_id = 2;
+}
+
+message RpcGuestGroupMember {
+  int32 group_member_id = 1;
+  int32 guest_user_id = 2;
+  string group_remarks = 3;
+  string group_owner = 4;
+  string burn_after_reading_settings = 5;
+  string burn_after_reading_time_unit = 6;
+  float burn_after_reading_time_length = 7;
+  int64 group_entry_time = 8;
+  string offline_message_setting = 9;
+}
+
+message RpcGuestGroupRegisteredUserMemberRelation {
+  int32 guest_group_id = 1;
+  int32 registered_user_member_id = 2;
+}
+
+message RpcGuestUserFriend {
+  int32 guest_user_id = 1;
+  int32 friend_id = 2;
+  int32 friend_user_id = 3;
+  string friend_comment = 4;
+  int64 creation_time = 5;
+  int64 modification_time = 6;
+  string offline_message_setting = 7;
+  string burn_after_reading_setting = 8;
+  string burn_after_reading_time_unit = 9;
+  float burn_after_reading_time_length = 10;
+  string friend_nick_name = 11;
+}
+
+message RpcOfflineMessagePriority {
+  string type = 1;
+  string priority = 2;
+}
+
+message RpcRegisteredGroup {
+  int32 registered_user_id = 1;
+  int32 group_id = 2;
+  string group_name = 3;
+  int32 group_announcement_id = 4;
+  int64 creation_time = 5;
+  int64 modification_time = 6;
+  int32 amount = 7;
+}
+
+message RpcRegisteredGroupAdministrator {
+  int32 administrator_id = 1;
+  string administrator_type = 2;
+  string administrator_name = 3;
+}
+
+message RpcRegisteredGroupGuestUserMemberRelation {
+  int32 registered_group_id = 1;
+  int32 guest_user_member_id = 2;
+}
+
+message RpcRegisteredGroupMember {
+  int32 group_member_id = 1;
+  int32 registered_user_id = 2;
+  string group_remarks = 3;
+  string group_owner = 4;
+  string burn_after_reading_settings = 5;
+  string burn_after_reading_time_unit = 6;
+  float burn_after_reading_time_length = 7;
+  int64 group_entry_time = 8;
+  string offline_message_setting = 9;
+}
+
+message RpcRegisteredGroupRegisteredUserMemberRelation {
+  int32 registered_group_id = 1;
+  int32 registered_user_member_id = 2;
+}
+
+message RpcRegisteredUserFriend {
+  int32 registered_user_id = 1;
+  int32 friend_id = 2;
+  int32 friend_user_id = 3;
+  string friend_comment = 4;
+  int64 creation_time = 5;
+  int64 modification_time = 6;
+  string offline_message_setting = 7;
+  string burn_after_reading_setting = 8;
+  string burn_after_reading_time_unit = 9;
+  float burn_after_reading_time_length = 10;
+  string friend_nick_name = 11;
+}
+
+message RpcGroupRemark {
+  int32 group_id = 1;
+  int32 group_member_id = 2;
+  int32 group_member_id_remarked = 3;
+  string remark = 4;
+}
