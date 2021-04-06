@@ -332,7 +332,7 @@ public class RegistService {
             return checkUnifiedEntranceMessage;
         }
 
-
+        //todo 拆分退出清理和文件服务
         ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
         singleThreadExecutor.execute(new Runnable() {
             @Override
