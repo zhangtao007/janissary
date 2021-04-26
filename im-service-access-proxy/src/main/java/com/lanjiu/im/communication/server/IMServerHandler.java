@@ -9,9 +9,13 @@ import com.lanjiu.pro.business.BusinessProtocolMessages;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.SingleThreadEventExecutor;
 import io.netty.util.internal.StringUtil;
 import org.apache.log4j.Logger;
 
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -147,7 +151,22 @@ public class IMServerHandler extends SimpleChannelInboundHandler<BusinessProtoco
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+     /*   IMServerUtil.scheduledService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Iterator<EventExecutor> iteratorGroups = ctx.executor().parent().iterator();
+                while (iteratorGroups.hasNext()){
+                    SingleThreadEventExecutor next = (SingleThreadEventExecutor)iteratorGroups.next();
+                    int size = next.pendingTasks();
+                    if(next == ctx.executor()){
+                        log.warn(ctx.channel().id() +"--> "+next+" pending size in queue is : --> "+size);
+                    }else{
+                        log.warn(next+" pending size in queue is : --> "+size);
+                    }
 
+                }
+            }
+        },0,1000, TimeUnit.MILLISECONDS);*/
     }
 
     @Override

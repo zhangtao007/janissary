@@ -37,9 +37,9 @@ public class MessageFriendCommon {
     }
 
 
-    public BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage friendChatRegist(BusinessProtocolMessageStandard.UnifiedEntranceMessage unifiedEntranceMessage, BusinessProtocolMessageStandard.Head head) {
+    public BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage friendChatRegist(ChannelHandlerContext ctx,BusinessProtocolMessageStandard.UnifiedEntranceMessage unifiedEntranceMessage, BusinessProtocolMessageStandard.Head head) {
         RegistFriendService registFriendService = new RegistFriendService();
-        return  registFriendService.friendChatRegist(unifiedEntranceMessage,head);
+        return  registFriendService.friendChatRegist(ctx,unifiedEntranceMessage,head);
     }
 
     public BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage friendChatTourist(BusinessProtocolMessageStandard.UnifiedEntranceMessage unifiedEntranceMessage, BusinessProtocolMessageStandard.Head head) {

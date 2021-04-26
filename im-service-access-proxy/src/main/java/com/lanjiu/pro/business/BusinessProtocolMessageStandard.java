@@ -1350,17 +1350,17 @@ public final class BusinessProtocolMessageStandard {
     com.lanjiu.pro.business.BusinessProtocolMessages.AudioAndVideoCallProtocolOrBuilder getAudioAndVideoCallProtocolOrBuilder();
 
     /**
-     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
      * @return Whether the bindingPushServicesProtocol field is set.
      */
     boolean hasBindingPushServicesProtocol();
     /**
-     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
      * @return The bindingPushServicesProtocol.
      */
     com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol getBindingPushServicesProtocol();
     /**
-     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
      */
     com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocolOrBuilder getBindingPushServicesProtocolOrBuilder();
 
@@ -2382,7 +2382,7 @@ public final class BusinessProtocolMessageStandard {
       CHECK_FOR_UPDATES_PROTOCOL(34),
       DEL_GROUP_OFF_MESSAGE_PROTOCOL(35),
       AUDIO_AND_VIDEO_CALL_PROTOCOL(36),
-      BINDING_PUSHSERVICES_PROTOCOL(37),
+      BINDINGPUSHSERVICESPROTOCOL(37),
       DATABODY_NOT_SET(0);
       private final int value;
       private DataBodyCase(int value) {
@@ -2433,7 +2433,7 @@ public final class BusinessProtocolMessageStandard {
           case 34: return CHECK_FOR_UPDATES_PROTOCOL;
           case 35: return DEL_GROUP_OFF_MESSAGE_PROTOCOL;
           case 36: return AUDIO_AND_VIDEO_CALL_PROTOCOL;
-          case 37: return BINDING_PUSHSERVICES_PROTOCOL;
+          case 37: return BINDINGPUSHSERVICESPROTOCOL;
           case 0: return DATABODY_NOT_SET;
           default: return null;
         }
@@ -3415,16 +3415,16 @@ public final class BusinessProtocolMessageStandard {
       return com.lanjiu.pro.business.BusinessProtocolMessages.AudioAndVideoCallProtocol.getDefaultInstance();
     }
 
-    public static final int BINDING_PUSHSERVICES_PROTOCOL_FIELD_NUMBER = 37;
+    public static final int BINDINGPUSHSERVICESPROTOCOL_FIELD_NUMBER = 37;
     /**
-     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
      * @return Whether the bindingPushServicesProtocol field is set.
      */
     public boolean hasBindingPushServicesProtocol() {
       return dataBodyCase_ == 37;
     }
     /**
-     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
      * @return The bindingPushServicesProtocol.
      */
     public com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol getBindingPushServicesProtocol() {
@@ -3434,7 +3434,7 @@ public final class BusinessProtocolMessageStandard {
       return com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol.getDefaultInstance();
     }
     /**
-     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+     * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
      */
     public com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocolOrBuilder getBindingPushServicesProtocolOrBuilder() {
       if (dataBodyCase_ == 37) {
@@ -4031,7 +4031,7 @@ public final class BusinessProtocolMessageStandard {
           hash = (53 * hash) + getAudioAndVideoCallProtocol().hashCode();
           break;
         case 37:
-          hash = (37 * hash) + BINDING_PUSHSERVICES_PROTOCOL_FIELD_NUMBER;
+          hash = (37 * hash) + BINDINGPUSHSERVICESPROTOCOL_FIELD_NUMBER;
           hash = (53 * hash) + getBindingPushServicesProtocol().hashCode();
           break;
         case 0:
@@ -4642,7 +4642,7 @@ public final class BusinessProtocolMessageStandard {
             mergeAudioAndVideoCallProtocol(other.getAudioAndVideoCallProtocol());
             break;
           }
-          case BINDING_PUSHSERVICES_PROTOCOL: {
+          case BINDINGPUSHSERVICESPROTOCOL: {
             mergeBindingPushServicesProtocol(other.getBindingPushServicesProtocol());
             break;
           }
@@ -9422,14 +9422,14 @@ public final class BusinessProtocolMessageStandard {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol, com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol.Builder, com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocolOrBuilder> bindingPushServicesProtocolBuilder_;
       /**
-       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
        * @return Whether the bindingPushServicesProtocol field is set.
        */
       public boolean hasBindingPushServicesProtocol() {
         return dataBodyCase_ == 37;
       }
       /**
-       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
        * @return The bindingPushServicesProtocol.
        */
       public com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol getBindingPushServicesProtocol() {
@@ -9446,7 +9446,7 @@ public final class BusinessProtocolMessageStandard {
         }
       }
       /**
-       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
        */
       public Builder setBindingPushServicesProtocol(com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol value) {
         if (bindingPushServicesProtocolBuilder_ == null) {
@@ -9462,7 +9462,7 @@ public final class BusinessProtocolMessageStandard {
         return this;
       }
       /**
-       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
        */
       public Builder setBindingPushServicesProtocol(
           com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol.Builder builderForValue) {
@@ -9476,7 +9476,7 @@ public final class BusinessProtocolMessageStandard {
         return this;
       }
       /**
-       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
        */
       public Builder mergeBindingPushServicesProtocol(com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol value) {
         if (bindingPushServicesProtocolBuilder_ == null) {
@@ -9498,7 +9498,7 @@ public final class BusinessProtocolMessageStandard {
         return this;
       }
       /**
-       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
        */
       public Builder clearBindingPushServicesProtocol() {
         if (bindingPushServicesProtocolBuilder_ == null) {
@@ -9517,13 +9517,13 @@ public final class BusinessProtocolMessageStandard {
         return this;
       }
       /**
-       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
        */
       public com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol.Builder getBindingPushServicesProtocolBuilder() {
         return getBindingPushServicesProtocolFieldBuilder().getBuilder();
       }
       /**
-       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
        */
       public com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocolOrBuilder getBindingPushServicesProtocolOrBuilder() {
         if ((dataBodyCase_ == 37) && (bindingPushServicesProtocolBuilder_ != null)) {
@@ -9536,7 +9536,7 @@ public final class BusinessProtocolMessageStandard {
         }
       }
       /**
-       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol binding_PushServices_Protocol = 37;</code>
+       * <code>.com.lanjiu.pro.business.BindingPushServicesProtocol bindingPushServicesProtocol = 37;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
           com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol, com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocol.Builder, com.lanjiu.pro.business.BusinessProtocolMessages.BindingPushServicesProtocolOrBuilder> 
@@ -11345,7 +11345,7 @@ public final class BusinessProtocolMessageStandard {
       "ocol_messages.proto\"\202\001\n\033CheckUnifiedEntr" +
       "anceMessage\022Q\n\030unified_entrance_message\030" +
       "\001 \001(\0132/.com.lanjiu.pro.business.UnifiedE" +
-      "ntranceMessage\022\020\n\010checksum\030\002 \001(\t\"\255\037\n\026Uni" +
+      "ntranceMessage\022\020\n\010checksum\030\002 \001(\t\"\253\037\n\026Uni" +
       "fiedEntranceMessage\022+\n\004head\030\001 \001(\0132\035.com." +
       "lanjiu.pro.business.Head\022K\n\tdata_type\030\002 " +
       "\001(\01628.com.lanjiu.pro.business.UnifiedEnt" +
@@ -11419,39 +11419,39 @@ public final class BusinessProtocolMessageStandard {
       "DelGroupOffMessageProtocolH\000\022[\n\035audio_an" +
       "d_video_call_protocol\030$ \001(\01322.com.lanjiu" +
       ".pro.business.AudioAndVideoCallProtocolH" +
-      "\000\022]\n\035binding_PushServices_Protocol\030% \001(\013" +
-      "24.com.lanjiu.pro.business.BindingPushSe" +
-      "rvicesProtocolH\000\"\321\007\n\010DataType\022\032\n\026Registe" +
-      "redUserProtocol\020\000\022\021\n\rLoginProtocol\020\001\022\022\n\016" +
-      "LogoutProtocol\020\002\022\024\n\020FindUserProtocol\020\003\022\026" +
-      "\n\022FriendListProtocol\020\004\022\026\n\022FriendInfoProt" +
-      "ocol\020\005\022$\n FriendOnlineStatusChangeProtoc" +
-      "ol\020\006\022\025\n\021FriendAddProtocol\020\007\022\030\n\024FriendDel" +
-      "eteProtocol\020\010\022\025\n\021FindGroupProtocol\020\t\022\025\n\021" +
-      "GroupListProtocol\020\n\022\027\n\023GroupCreateProtoc" +
-      "ol\020\013\022\025\n\021GroupInfoProtocol\020\014\022)\n%GroupMemb" +
-      "erOnlineStatusChangeProtocol\020\r\022\032\n\026GroupM" +
-      "emberAddProtocol\020\016\022\035\n\031GroupMemberDeleteP" +
-      "rotocol\020\017\022\035\n\031GroupAnnouncementProtocol\020\020" +
-      "\022\030\n\024PersonalInfoProtocol\020\021\022\034\n\030PersonalSe" +
-      "ttingsProtocol\020\022\022\032\n\026FriendSettingsProtoc" +
-      "ol\020\023\022\031\n\025GroupSettingsProtocol\020\024\022\037\n\033Group" +
-      "MemberSettingsProtocol\020\025\022\031\n\025Notification" +
-      "sProtocol\020\026\022\025\n\021SysNotifyProtocol\020\027\022\026\n\022Us" +
-      "erNotifyProtocol\020\030\022\026\n\022FriendChatProtocol" +
-      "\020\031\022\025\n\021GroupChatProtocol\020\032\022\037\n\033DelFriendOf" +
-      "fMessageProtocol\020\033\022 \n\034OffFriendMessageLi" +
-      "stProtocol\020\034\022\037\n\033OfflineGroupMessageProto" +
-      "col\020\036\022\033\n\027CheckForUpdatesProtocol\020\037\022\036\n\032De" +
-      "lGroupOffMessageProtocol\020 \022\030\n\024MessageCle" +
-      "arProtocol\020!\022\035\n\031AudioAndVideoCallProtoco" +
-      "l\020\"\022\037\n\033BindingPushServicesProtocol\020%B\n\n\010" +
-      "dataBody\"\236\001\n\004Head\022\017\n\007msgType\030\001 \001(\t\022\026\n\016ms" +
-      "gContentType\030\002 \001(\005\022\016\n\006fromId\030\003 \001(\t\022\014\n\004to" +
-      "Id\030\004 \001(\t\022\021\n\ttimestamp\030\005 \001(\003\022\024\n\014statusRep" +
-      "ort\030\006 \001(\t\022\027\n\017unique_identify\030\007 \001(\t\022\r\n\005to" +
-      "ken\030\010 \001(\tB<\n\027com.lanjiu.pro.businessB\037Bu" +
-      "sinessProtocolMessageStandardH\001b\006proto3"
+      "\000\022[\n\033bindingPushServicesProtocol\030% \001(\01324" +
+      ".com.lanjiu.pro.business.BindingPushServ" +
+      "icesProtocolH\000\"\321\007\n\010DataType\022\032\n\026Registere" +
+      "dUserProtocol\020\000\022\021\n\rLoginProtocol\020\001\022\022\n\016Lo" +
+      "goutProtocol\020\002\022\024\n\020FindUserProtocol\020\003\022\026\n\022" +
+      "FriendListProtocol\020\004\022\026\n\022FriendInfoProtoc" +
+      "ol\020\005\022$\n FriendOnlineStatusChangeProtocol" +
+      "\020\006\022\025\n\021FriendAddProtocol\020\007\022\030\n\024FriendDelet" +
+      "eProtocol\020\010\022\025\n\021FindGroupProtocol\020\t\022\025\n\021Gr" +
+      "oupListProtocol\020\n\022\027\n\023GroupCreateProtocol" +
+      "\020\013\022\025\n\021GroupInfoProtocol\020\014\022)\n%GroupMember" +
+      "OnlineStatusChangeProtocol\020\r\022\032\n\026GroupMem" +
+      "berAddProtocol\020\016\022\035\n\031GroupMemberDeletePro" +
+      "tocol\020\017\022\035\n\031GroupAnnouncementProtocol\020\020\022\030" +
+      "\n\024PersonalInfoProtocol\020\021\022\034\n\030PersonalSett" +
+      "ingsProtocol\020\022\022\032\n\026FriendSettingsProtocol" +
+      "\020\023\022\031\n\025GroupSettingsProtocol\020\024\022\037\n\033GroupMe" +
+      "mberSettingsProtocol\020\025\022\031\n\025NotificationsP" +
+      "rotocol\020\026\022\025\n\021SysNotifyProtocol\020\027\022\026\n\022User" +
+      "NotifyProtocol\020\030\022\026\n\022FriendChatProtocol\020\031" +
+      "\022\025\n\021GroupChatProtocol\020\032\022\037\n\033DelFriendOffM" +
+      "essageProtocol\020\033\022 \n\034OffFriendMessageList" +
+      "Protocol\020\034\022\037\n\033OfflineGroupMessageProtoco" +
+      "l\020\036\022\033\n\027CheckForUpdatesProtocol\020\037\022\036\n\032DelG" +
+      "roupOffMessageProtocol\020 \022\030\n\024MessageClear" +
+      "Protocol\020!\022\035\n\031AudioAndVideoCallProtocol\020" +
+      "\"\022\037\n\033BindingPushServicesProtocol\020%B\n\n\010da" +
+      "taBody\"\236\001\n\004Head\022\017\n\007msgType\030\001 \001(\t\022\026\n\016msgC" +
+      "ontentType\030\002 \001(\005\022\016\n\006fromId\030\003 \001(\t\022\014\n\004toId" +
+      "\030\004 \001(\t\022\021\n\ttimestamp\030\005 \001(\003\022\024\n\014statusRepor" +
+      "t\030\006 \001(\t\022\027\n\017unique_identify\030\007 \001(\t\022\r\n\005toke" +
+      "n\030\010 \001(\tB<\n\027com.lanjiu.pro.businessB\037Busi" +
+      "nessProtocolMessageStandardH\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

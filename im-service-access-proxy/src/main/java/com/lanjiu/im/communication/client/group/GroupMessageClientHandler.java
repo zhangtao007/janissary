@@ -21,6 +21,7 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.apache.log4j.Logger;
 
+import java.time.Clock;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -158,17 +159,27 @@ public class GroupMessageClientHandler extends SimpleChannelInboundHandler<Busin
             Channel socketChannel = IMServerUtil.getSocketChannel(head.getToId());
             String groupId = msg.getUnifiedEntranceMessage().getGroupChatProtocol().getRegisteredGroupMember().getGroup().getGroupId();
             log.info("群"+groupId+"用户[" + head.getToId() + "]接收聊天消息");
+//            String fromId = msg.getUnifiedEntranceMessage().getHead().getFromId();
+            long stTime =Clock.systemUTC().millis();
+//            if (IMServerUtil.channelTimes.get(fromId) !=null){
+//                stTime = IMServerUtil.channelTimes.get(fromId);
+//            }
             if (socketChannel == null){
                 if (head.getStatusReport().equalsIgnoreCase("huawei-push")){
                     String data = msg.getUnifiedEntranceMessage().getGroupChatProtocol().getStatusDetail();
                     String pushToken = msg.getUnifiedEntranceMessage().getGroupChatProtocol().getAt();
                     log.info("对群"+groupId+"用户[" + head.getToId() + "]发送华为推送透传消息");
 
+                    long finalStTime = stTime;
                     IMClientUtils.cachedThreadPool.execute(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                IMServerUtil.sendTransparent(pushToken,data);
+                                IMServerUtil.sendGroupNotification(pushToken,data);
+                                long pushTime = Clock.systemUTC().millis() - finalStTime;
+                                if (pushTime > 1000){
+                                    log.warn("[[push OFF-MSG-GROUP  time is: "+pushTime +",toId:"+head.getToId());
+                                }
                             } catch (HuaweiMesssagingException e) {
                                 log.error("对群成员：["+head.getToId()+"] 发送华为推送消息异常，"+e.getErrorCode()+e.getMessage() +",token："+pushToken);
                             }

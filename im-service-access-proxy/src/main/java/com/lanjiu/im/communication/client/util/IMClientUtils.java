@@ -17,7 +17,7 @@ public class IMClientUtils {
 
     private static final Logger log = Logger.getLogger(IMClientUtils.class);
 
-    public static ExecutorService cachedThreadPool = new ThreadPoolExecutor(20,200,60, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>(1024));
+    public static ExecutorService cachedThreadPool = new ThreadPoolExecutor(16,20,1, TimeUnit.SECONDS,new LinkedBlockingQueue<Runnable>(1024));
 
     /**
      * 创建心跳包请求消息

@@ -7,6 +7,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import org.apache.log4j.Logger;
 
+import java.time.Clock;
+
 import static com.lanjiu.im.communication.util.ChannelList.*;
 
 public class MsgToDistributionOnline {
@@ -20,7 +22,7 @@ public class MsgToDistributionOnline {
         String msgType = head.getMsgType();
         printLog(checkUnifiedEntranceMessage);
 
-        //todo 客户端需修改proto文件的databody和DataType的序号为37
+
         //用户设备信息更新
         if (IMSContacts.MsgType.USER_DEVICE_UPDATE.equalsIgnoreCase(msgType)){
             IMServerUtil.sendLoginRegistrationServer(ctx,checkUnifiedEntranceMessage);
@@ -63,6 +65,7 @@ public class MsgToDistributionOnline {
         }
         // 捞取好友离线消息）
         if (IMSContacts.MsgType.GET_OFF_MESSAGE_REGIST.equals(msgType) || IMSContacts.MsgType.GET_OFF_MESSAGE_TOURIST.equals(msgType)){
+//            IMServerUtil.channelTimes.put(checkUnifiedEntranceMessage.getUnifiedEntranceMessage().getHead().getFromId(), Clock.systemUTC().millis());
             IMServerUtil.sendFriendMessageServer(ctx, checkUnifiedEntranceMessage);
             return;
         }
@@ -92,12 +95,12 @@ public class MsgToDistributionOnline {
 
         // 多人聊天(群聊)
         if((IMSContacts.MsgType.GROUP_CHAT_TOURISTS.equals(msgType)) ||(IMSContacts.MsgType.GROUP_CHAT_REGISTERED.equals(msgType))){
+//            IMServerUtil.channelTimes.put(checkUnifiedEntranceMessage.getUnifiedEntranceMessage().getHead().getFromId(), Clock.systemUTC().millis());
             Channel shortChannel = IMServerUtil.getShortChannel(head.getFromId());
             if (shortChannel != null){
                 log.info("群聊天响应发送人【"+head.getFromId()+"】消息发送结果：" + IMServerUtil.responseSuccessfulMsg(checkUnifiedEntranceMessage));
                 shortChannel.writeAndFlush(IMServerUtil.responseSuccessfulMsg(checkUnifiedEntranceMessage));
             }
-
 
             IMServerUtil.sendMessageGroupServer(ctx, checkUnifiedEntranceMessage);
             return;
@@ -167,6 +170,7 @@ public class MsgToDistributionOnline {
 
         // 同意好友申请
         if (IMSContacts.MsgType.FRIEND_APPLY_AGREE_TOURISTS.equals(msgType) || IMSContacts.MsgType.FRIEND_APPLY_AGREE_REGISTERED.equals(msgType)){
+//            IMServerUtil.channelTimes.put(checkUnifiedEntranceMessage.getUnifiedEntranceMessage().getHead().getFromId(), Clock.systemUTC().millis());
             IMServerUtil.sendInformationServer(ctx, checkUnifiedEntranceMessage);
             return;
         }
@@ -374,6 +378,7 @@ public class MsgToDistributionOnline {
             IMServerUtil.sendInformationServer(ctx, checkUnifiedEntranceMessage);
         }else if(IMSContacts.MsgType.FRIEND_CHAT_TOURISTS.equals(msgType) ||(IMSContacts.MsgType.FRIEND_CHAT_REGISTERED.equals(msgType))){
             String toId = head.getToId();
+//            IMServerUtil.channelTimes.put(checkUnifiedEntranceMessage.getUnifiedEntranceMessage().getHead().getFromId(), Clock.systemUTC().millis());
             // toId用户是否登录过
             Channel toIdChannel = IMServerUtil.getSocketChannel(toId);
             if (toIdChannel == null){

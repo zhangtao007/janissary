@@ -308,6 +308,7 @@ public class RegistUserAPI {
 
     //检查并更新设备信息
     public RequestUserDevice updateUserDevice(RequestUserDevice request) {
+        logger.info("request:"+request.getRequestDeviceUpdate(0).toString());
         RegisterUserService rservice = new RegisterUserService();
         UserDevice userDevice = rservice.selectUserDevice(request.getRequestDeviceUpdate(0).getUserId());
         if(request.getRequestDeviceUpdate(0).getStatusDetail().equalsIgnoreCase("select")){
@@ -322,12 +323,14 @@ public class RegistUserAPI {
                         .setStatusDetail(IMSContacts.ResponseCode.STATUS_REPORT_SUCCESS).build()).build();
             }
             return RequestUserDevice.newBuilder().addRequestDeviceUpdate(RequestDeviceUpdate.newBuilder()
-                    .setUserId(request.getRequestDeviceUpdate(0).getUserId()) .setStatusDetail(IMSContacts.ResponseCode.STATUS_REPORT_FAILURE).build()).build();
+                    .setUserId(request.getRequestDeviceUpdate(0).getUserId())
+                    .setStatusDetail(IMSContacts.ResponseCode.STATUS_REPORT_FAILURE).build()).build();
         }
         if (userDevice == null){
-           return rservice.insertUserDevice(request.getRequestDeviceUpdate(0).getUserId(),request.getRequestDeviceUpdate(0).getManufacturer(),request.getRequestDeviceUpdate(0).getPushToken());
+           return rservice.insertUserDevice(request.getRequestDeviceUpdate(0).getUserId(),request.getRequestDeviceUpdate(0).getPushToken(),request.getRequestDeviceUpdate(0).getManufacturer());
         }
-        rservice.updateUserDevice(request.getRequestDeviceUpdate(0).getUserId(),request.getRequestDeviceUpdate(0).getManufacturer(),request.getRequestDeviceUpdate(0).getPushToken());
+        logger.info("userDevice【更新前】:"+userDevice.toString());
+        rservice.updateUserDevice(request.getRequestDeviceUpdate(0).getUserId(),request.getRequestDeviceUpdate(0).getPushToken(),request.getRequestDeviceUpdate(0).getManufacturer());
         return RequestUserDevice.newBuilder()
                 .addRequestDeviceUpdate(RequestDeviceUpdate.newBuilder()
                         .setUserId(request.getRequestDeviceUpdate(0).getUserId())

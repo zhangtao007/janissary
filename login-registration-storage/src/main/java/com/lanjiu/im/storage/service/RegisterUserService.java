@@ -166,14 +166,17 @@ public class RegisterUserService {
     }
 
     public RequestUserDevice insertUserDevice(String userId, String pushToken, String manufacturer) {
+        int n =0;
         try {
-            mapper.insertUserDevice(Integer.parseInt(userId),manufacturer,pushToken);
+            n=mapper.insertUserDevice(Integer.parseInt(userId),manufacturer,pushToken);
             session.commit();
-            session.close();
         } catch (NumberFormatException e) {
-            logger.error("insertUserDevice :"+e.getMessage()+",userId:"+userId+",manufacturer："+manufacturer);
+            logger.error("ERROR===insertUserDevice :"+e.getMessage()+",userId:"+userId+",manufacturer："+manufacturer);
         } finally {
             session.close();
+        }
+        if (n<=0){
+            logger.error("insertUserDevice:"+userId+"插入设备token失败");
         }
         return RequestUserDevice.newBuilder().addRequestDeviceUpdate(RequestDeviceUpdate.newBuilder()
                 .setStatusDetail(IMSContacts.ResponseCode.STATUS_REPORT_SUCCESS)
@@ -185,11 +188,13 @@ public class RegisterUserService {
         try {
             n = mapper.updateUserDevice(Integer.parseInt(userId),manufacturer,pushToken);
             session.commit();
-            session.close();
         } catch (NumberFormatException e) {
-            logger.error("updateUserDevice :"+e.getMessage()+",userId:"+userId+",manufacturer："+manufacturer);
+            logger.error("ERROR====updateUserDevice :"+e.getMessage()+",userId:"+userId+",manufacturer："+manufacturer);
         } finally {
             session.close();
+        }
+        if (n<=0){
+            logger.error("updateUserDevice:"+userId+"更新设备token失败");
         }
         return n;
     }

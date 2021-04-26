@@ -1415,6 +1415,7 @@ public class RegistService {
                             .setStatusDetail("传入参数为空")).build();
             return responseIllegalParam(unifiedEntranceMessage,head,uem,ResponseStatus.STATUS_REPORT_FAILURE);
         }
+
         RegistUserAPI registUserAPI = new RegistUserAPI();
         RequestUserDevice respose = registUserAPI.updateUserDevice(RequestUserDevice.newBuilder()
                 .addRequestDeviceUpdate(RequestDeviceUpdate.newBuilder()

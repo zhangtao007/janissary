@@ -5,8 +5,12 @@ import com.lanjiu.im.regist.server.loginRegistStorageAPI.GuestUserAPI;
 import com.lanjiu.im.regist.server.loginRegistStorageAPI.RegistUserAPI;
 import com.lanjiu.pro.login.*;
 import io.grpc.stub.StreamObserver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RegisterUserStorageServiceGrpcImpl extends RegisterStorageServiceGrpc.RegisterStorageServiceImplBase{
+
+    private static  final Logger logger = LoggerFactory.getLogger(RegisterUserStorageServiceGrpcImpl.class);
 
     //注冊用戶
     @Override
@@ -51,6 +55,7 @@ public class RegisterUserStorageServiceGrpcImpl extends RegisterStorageServiceGr
     @Override
     public void selectUserInfomation(RequestUser requestUser,
                                      io.grpc.stub.StreamObserver<ResponseUser> responseObserver) {
+        logger.info("info:"+requestUser.getRegisterUser().toString());
         RegistUserAPI registUserAPI = new RegistUserAPI();
         ResponseUser responseUser = registUserAPI.selectUserInfomation(requestUser);
         responseObserver.onNext(responseUser);

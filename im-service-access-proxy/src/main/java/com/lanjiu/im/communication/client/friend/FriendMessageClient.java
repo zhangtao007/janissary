@@ -2,17 +2,18 @@ package com.lanjiu.im.communication.client.friend;
 
 
 import com.lanjiu.im.communication.client.group.GroupMessageClient;
+import com.lanjiu.im.communication.client.util.IMClientUtils;
 import com.lanjiu.im.communication.util.ConfigFileOperation;
+import com.lanjiu.im.communication.util.IMSContacts;
+import com.lanjiu.im.communication.util.IMServerUtil;
 import com.lanjiu.pro.business.BusinessProtocolMessageStandard;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.apache.log4j.Logger;
 
+import java.time.Clock;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -37,7 +38,17 @@ public class FriendMessageClient {
             log.info("消息服务异常，发送数据类型：" + msgType + "channel:" + friendChannel);
             throw new Exception("消息服务异常");
         }
-        friendChannel.writeAndFlush(checkUnifiedEntranceMessage);
+        ChannelFuture chfure = friendChannel.writeAndFlush(checkUnifiedEntranceMessage);
+        long nowTime = Clock.systemUTC().millis();
+        if (checkUnifiedEntranceMessage.getUnifiedEntranceMessage().getHead().getMsgType().equals(IMSContacts.MsgType.GET_OFF_MESSAGE_REGIST)){
+            chfure.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    long ioTime = Clock.systemUTC().millis() - nowTime;
+                    log.warn("[send to FRIEND-SERVER  io time is: 【"+ioTime +"】,fromId:"+checkUnifiedEntranceMessage.getUnifiedEntranceMessage().getHead().getFromId());
+                }
+            });
+        }
     }
 
     private static void initLinkFriendServer() throws Exception {

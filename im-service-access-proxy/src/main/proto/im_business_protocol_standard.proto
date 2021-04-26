@@ -91,7 +91,7 @@ message UnifiedEntranceMessage {
         CheckForUpdatesProtocol check_for_updates_protocol = 34;
         DelGroupOffMessageProtocol del_group_off_message_protocol = 35;
         AudioAndVideoCallProtocol audio_and_video_call_protocol = 36;
-        BindingPushServicesProtocol binding_PushServices_Protocol = 37;
+        BindingPushServicesProtocol bindingPushServicesProtocol = 37;
 
     }
 }

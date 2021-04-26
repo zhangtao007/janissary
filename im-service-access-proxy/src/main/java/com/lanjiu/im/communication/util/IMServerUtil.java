@@ -1,11 +1,19 @@
 package com.lanjiu.im.communication.util;
 
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.huawei.push.android.*;
+import com.huawei.push.examples.SendNotifyMessage;
 import com.huawei.push.exception.HuaweiMesssagingException;
 import com.huawei.push.message.AndroidConfig;
 import com.huawei.push.message.Message;
+import com.huawei.push.message.Notification;
 import com.huawei.push.messaging.HuaweiApp;
 import com.huawei.push.messaging.HuaweiMessaging;
+import com.huawei.push.model.Importance;
 import com.huawei.push.model.Urgency;
+import com.huawei.push.model.Visibility;
 import com.huawei.push.reponse.SendResponse;
 import com.huawei.push.util.InitAppUtils;
 import com.lanjiu.im.communication.client.friend.FriendMessageClient;
@@ -20,9 +28,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.internal.StringUtil;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.time.Clock;
+import java.util.*;
+import java.util.concurrent.*;
 
 import static com.lanjiu.im.communication.util.ChannelList.*;
 
@@ -31,8 +42,12 @@ public class IMServerUtil {
 
     private final static Logger log = Logger.getLogger(IMServerUtil.class);
 
+    public static ScheduledExecutorService scheduledService = new ScheduledThreadPoolExecutor(16);
+
+    public static ConcurrentHashMap<String,Long> channelTimes = new ConcurrentHashMap<>();
+
     public static Channel getShortChannel(String userId){
-        if (StringUtil.isNullOrEmpty(userId)) return null;
+        if (StringUtil.isNullOrEmpty(userId)) {return null;}
         Channel channel = shortChannelGroup.get(userId);
         if (channel != null && channel.isActive()){
             log.info("用户:["+ userId + "]取出的短管道ID：" + channel.id().toString() + "，channel：" + channel);
@@ -43,7 +58,7 @@ public class IMServerUtil {
     }
 
     public static Channel getSocketChannel(String userId){
-        if (StringUtil.isNullOrEmpty(userId)) return null;
+        if (StringUtil.isNullOrEmpty(userId)) {return null;}
         if (userId.length() == 8) {
             userId = userId + "1";
         }
@@ -397,4 +412,137 @@ public class IMServerUtil {
         SendResponse response = huaweiMessaging.sendMessage(message);
 
     }
+
+
+
+    /**
+     * 华为Notify好友消息
+     */
+    public static void sendNotification(String token,String content) throws HuaweiMesssagingException {
+        HuaweiApp app = InitAppUtils.initializeApp();
+        HuaweiMessaging huaweiMessaging = HuaweiMessaging.getInstance(app);
+        Map<String,String> cmap =mapStringToMap(content);
+        String fromId = cmap.get("fromId");
+        String fromName = cmap.get("fromName");
+        String cc = cmap.get("content");
+        log.info("fromId:"+fromId+",fromName:"+fromName+",cc:"+cc);
+        Notification notification = Notification.builder().setTitle(fromName)
+                .setBody("****")
+                .build();
+
+        String ents =  "intent://com.ljkj.cordial.chat/pushlink?groupType=1&targetId=";
+        StringBuffer sbuff = new StringBuffer();
+        sbuff.append(ents).append(fromId).append("&targetName=").append(fromName).append("&targetType=1#Intent;scheme=pushscheme;launchFlags=0x10000000;end");
+        AndroidNotification androidNotification = AndroidNotification.builder()
+                .setClickAction(ClickAction.builder().setType(1)
+                        .setIntent(sbuff.toString())
+                        .build())
+                .setBody("****")
+                .build();
+
+        AndroidConfig androidConfig = AndroidConfig.builder()
+                .setUrgency(Urgency.HIGH.getValue())
+                .setTtl("10000s")
+                .setBiTag("the_sample_bi_tag_for_receipt_service")
+                .setNotification(androidNotification)
+                .build();
+
+        Message message = Message.builder().setNotification(notification)
+                .setAndroidConfig(androidConfig)
+                .addToken(token)
+                .setData("****")
+                .build();
+
+        SendResponse response = huaweiMessaging.sendMessage(message);
+        log.info("response:"+response.getCode()+",MSG:"+response.getMsg());
+        log.info("&&&&&&&&>toId:"+cmap.get("toId")+" ,【message:】 "+JSONObject.toJSON(message).toString());
+
+
+    }
+
+
+    /**
+     * 华为推送群聊消息
+     * @param
+     * @return
+     */
+    public static void sendGroupNotification(String token,String content) throws HuaweiMesssagingException {
+        HuaweiApp app = InitAppUtils.initializeApp();
+        HuaweiMessaging huaweiMessaging = HuaweiMessaging.getInstance(app);
+        Map<String,String> cmap =mapStringToMap(content);
+        String groupId = cmap.get("groupId");
+        String groupName = cmap.get("groupName");
+//        String gc = cmap.get("content");
+        log.info("huawei-push groupId:"+groupId+",groupName:"+groupName);
+        Notification notification = Notification.builder().setTitle(groupName)
+                .setBody("****")
+                .build();
+        String gent = "intent://com.ljkj.cordial.chat/pushlink?groupType=2&targetId=";
+        StringBuffer gbuff = new StringBuffer();
+        gbuff.append(gent).append(groupId).append("&targetName=").append(groupName).append("&targetType=1#Intent;scheme=pushscheme;launchFlags=0x10000000;end");
+
+        AndroidNotification androidNotification = AndroidNotification.builder()
+                .setClickAction(ClickAction.builder().setType(1)
+                        .setIntent(gbuff.toString())
+                        .build())
+                .setBody("****")
+                .build();
+
+        AndroidConfig androidConfig = AndroidConfig.builder()
+                .setNotification(androidNotification)
+                .build();
+
+        Message message = Message.builder().setNotification(notification)
+                .setAndroidConfig(androidConfig)
+                .addToken(token)
+                .setData("****")
+                .build();
+
+        SendResponse response = huaweiMessaging.sendMessage(message);
+        log.info("response:"+response.getCode()+",MSG:"+response.getMsg());
+        log.info(">>>>>>groupId:"+groupId+" ,【message】:"+ JSONObject.toJSON(message).toString());
+
+    }
+
+
+
+    public static HashMap<String,String> mapStringToMap(String str){
+        String[] strs=str.split(",");
+        HashMap<String,String> map = new HashMap<String, String>();
+        for (String string : strs) {
+            String key=string.split(":")[0];
+            String value=string.split(":")[1];
+            map.put(key, value);
+        }
+        return map;
+    }
+
+    public static String getMapToString(Map<String,String> map){
+        Set<String> keySet = map.keySet();
+        //将set集合转化为数组
+        String[] keyArray = keySet.toArray(new String[keySet.size()]);
+        //给数组排序
+        Arrays.sort(keyArray);
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i<keyArray.length;i++){
+            if ((String.valueOf(map.get(keyArray[i]))).trim().length()>0){
+                sb.append(keyArray[i]).append(":").append(String.valueOf(map.get(keyArray[i])).trim());
+            }
+            if (i != keyArray.length -1){
+                sb.append(",");
+            }
+        }
+        return sb.toString();
+    }
+
+
+    public static void main(String[] args) throws HuaweiMesssagingException {
+
+        String token = "0869158029739873300010793000CN01";   //10010198
+        String data = "fromId:10010198,fromName:鸿,content:哈哈";
+        IMServerUtil.sendNotification(token,data);
+
+    }
+
+
 }

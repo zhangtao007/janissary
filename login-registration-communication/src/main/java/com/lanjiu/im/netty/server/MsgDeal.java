@@ -4,13 +4,21 @@ import com.lanjiu.im.netty.common.LoginRegistComm;
 import com.lanjiu.im.util.IMSContacts;
 import com.lanjiu.im.util.JCRC32;
 import com.lanjiu.im.util.ResponseStatus;
+import com.lanjiu.pro.business.BusinessProtocolEntities;
 import com.lanjiu.pro.business.BusinessProtocolMessageStandard;
 import io.netty.channel.ChannelHandlerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MsgDeal {
+
+    private static final Logger logger = LoggerFactory.getLogger(MsgDeal.class);
+
     public void msgToDeal(ChannelHandlerContext ctx, BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage checkUnifiedEntranceMessage) {
         BusinessProtocolMessageStandard.UnifiedEntranceMessage unifiedEntranceMessage = checkUnifiedEntranceMessage.getUnifiedEntranceMessage();
         BusinessProtocolMessageStandard.Head head = unifiedEntranceMessage.getHead();
@@ -24,6 +32,7 @@ public class MsgDeal {
             ctx.writeAndFlush(response);
         } else if(IMSContacts.MsgType.LOGIN_REGISTERED.equals(msgType)) {
             response = loginRegistComm.loginRegistered(unifiedEntranceMessage, head);
+
             ctx.writeAndFlush(response);
         }else if(IMSContacts.MsgType.LOGIN_TOURISTS.equals(msgType)) {
             response = loginRegistComm.loginTourists(unifiedEntranceMessage, head);
@@ -95,7 +104,7 @@ public class MsgDeal {
             ctx.writeAndFlush(checkMessage);
         }
 
-
+        printLog(checkUnifiedEntranceMessage);
 
 
     }
@@ -143,5 +152,25 @@ public class MsgDeal {
         BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage response = jcrc32.packageCheckSum(illegal);
         ctx.writeAndFlush(response);
         return ;
+    }
+
+
+
+    private void printLog(BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage msg) {
+        BusinessProtocolMessageStandard.UnifiedEntranceMessage unifiedEntranceMessage = msg.getUnifiedEntranceMessage();
+        BusinessProtocolMessageStandard.Head head = unifiedEntranceMessage.getHead();
+        String msgType = head.getMsgType();
+        switch (msgType){
+            case IMSContacts.MsgType.LOGIN_REGISTERED:
+                logger.info("用户【"+ head.getFromId() +"】获取info：" + msg.getUnifiedEntranceMessage().toString());
+                break;
+            case IMSContacts.MsgType.USER_DEVICE_UPDATE:
+                logger.info("用户【"+ head.getFromId() +"】获取设备token：" + msg.getUnifiedEntranceMessage().toString());
+                break;
+            case IMSContacts.MsgType.CHECK_FOR_UPDATES:
+                logger.info("用户【"+ head.getFromId() +"】获取版本信息：" + msg.getUnifiedEntranceMessage().toString());
+            default:
+                break;
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.lanjiu.im.communication.client.login;
 
 import com.lanjiu.im.communication.client.information.InformationClient;
 import com.lanjiu.im.communication.util.ConfigFileOperation;
+import com.lanjiu.im.communication.util.IMSContacts;
 import com.lanjiu.pro.business.BusinessProtocolMessageStandard;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -9,6 +10,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.apache.log4j.Logger;
 
+import java.time.Clock;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +42,18 @@ public class LoginRegistrationClient {
             log.info("向登录服务服务转发用户【"+head.getFromId()+"】-【"+msgType+"】请求异常" + msgType);
             throw new Exception("登录服务异常");
         }
-        loginChannel.writeAndFlush(checkUnifiedEntranceMessage);
+        ChannelFuture loginFuture = loginChannel.writeAndFlush(checkUnifiedEntranceMessage);
+        long nowTime = Clock.systemUTC().millis();
+        if (checkUnifiedEntranceMessage.getUnifiedEntranceMessage().getHead().getMsgType().equals(IMSContacts.MsgType.LOGIN_REGISTERED)){
+            loginFuture.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    long ioTime = Clock.systemUTC().millis() - nowTime;
+                    log.warn("[send to LOGIN-SERVER  io time is: 【"+ioTime +"】,fromId:"+checkUnifiedEntranceMessage.getUnifiedEntranceMessage().getHead().getFromId());
+                }
+            });
+        }
+
     }
 
     private static void linkLoginServer() throws Exception {

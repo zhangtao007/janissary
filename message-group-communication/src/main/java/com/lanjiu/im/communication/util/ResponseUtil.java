@@ -5,13 +5,14 @@ import com.lanjiu.pro.business.BusinessProtocolEntities;
 import com.lanjiu.pro.business.BusinessProtocolMessageStandard;
 import com.lanjiu.pro.business.BusinessProtocolMessages;
 import com.lanjiu.pro.login.RegisterStorageProto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ResponseUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(ResponseUtil.class);
 
     public static BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage requestValidateFail(BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage checkUnifiedEntranceMessage){
         BusinessProtocolMessageStandard.Head head = checkUnifiedEntranceMessage.getUnifiedEntranceMessage().getHead();
@@ -188,7 +189,7 @@ public class ResponseUtil {
                 .setDataType(BusinessProtocolMessageStandard.UnifiedEntranceMessage.DataType.GroupChatProtocol)
                 .setGroupChatProtocol(BusinessProtocolMessages.GroupChatProtocol.newBuilder()
                         .setAt(map.get("pushToken"))
-                        .setStatusDetail(map.toString())
+                        .setStatusDetail(getMapToString(map))
                         .setRegisteredGroupMember(BusinessProtocolEntities.RegisteredGroupMember.newBuilder()
                                 .setGroup(BusinessProtocolEntities.RegisteredGroup.newBuilder()
                                         .setGroupId(msg.getUnifiedEntranceMessage().getGroupChatProtocol().getRegisteredGroupMember().getGroup().getGroupId())
@@ -196,6 +197,38 @@ public class ResponseUtil {
                                 .build())
                         .build())
                 .build();
+        logger.info("huawei-push:"+getMapToString(map));
         return JCRC32.packageCheckSum(message);
     }
+
+
+    public static HashMap<String,String> mapStringToMap(String str){
+        String[] strs=str.split(",");
+        HashMap<String,String> map = new HashMap<String, String>();
+        for (String string : strs) {
+            String key=string.split(":")[0];
+            String value=string.split(":")[1];
+            map.put(key, value);
+        }
+        return map;
+    }
+
+    public static String getMapToString(Map<String,String> map){
+        Set<String> keySet = map.keySet();
+        //将set集合转化为数组
+        String[] keyArray = keySet.toArray(new String[keySet.size()]);
+        //给数组排序
+        Arrays.sort(keyArray);
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i<keyArray.length;i++){
+            if ((String.valueOf(map.get(keyArray[i]))).trim().length()>0){
+                sb.append(keyArray[i]).append(":").append(String.valueOf(map.get(keyArray[i])).trim());
+            }
+            if (i != keyArray.length -1){
+                sb.append(",");
+            }
+        }
+        return sb.toString();
+    }
+
 }

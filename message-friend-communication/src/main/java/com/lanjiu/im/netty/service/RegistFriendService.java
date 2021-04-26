@@ -1,5 +1,6 @@
 package com.lanjiu.im.netty.service;
 
+import com.google.gson.JsonObject;
 import com.google.protobuf.ByteString;
 import com.lanjiu.im.grpc.InformationStorageProto;
 import com.lanjiu.im.grpc.InformationStorageServiceGrpc;
@@ -22,11 +23,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Time;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class RegistFriendService {
 
     private static final Logger logger = LoggerFactory.getLogger(RegistFriendService.class);
+
+    private static ThreadPoolExecutor pool = new ThreadPoolExecutor(16, 20, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(1024));
+
+    private static final ConcurrentHashMap osap = new ConcurrentHashMap();
 
     public BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage friendApplyRegist(BusinessProtocolMessageStandard.UnifiedEntranceMessage unifiedEntranceMessage, BusinessProtocolMessageStandard.Head head) {
         BusinessProtocolMessages.FriendChatProtocol friendChatProtocol = unifiedEntranceMessage.getFriendChatProtocol();
@@ -293,7 +300,7 @@ public class RegistFriendService {
         return  checkUnifiedEntranceMessage;
     }
 
-    public BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage friendChatRegist(BusinessProtocolMessageStandard.UnifiedEntranceMessage unifiedEntranceMessage, BusinessProtocolMessageStandard.Head head)  {
+    public BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage friendChatRegist(ChannelHandlerContext ctx,BusinessProtocolMessageStandard.UnifiedEntranceMessage unifiedEntranceMessage, BusinessProtocolMessageStandard.Head head)  {
         BusinessProtocolMessages.FriendChatProtocol friendChatProtocol = unifiedEntranceMessage.getFriendChatProtocol();
         String userType =friendChatProtocol.getUserType();
         String fromId = friendChatProtocol.getRegisteredUser().getUserId();
@@ -314,103 +321,6 @@ public class RegistFriendService {
         boolean frindOffMsgSetting=false;
         JCRC32 jcrc32 = new JCRC32();
         long start = System.currentTimeMillis();
-
-/*
-        //1.调资料服务器接口，判断好友的好友之间离线消息设置
-        if(friendUserType.equals(IMSContacts.UserType.REGISTERED_USER)){
-
-            StorageAPI storageAPI = new StorageAPI();
-            InformationStorageProto.TransmissionRequest request = InformationStorageProto.TransmissionRequest.newBuilder().setRequestKind(ConstantsSelectKind.FRIEND_SELECT_TYPE_BY_FRIEND_USER_ID)
-                    .setRegisteredUserFriend(InformationStorageProto.RpcRegisteredUserFriend.newBuilder()
-                            .setRegisteredUserId(Integer.parseInt(toId))
-                            .setFriendUserId(Integer.parseInt(fromId)).build()).build();
-            InformationStorageProto.RpcRegisteredUserFriend infoServerRespponse = null;
-            //grpc连接池方式一
-//            InformationStorageServiceGrpc.InformationStorageServiceBlockingStub stub =null;
-//            infoServerRespponse = (InformationStorageProto.RpcRegisteredUserFriend)InfoClient.call("checkFriend", toId, fromId);
-            //grpc连接池方式二
-//            Pool  infoPool  =Pool.getPoolInstanse();
-////            infoPool.init();
-////            infoPool.timer();
-//            try {
-//                 stub = infoPool.get();
-//                infoServerRespponse = stub.queryUserFriendRelation(request);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            } finally {
-//                if(stub != null){
-//                    infoPool.release(stub);
-//                    System.out.println("释放连接对象》》》》》stub:"+stub.toString());
-//                }
-//            }
-            //普通方式调用
-            try {
-                infoServerRespponse = storageAPI.queryUserFriendRelation(request);
-            } catch (Exception e) {
-                logger.error("离线消息(聊天消息)存储时调用资料服务器接口异常，fromId:{},and toId:{}，msgType:{}",fromId,toId,msgType);
-                BusinessProtocolMessageStandard.UnifiedEntranceMessage message = BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
-                        .setDataType(unifiedEntranceMessage.getDataType())
-                        .setFriendChatProtocol( BusinessProtocolMessages.FriendChatProtocol.newBuilder()
-                                .setUserType(IMSContacts.UserType.REGISTERED_USER)
-                                .setStatusDetail(ConstType.EXCEPTION)
-                                .setRegisteredUser(BusinessProtocolEntities.RegisteredUser.newBuilder().setUserId(fromId).build())
-                                .setRegisteredFriend(BusinessProtocolEntities.RegisteredFriend.newBuilder()
-                                        .setFriendUserId(toId)
-                                        .setUserType(friendUserType).build()
-                                ).build())
-                        .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
-                                .setToken(head.getToken())
-                                .setUniqueIdentify(head.getUniqueIdentify())
-                                .setMsgType(head.getMsgType())
-                                .setFromId(fromId)
-                                .setToId(toId)
-                                .setStatusReport(ResponseStatus.STATUS_REPORT_FAILURE).build())
-                        .build();
-                BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage checkUnifiedEntranceMessage = jcrc32.packageCheckSum(message);
-                return  checkUnifiedEntranceMessage;
-            }
-            frindOffMsgSetting = infoServerRespponse.getOfflineMessageSetting().equalsIgnoreCase(ConstType.ON)  ? true : false;
-        }else if(friendUserType.equals(IMSContacts.UserType.TOURISTS_USER)){
-
-            StorageAPI storageAPI = new StorageAPI();
-            InformationStorageProto.TransmissionRequest request = InformationStorageProto.TransmissionRequest.newBuilder().setRequestKind(ConstantsSelectKind.FRIEND_SELECT_TYPE_BY_FRIEND_USER_ID)
-                    .setGuestUserFriend(InformationStorageProto.RpcGuestUserFriend.newBuilder()
-                            .setGuestUserId(Integer.parseInt(fromId))
-                            .setFriendUserId(Integer.parseInt(toId)).build()).build();
-            InformationStorageProto.RpcRegisteredUserFriend infoServerRespponse = storageAPI.queryUserFriendRelation(request);
-            frindOffMsgSetting = infoServerRespponse.getOfflineMessageSetting().equalsIgnoreCase(ConstType.ON)  ? true : false;
-
-        }
-        long inforTime = System.currentTimeMillis();
-        //当用户不接受离线消息
-      if(!frindOffMsgSetting) {
-
-            BusinessProtocolMessages.FriendChatProtocol friendChatProtocols = BusinessProtocolMessages.FriendChatProtocol.newBuilder()
-                    .setUserType(IMSContacts.UserType.REGISTERED_USER)
-                    .setStatusDetail(ConstType.OFF_MSG_SETTING)
-                    .setRegisteredUser(BusinessProtocolEntities.RegisteredUser.newBuilder().setUserId(fromId).build())
-                    .setRegisteredFriend(BusinessProtocolEntities.RegisteredFriend.newBuilder()
-                            .setFriendUserId(toId)
-                            .setUserType(friendUserType).build()
-                    ).build();
-
-            BusinessProtocolMessageStandard.UnifiedEntranceMessage message = BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
-                    .setDataType(unifiedEntranceMessage.getDataType())
-                    .setFriendChatProtocol(friendChatProtocols)
-                    .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
-                            .setToken(head.getToken())
-                            .setUniqueIdentify(head.getUniqueIdentify())
-                            .setMsgType(head.getMsgType())
-                            .setFromId(fromId)
-                            .setToId(toId)
-                            .setStatusReport(ResponseStatus.STATUS_REPORT_REFUSE).build())
-                    .build();
-            BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage checkUnifiedEntranceMessage = jcrc32.packageCheckSum(message);
-            return  checkUnifiedEntranceMessage;
-        }
-
-*/
-
 
 
         if(msgType==IMSContacts.MsgContentType.TEXT){
@@ -448,34 +358,67 @@ public class RegistFriendService {
         }
 
 
-        //todo
-        RegistUserAPI userAPI = new RegistUserAPI();
-        RequestUserDevice deviceResponse = userAPI.updateUserDevice(RequestUserDevice.newBuilder().addRequestDeviceUpdate(RequestDeviceUpdate.newBuilder()
-                .setUserId(toId).setStatusDetail("select").build()).build());
-        if (deviceResponse != null && deviceResponse.getRequestDeviceUpdate(0).getStatusDetail().equalsIgnoreCase(ResponseStatus.STATUS_REPORT_SUCCESS)){
-            String pushToken = deviceResponse.getRequestDeviceUpdate(0).getPushToken();
-            Map<String,String> data = new HashMap();
-            data.put("fromId",fromId);
-            data.put("toId",toId);
-            data.put("content",content);
-            data.put("pushToken",pushToken);
-            BusinessProtocolMessageStandard.UnifiedEntranceMessage message = BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
-                    .setDataType(unifiedEntranceMessage.getDataType())
-                    .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
-                            .setToken(head.getToken())
-                            .setUniqueIdentify(head.getUniqueIdentify())
-                            .setMsgType(head.getMsgType())
-                            .setFromId(fromId)
-                            .setToId(toId)
-                            .setStatusReport("huawei-push").build())
-                    .setFriendChatProtocol(BusinessProtocolMessages.FriendChatProtocol.newBuilder()
-                            .setRegisteredUser(BusinessProtocolEntities.RegisteredUser.newBuilder().setSecret(pushToken).build())
-                            .setStatusDetail(data.toString())
-                            .build()).build();
+        HashMap tmap = new HashMap();
+        tmap.put("fromId",fromId);
+        tmap.put("fromNickname",fromNickname);
+        tmap.put("toId",toId);
+        osap.put(fromId,tmap);
 
-            BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage entranceMessage = jcrc32.packageCheckSum(message);
-            return entranceMessage;
-        }
+        logger.info("channelId:"+ctx.channel().id());
+        logger.info("data:"+tmap.toString());
+        //todo
+        new   Thread(new Runnable() {
+            @Override
+            public void run() {
+                RegistUserAPI userAPI = new RegistUserAPI();
+                HashMap resmap = (HashMap) osap.get(fromId);
+                logger.info("resmap:"+resmap);
+                RequestUserDevice deviceResponse   = userAPI.updateUserDevice(RequestUserDevice.newBuilder().addRequestDeviceUpdate(RequestDeviceUpdate.newBuilder()
+                        .setUserId((String) resmap.get("toId")).setStatusDetail("select").build()).build());
+
+                if (deviceResponse != null && deviceResponse.getRequestDeviceUpdate(0).getStatusDetail().equalsIgnoreCase(ResponseStatus.STATUS_REPORT_SUCCESS) ){
+                    logger.info("push device:"+deviceResponse.getRequestDeviceUpdate(0).toString());
+                    if (deviceResponse.getRequestDeviceUpdate(0).getManufacturer().equalsIgnoreCase("HUAWEI")) {
+                        String pushToken = deviceResponse.getRequestDeviceUpdate(0).getPushToken();
+                        Map<String, String> data = new HashMap();
+                        data.put("fromId", fromId);
+                        data.put("fromName", fromNickname);
+                        data.put("toId", toId);
+                        data.put("pushToken", pushToken);
+                        String mapToString = getMapToString(data);
+                        BusinessProtocolMessageStandard.UnifiedEntranceMessage message = BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
+                                .setDataType(unifiedEntranceMessage.getDataType())
+                                .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
+                                        .setToken(head.getToken())
+                                        .setUniqueIdentify(head.getUniqueIdentify())
+                                        .setMsgType(head.getMsgType())
+                                        .setFromId(fromId)
+                                        .setToId(toId)
+                                        .setStatusReport("huawei-push").build())
+                                .setFriendChatProtocol(BusinessProtocolMessages.FriendChatProtocol.newBuilder()
+                                        .setRegisteredUser(BusinessProtocolEntities.RegisteredUser.newBuilder().setSecret(pushToken).build())
+                                        .setStatusDetail(mapToString)
+                                        .build()).build();
+                        logger.info("[data]:"+mapToString);
+                        BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage entranceMessage = jcrc32.packageCheckSum(message);
+                        ctx.writeAndFlush(entranceMessage);
+                        logger.info("[channelId]:"+ctx.channel().id());
+                    }
+
+                }
+                osap.remove(fromId);
+            }
+        },"thread-"+fromId).start();
+
+
+       /* pool.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });*/
+
+
 
         OffFriendMessageAPI offFriendMessageAPI = new OffFriendMessageAPI();
         RequestFriendMessage requestFriendMessage = null;
@@ -851,6 +794,7 @@ public class RegistFriendService {
             BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage checkUnifiedEntranceMessage = jcrc32.packageCheckSum(message);
             return checkUnifiedEntranceMessage;
         }
+
 
         //响应IMServer
         List<FriendMessage> friendMessageList = responseFriendMessage.getFriendMessageList();
@@ -1529,4 +1473,23 @@ public class RegistFriendService {
         }
         return;
     }
+
+    public static String getMapToString(Map<String,String> map){
+        Set<String> keySet = map.keySet();
+        //将set集合转化为数组
+        String[] keyArray = keySet.toArray(new String[keySet.size()]);
+        //给数组排序
+        Arrays.sort(keyArray);
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i<keyArray.length;i++){
+            if ((String.valueOf(map.get(keyArray[i]))).trim().length()>0){
+                sb.append(keyArray[i]).append(":").append(String.valueOf(map.get(keyArray[i])).trim());
+            }
+            if (i != keyArray.length -1){
+                sb.append(",");
+            }
+        }
+        return sb.toString();
+    }
+
 }

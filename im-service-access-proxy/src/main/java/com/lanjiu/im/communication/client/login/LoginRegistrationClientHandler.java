@@ -4,10 +4,10 @@ import com.lanjiu.im.communication.client.util.IMClientUtils;
 import com.lanjiu.im.communication.util.*;
 import com.lanjiu.pro.business.BusinessProtocolMessageStandard;
 import com.lanjiu.pro.business.BusinessProtocolMessages;
-import com.mysql.cj.util.StringUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -84,7 +84,7 @@ public class LoginRegistrationClientHandler extends SimpleChannelInboundHandler<
             String macAdr = head.getFromId();
             String userId = loginProtocol.getRegisteredUser().getUserId();
             String ordMacAdr = userMacMap.get(userId);
-            if (StringUtils.isNullOrEmpty(ordMacAdr)){
+            if (StringUtils.isEmpty(ordMacAdr)){
                 userMacMap.put(userId, macAdr);
                 Channel shortChannel = macChannelMap.get(head.getFromId());
                 if (shortChannel != null){

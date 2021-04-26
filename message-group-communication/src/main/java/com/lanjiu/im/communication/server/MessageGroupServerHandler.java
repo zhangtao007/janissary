@@ -121,22 +121,28 @@ public class MessageGroupServerHandler extends SimpleChannelInboundHandler<Busin
                         String fromId = msg.getUnifiedEntranceMessage().getHead().getFromId();
                         String toId = msg.getUnifiedEntranceMessage().getHead().getToId();
                         String groupId = msg.getUnifiedEntranceMessage().getGroupChatProtocol().getRegisteredGroupMember().getGroup().getGroupId();
+                        String groupName = msg.getUnifiedEntranceMessage().getGroupChatProtocol().getRegisteredGroupMember().getGroup().getGroupName();
                         RegisterStorageProto.RequestUserDevice requestUserDevice = RegisterStorageProto.RequestUserDevice.newBuilder().addRequestDeviceUpdate(RegisterStorageProto.RequestDeviceUpdate.newBuilder().setUserId(toId).setStatusDetail("select").build()).build();
                         RegisterStorageProto.RequestUserDevice response = loginApi.updateUserDevice(requestUserDevice);
                         //2.调用华为推送服务下发消息
+                        log.info("userDevice:"+response.getRequestDeviceUpdate(0).toString());
                         if(response != null && response.getRequestDeviceUpdate(0).getStatusDetail().equalsIgnoreCase(ResponseStatus.STATUS_REPORT_SUCCESS)){
                             //todo 调用华为推送
-                            String pushToken = response.getRequestDeviceUpdate(0).getPushToken();
-                            String content = CommonUtils.msgContentHandel(msg.getUnifiedEntranceMessage().getGroupChatProtocol().getChatMessage());
-                           Map<String,String> data = new HashMap();
-                           data.put("fromId",fromId);
-                           data.put("toId",toId);
-                           data.put("groupId",groupId);
-                           data.put("content",content);
-                           data.put("pushToken",pushToken);
-                           BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage entranceMessage = ResponseUtil.transtionHuaweiPush(msg,data);
-                            ctx.channel().writeAndFlush(entranceMessage);
-                           return;
+                            if (response.getRequestDeviceUpdate(0).getManufacturer().equalsIgnoreCase("HUAWEI")){
+
+                               String pushToken = response.getRequestDeviceUpdate(0).getPushToken();
+                               String content = CommonUtils.msgContentHandel(msg.getUnifiedEntranceMessage().getGroupChatProtocol().getChatMessage());
+                              Map<String,String> data = new HashMap();
+                              data.put("fromId",fromId);
+                              data.put("toId",toId);
+                                 data.put("groupId",groupId);
+                                 data.put("groupName",groupName);
+                              data.put("content",content);
+                              data.put("pushToken",pushToken);
+                                BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage entranceMessage = ResponseUtil.transtionHuaweiPush(msg,data);
+                               ctx.channel().writeAndFlush(entranceMessage);
+                              return;
+                            }
                         }
 
                     }

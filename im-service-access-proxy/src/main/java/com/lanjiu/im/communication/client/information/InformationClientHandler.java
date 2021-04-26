@@ -14,6 +14,7 @@ import com.lanjiu.pro.business.BusinessProtocolMessageStandard;
 import io.netty.channel.*;
 import org.apache.log4j.Logger;
 
+import java.time.Clock;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -55,9 +56,31 @@ public class InformationClientHandler extends SimpleChannelInboundHandler<Busine
         printLog(msg);
         if (IMSContacts.MsgType.FRIEND_APPLY_AGREE_REGISTERED.equals(msgType) || IMSContacts.MsgType.FRIEND_APPLY_AGREE_TOURISTS.equals(msgType)){
             Channel shortChannel = IMServerUtil.getShortChannel(head.getFromId());
+            String fromId = msg.getUnifiedEntranceMessage().getHead().getFromId();
+//            long inTime =Clock.systemUTC().millis();
+//            if (IMServerUtil.channelTimes.get(fromId) !=null){
+//                inTime = IMServerUtil.channelTimes.get(fromId);
+//            }
+
             if (shortChannel != null){
                 log.info("用户【"+ head.getFromId() +"】同意好友申请响应成功：");
-                shortChannel.writeAndFlush(InformationUtils.responseAddFriendMsg(msg));
+                ChannelFuture chf = shortChannel.writeAndFlush(InformationUtils.responseAddFriendMsg(msg));
+                long beginTime = Clock.systemUTC().millis();
+//                long finalInTime = inTime;
+                chf.addListener(new ChannelFutureListener(){
+
+                    @Override
+                    public void operationComplete(ChannelFuture future) throws Exception {
+                        long ioTime = Clock.systemUTC().millis() - beginTime;
+//                        long costTime = Clock.systemUTC().millis() - finalInTime;
+                        log.warn("[send FRIEND-AGREE io time is: "+ioTime +",fromId:"+head.getFromId());
+//                        log.warn("[send FRIEND-AGREE cost time is: "+costTime +",fromId:"+head.getFromId());
+//                        if (costTime > 1000 || ioTime >1000){
+//                            log.warn("[send FRIEND-AGREE io time is: "+ioTime +",fromId:"+head.getFromId());
+//                            log.warn("[send FRIEND-AGREE cost time is: "+costTime +",fromId:"+head.getFromId());
+//                        }
+                    }
+                });
             }
             if (ResponseStatus.STATUS_REPORT_EXCEPTION.equals(head.getStatusReport())){
                 log.info("用户【"+ head.getFromId() +"】同意好友申请响应失败：");
@@ -133,7 +156,7 @@ public class InformationClientHandler extends SimpleChannelInboundHandler<Busine
             }
             return;
         }
-
+        //xxx
         if (IMSContacts.MsgType.FRIEND_OFFLINE_MSG_REGISTERED.equals(msgType) || IMSContacts.MsgType.FRIEND_OFFLINE_MSG_TOURISTS.equals(msgType)){
             Channel shortChannel = IMServerUtil.getShortChannel(head.getFromId());
             if (shortChannel != null){

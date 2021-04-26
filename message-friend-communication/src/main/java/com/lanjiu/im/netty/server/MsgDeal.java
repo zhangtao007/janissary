@@ -49,7 +49,7 @@ public class MsgDeal {
             response = messageFriendCommon.refuseFriendApplyTourist(unifiedEntranceMessage, head);
             ctx.writeAndFlush(response);
         }else if(IMSContacts.MsgType.FRIEND_CHAT_REGISTERED.equals(msgType)){
-            response = messageFriendCommon.friendChatRegist(unifiedEntranceMessage, head);
+            response = messageFriendCommon.friendChatRegist(ctx,unifiedEntranceMessage, head);
             ctx.writeAndFlush(response);
         }else if(IMSContacts.MsgType.FRIEND_CHAT_TOURISTS.equals(msgType)){
             response = messageFriendCommon.friendChatTourist(unifiedEntranceMessage, head);

@@ -52,7 +52,7 @@ public class LoginClient {
     public static void main(String[] args) throws Exception {
         JCRC32 jcrc32 = new JCRC32();
 
-        //群消息对接华为推送测试
+    /*    //群消息对接华为推送测试
          BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage check = jcrc32.packageCheckSum(BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
          .setDataType(BusinessProtocolMessageStandard.UnifiedEntranceMessage.DataType.GroupChatProtocol)
          .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
@@ -72,26 +72,94 @@ public class LoginClient {
          .build());
         for (int i = 0; i <1 ; i++) {
             linkServer(check);
-        }
+        }*/
 
 //        //好友消息对接华为推送测试
- /*       BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage check = jcrc32.packageCheckSum(BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
+//        BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage check = jcrc32.packageCheckSum(BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
+//                .setDataType(BusinessProtocolMessageStandard.UnifiedEntranceMessage.DataType.FriendChatProtocol)
+//                .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
+//                        .setFromId("10373722")
+//                        .setToId("10010198")
+//                        .setTimestamp(1545098699)
+//                        .setMsgType(IMSContacts.MsgType.FRIEND_CHAT_REGISTERED).build())
+//                .setFriendChatProtocol(BusinessProtocolMessages.FriendChatProtocol.newBuilder()
+//                        .setRegisteredUser(BusinessProtocolEntities.RegisteredUser.newBuilder()
+//                                .setUserId("10373722")
+//                                .setNickname("S60")
+//                                .setPhone("18754295781").build())
+//                        .setChatMessage(BusinessProtocolEntities.ChatMessage.newBuilder().setText(BusinessProtocolEntities.Text.newBuilder().setContent("hahaha").build()).build())
+//                        .setRegisteredFriend(BusinessProtocolEntities.RegisteredFriend.newBuilder()
+//                                .setFriendId("10373722")
+//                                .setFriendUserId("10010198")
+//                                .setUserType("100")
+//                                .setSettings(BusinessProtocolEntities.Settings.newBuilder().setTimerClean(0).build()).build())
+//                        .build())
+//                .build());
+//        for (int i = 0; i <1 ; i++) {
+//            linkServer(check);
+//        }
+
+
+//        //用户设备绑定接口测试
+     /*   BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage check = jcrc32.packageCheckSum(BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
+                .setDataType(BusinessProtocolMessageStandard.UnifiedEntranceMessage.DataType.BindingPushServicesProtocol)
+                .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
+                        .setFromId("77777777")
+                        .setToId("10010198")
+                        .setTimestamp(1545098699)
+                        .setMsgType(IMSContacts.MsgType.USER_DEVICE_UPDATE).build())
+                .setBindingPushServicesProtocol(BusinessProtocolMessages.BindingPushServicesProtocol.newBuilder()
+                        .setUserId("77777777")
+                        .setPushToken("token======ajfiugkg")
+                        .setManufacturer("huawei").build())
+                .build());
+        for (int i = 0; i <10 ; i++) {
+            linkServer(check);
+        }*/
+
+
+
+
+/*
+        BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage check = jcrc32.packageCheckSum(BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
+                .setDataType(BusinessProtocolMessageStandard.UnifiedEntranceMessage.DataType.OffFriendMessageListProtocol)
+                .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
+                        .setFromId("77777777")
+                        .setToId("10010198")
+                        .setTimestamp(1545098699)
+                        .setMsgType(IMSContacts.MsgType.GET_OFF_MESSAGE_REGIST).build())
+                .setOffFriendMessageListProtocol(BusinessProtocolMessages.OffFriendMessageListProtocol.newBuilder()
+                        .setRegisteredUser(BusinessProtocolEntities.RegisteredUser.newBuilder()
+                                .setUserId("77777777")
+                                .build())
+                        .setUserType("0")
+                        .build())
+                .build());
+        for (int i = 0; i <1 ; i++) {
+            linkServer(check);
+        }*/
+
+
+/*
+
+        BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage check = jcrc32.packageCheckSum(BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
                 .setDataType(BusinessProtocolMessageStandard.UnifiedEntranceMessage.DataType.FriendChatProtocol)
                 .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
-                        .setFromId("10010198")
-                        .setToId("77777777")
+                        .setFromId("77777777")
+                        .setToId("10010198")
                         .setTimestamp(1545098699)
                         .setMsgType(IMSContacts.MsgType.FRIEND_CHAT_REGISTERED).build())
                 .setFriendChatProtocol(BusinessProtocolMessages.FriendChatProtocol.newBuilder()
                         .setRegisteredUser(BusinessProtocolEntities.RegisteredUser.newBuilder()
-                                .setUserId("10010198")
-                                .setPhone("18754295781").build())
-                        .setChatMessage(BusinessProtocolEntities.ChatMessage.newBuilder().setText(BusinessProtocolEntities.Text.newBuilder().setContent("hahaha").build()).build())
+                                .setUserId("77777777")
+                                .build())
                         .setRegisteredFriend(BusinessProtocolEntities.RegisteredFriend.newBuilder()
-                                .setFriendId("77777777")
-                                .setFriendUserId("77777777")
-                                .setUserType("100")
-                                .setSettings(BusinessProtocolEntities.Settings.newBuilder().setTimerClean(0).build()).build())
+                                .setUserType("0")
+                                .setFriendUserId("10010198")
+                                .build())
+                        .setChatMessage(BusinessProtocolEntities.ChatMessage.newBuilder()
+                                .setText(BusinessProtocolEntities.Text.newBuilder().setContent("娃哈哈").build()).build())
+                        .setUserType("0")
                         .build())
                 .build());
         for (int i = 0; i <1 ; i++) {
@@ -99,27 +167,6 @@ public class LoginClient {
         }
 
 */
-//        //用户设备绑定接口测试
-//        BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage check = jcrc32.packageCheckSum(BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
-//                .setDataType(BusinessProtocolMessageStandard.UnifiedEntranceMessage.DataType.BindingPushServicesProtocol)
-//                .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
-//                        .setFromId("77777777")
-//                        .setToId("10010198")
-//                        .setTimestamp(1545098699)
-//                        .setMsgType(IMSContacts.MsgType.USER_DEVICE_UPDATE).build())
-//                .setBindingPushServicesProtocol(BusinessProtocolMessages.BindingPushServicesProtocol.newBuilder()
-//                        .setUserId("77777777")
-//                        .setPushToken("token======ajfiugkg")
-//                        .setManufacturer("huawei").build())
-//                .build());
-//        for (int i = 0; i <1 ; i++) {
-//            linkServer(check);
-//        }
-
-
-
-
-
 
 
 //
@@ -187,6 +234,25 @@ public class LoginClient {
 //
 //        linkServer(check);
 
+
+
+        BusinessProtocolMessageStandard.CheckUnifiedEntranceMessage check = jcrc32.packageCheckSum(BusinessProtocolMessageStandard.UnifiedEntranceMessage.newBuilder()
+                .setLoginProtocol(BusinessProtocolMessages.LoginProtocol.newBuilder()
+                        .setRegisteredUser(BusinessProtocolEntities.RegisteredUser.newBuilder()
+                                .setUserId("10010260")
+                                .setNickname("aaaas")
+                                .setPhone("13390907788")
+                                .setSecret("123456")
+                                .build())
+                        .build())
+                .setHead(BusinessProtocolMessageStandard.Head.newBuilder()
+                        .setFromId("10010260")
+                        .setToId("1")
+                        .setTimestamp(1545098699)
+                        .setMsgType(IMSContacts.MsgType.LOGIN_REGISTERED).build())
+                .build());
+
+        linkServer(check);
 
     }
  }
